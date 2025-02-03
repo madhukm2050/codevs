@@ -50,33 +50,45 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
-
-    ll d = n-m;
-
-    if(d != 1){
-        NO;
-        return;
-    }
+    ll n,q;
+    cin >> n >> q;
+    vector<ll> vec(n+1,1);
+    set<ll> set;
     
-    ll ans = n + m;
+    // debug(vec);
+    // debug(set);
+    
+    vector<ll> parent(n+1);
+    rep(i,n+1)parent[i] = i;
 
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
+    rep(i,q){
+        ll a;
+        cin >> a;
+        if(a == 1){
+            ll p,h;
+            cin >> p >> h;
+            ll pa = parent[p];
+            //cerr << pa << ln;
+            vec[pa]--;
+            if(vec[pa] < 2 && set.find(pa) != set.end())set.erase(set.find(pa));
+            vec[h]++;
+            //cerr <<p << " "<< parent[p] << ln;
+            parent[p] = h;
+            //cerr <<p << " "<< parent[p] << ln;
+            if(vec[h] > 1)set.insert(h);
+            
         }
+        else{
+            cout << set.size() << ln;
+        }
+        // debug(i);
+        // debug(vec);
+        // debug(set);
+        // debug(parent);
+
     }
-    if(count == 2){
-        YES;
-    }
-    else{
-        NO;
-    }
+
+
 }
 
 int main() {
@@ -84,7 +96,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

@@ -50,32 +50,32 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    string s;
+    cin >> s;
 
-    ll d = n-m;
-
-    if(d != 1){
-        NO;
-        return;
+    if(s == "N"){
+        cout << "S "<<ln;
     }
-    
-    ll ans = n + m;
-
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
-        }
+    else if(s == "S"){
+        cout << "N"<<ln;
     }
-    if(count == 2){
-        YES;
+    else if(s == "E"){
+        cout << "W"<<ln;
     }
-    else{
-        NO;
+    else if(s == "W"){
+        cout << "E"<<ln;
+    }
+    else if(s == "NE"){
+        cout << "SW"<<ln;
+    }
+    else if(s == "NW"){
+        cout << "SE"<<ln;
+    }
+    else if(s == "SE"){
+        cout << "NW"<<ln;
+    }
+    else if(s == "SW"){
+        cout << "NE"<<ln;
     }
 }
 
@@ -84,7 +84,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

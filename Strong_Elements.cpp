@@ -50,33 +50,35 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    ll d = n-m;
-
-    if(d != 1){
-        NO;
-        return;
+    vector<ll> pre(n),suff(n);
+    pre[0] = vec[0];
+    for(ll i = 1; i < n; i++){
+        pre[i] = __gcd(pre[i-1], vec[i]);
     }
+    suff[n-1] = vec[n-1];
+
+    for(ll i = n-2; i >= 0; i--){
+        suff[i] = __gcd(suff[i+1], vec[i]);
+    }
+
+    ll count = 0;
+    for(int i = 1; i < n-1; i++){
+        if(__gcd(pre[i-1], suff[i+1]) != 1)count++;
+    }
+
+    // last element
+    if(pre[n-2] != 1)count++;
+
+    //first element
+    if(suff[1] != 1)count++;
+    cout << count << ln; 
+
     
-    ll ans = n + m;
-
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
-        }
-    }
-    if(count == 2){
-        YES;
-    }
-    else{
-        NO;
-    }
 }
 
 int main() {

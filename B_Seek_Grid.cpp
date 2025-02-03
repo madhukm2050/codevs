@@ -52,31 +52,44 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n, m;
     cin >> n >> m;
+    //cerr << n << " "<< m<<ln;
 
-    ll d = n-m;
+    vector<vector<char>> s(n, vector<char>(n));
+    vector<vector<char>> t(m, vector<char>(m));
 
-    if(d != 1){
-        NO;
-        return;
+    rep(i,n){
+        rep(j,n)cin >> s[i][j];
     }
-    
-    ll ans = n + m;
+    rep(i,m){
+        rep(j,m)cin >> t[i][j];
+    }
+    // debug(s);
+    // debug(t);
 
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
+    for(int i = 0; i < n ; i++){
+        for(int j = 0; j < n; j++){
+            //cerr << i << " "<< j << " "<<s[i][j] << " "<< i+m << " "<<j+m <<ln;
+            if(s[i][j] == t[0][0] && i+m <= n && j+m <= n){
+                bool flag = true;
+                //cerr << i << " "<< j<<ln;
+                rep(i1,m)
+                {
+                    rep(j1,m){
+                        if(s[i+i1][j+j1] != t[i1][j1]){
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(!flag)break;
+                }
+                if(flag){
+                    cout << i+1 << " "<< j+1<<ln;
+                    return;
+                }
             }
         }
     }
-    if(count == 2){
-        YES;
-    }
-    else{
-        NO;
-    }
+
 }
 
 int main() {
@@ -84,7 +97,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

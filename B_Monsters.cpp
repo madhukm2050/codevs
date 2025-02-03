@@ -49,34 +49,34 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+auto query = [&](pair<ll,ll> &a, pair<ll,ll> &b) -> bool{
+    if(a.ff == b.ff)return a.ss > b.ss;
+    return a.ff < b.ff;
+};
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n, k;
+    cin >> n >> k;
 
-    ll d = n-m;
-
-    if(d != 1){
-        NO;
-        return;
-    }
-    
-    ll ans = n + m;
-
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
+    priority_queue<pair<ll,ll>,vector<pair<ll,ll>>, decltype(query)> pq(query);
+    rep(i,n){
+        ll a;
+        cin >> a;
+        if(a%k == 0){
+            cout << i+1 << " ";
+        }
+        else{
+            pq.push({a%k,i});
         }
     }
-    if(count == 2){
-        YES;
+    while (!pq.empty())
+    {
+        pair<ll,ll> p = pq.top();
+        pq.pop();
+        cout << p.ss+1 << " ";
+        
     }
-    else{
-        NO;
-    }
+    cout << ln;
+    
 }
 
 int main() {

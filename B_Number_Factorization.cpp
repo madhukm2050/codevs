@@ -49,40 +49,49 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+
 void solve() {
-    ll n, m;
-    cin >> n >> m;
-
-    ll d = n-m;
-
-    if(d != 1){
-        NO;
-        return;
-    }
-    
-    ll ans = n + m;
-
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
+    ll n;
+    cin >> n;
+    map<ll,ll> map;
+    ll m = 0;
+    for(ll i = 2; i*i <= n; i++){
+        if(n%i == 0){
+            ll c = 0;
+            while(n%i == 0){
+                c++;
+                n/=i;
             }
+            // cerr << i << ln;
+            if(c > 0)map[i] = c;
+            m = max(m, c);
         }
     }
-    if(count == 2){
-        YES;
+    //debug(map);
+    if(n!= 1){
+        map[n] =1;
+        m = max(m, 1LL);
     }
-    else{
-        NO;
+    //debug(map);
+    ll sum = 0;
+    while (m--)
+    {
+        ll prod = 1;
+        for(auto e : map){
+            if(e.ss > 0){
+                prod *= e.ff;
+                map[e.ff]--;
+            }
+        }
+        sum += prod;
     }
+    cout << sum << ln;
+    
+    
 }
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(NULL);
-
     int t=1;
     cin >> t;
     while (t--) {

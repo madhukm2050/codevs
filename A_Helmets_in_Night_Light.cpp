@@ -50,33 +50,37 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n, p;
+    cin >> n >> p;
+    vector<pair<ll,ll>> vec(n);
 
-    ll d = n-m;
-
-    if(d != 1){
-        NO;
-        return;
+    for(int i = 0; i < n; i++){
+        cin >> vec[i].ff; 
     }
-    
-    ll ans = n + m;
+    for(int i = 0; i < n; i++){
+        cin >> vec[i].ss; 
+    }
 
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
+    auto query = [&](pair<ll,ll> &a, pair<ll,ll> &b)->bool{
+        if(a.ss == b.ss)return a.ff < b.ff;
+        return a.ss < b.ss;
+    };
+    sort(all(vec), query);
+
+    //debug(vec);
+    ll count = n-1, sum = p;
+
+    for(ll i = 0; i < n; i++){
+        if(p <= vec[i].ss || count <= 0){
+            break;
         }
+        sum += min(vec[i].ff, count)*vec[i].ss;
+        count -= vec[i].ff;
     }
-    if(count == 2){
-        YES;
-    }
-    else{
-        NO;
-    }
+    if(count > 0 )sum += p*count;
+    cout << sum << ln;
+
+
 }
 
 int main() {

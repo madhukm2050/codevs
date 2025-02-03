@@ -50,33 +50,44 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
 
-    ll d = n-m;
+    rep(i,n)cin >> vec[i];
+    vector<bool> vis(n);
+    ll m = *min_element(all(vec));
+    vector<ll> s;
 
-    if(d != 1){
-        NO;
-        return;
-    }
-    
-    ll ans = n + m;
-
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
+    rep(i,n){
+        if(vec[i]%m == 0){
+            s.pb(vec[i]);
         }
     }
-    if(count == 2){
+    sort(all(s));
+    ll j = 0;
+    rep(i,n){
+        if(vec[i]%m == 0){
+            vec[i] = s[j];
+            j++;
+        }
+    }
+    //debug(vec);
+    bool flag = true;
+    for(ll i = 1;i < n ; i++){
+        if(vec[i] < vec[i-1]){
+            flag = false;
+        }
+    }
+    if (flag)
+    {
         YES;
     }
     else{
         NO;
     }
+    
+
 }
 
 int main() {

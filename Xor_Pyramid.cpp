@@ -49,34 +49,31 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+const ll N = 2e5;
+ll power[N+1];
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    vector<ll>vec(n);
+    rep(i,n)cin >> vec[i];
 
-    ll d = n-m;
+    power[2] = 1;
 
-    if(d != 1){
-        NO;
-        return;
+    for(ll i = 3; i <= N; i++){
+        power[i] = (i/2)+power[i/2];
     }
-    
-    ll ans = n + m;
-
-    int count = 0;
-    for(ll i = 1 ; i*i <= ans; i++){
-        if(ans%i == 0){
-            count++;
-            if((n/i)% i == 0){
-                count++;
-            }
+    ll ans = 0;
+    for(ll i = 0; i < n; i++){
+        ll c1 = power[n-1];
+        ll c2 = power[i];
+        ll c3 = power[n-i-1];
+        //cerr << c1 << " "<< c2 << " "<< c3 <<ln;
+        if((c1-c2-c3) == 0 ){
+            ans ^= vec[i];
         }
     }
-    if(count == 2){
-        YES;
-    }
-    else{
-        NO;
-    }
+
+    cout << ans << ln;
 }
 
 int main() {
@@ -84,7 +81,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
