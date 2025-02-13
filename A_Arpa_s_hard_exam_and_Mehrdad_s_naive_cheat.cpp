@@ -50,22 +50,26 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
 
-    ll sum = 0, rem = 0;
-    while(n != 0){
-        if(rem >= m){
-            rem -= m;
-            n++;
-        }
-        sum += n;
-        rem += n%m;
-        n /= m;
+    if(n == 0){
+        cout << 1 << ln;
     }
-    //cerr <<sum << " "<< rem << ln;
-
-    cout << sum +(rem/m)<< ln;
+    else{
+        if(n%4 == 0){
+            cout << 6 <<ln;
+        }
+        else if(n%4 == 1){
+            cout << 8 <<ln;
+        }
+        else if(n%4 == 2){
+            cout << 4 <<ln;
+        }
+        else if(n%4 == 3){
+            cout << 2 <<ln;
+        }
+    }
 }
 
 int main() {

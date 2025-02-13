@@ -50,22 +50,16 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll x,y,a,b;
+    cin >> x >> y >> a >> b;
 
-    ll sum = 0, rem = 0;
-    while(n != 0){
-        if(rem >= m){
-            rem -= m;
-            n++;
-        }
-        sum += n;
-        rem += n%m;
-        n /= m;
+    if(2LL*a <= b){
+        cout << (x+y)*a << ln;
     }
-    //cerr <<sum << " "<< rem << ln;
-
-    cout << sum +(rem/m)<< ln;
+    else{
+        ll m1 = min(x,y), d = abs(x-y);
+        cout << (m1*b)+d*a << ln;
+    }
 }
 
 int main() {
@@ -73,7 +67,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

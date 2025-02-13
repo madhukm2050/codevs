@@ -53,19 +53,23 @@ void solve() {
     ll n, m;
     cin >> n >> m;
 
-    ll sum = 0, rem = 0;
-    while(n != 0){
-        if(rem >= m){
-            rem -= m;
-            n++;
+    if(m == 10){
+        if(n == 1){
+            cout << -1 << ln;
         }
-        sum += n;
-        rem += n%m;
-        n /= m;
+        else{
+            cout<< 1;
+            for(ll i = 0; i < n-1; i++){
+                cout <<0;
+            }
+        }
+        return;
     }
-    //cerr <<sum << " "<< rem << ln;
 
-    cout << sum +(rem/m)<< ln;
+    for(ll i = 0; i < n; i++){
+        cout <<m;
+    }
+    cout << ln;
 }
 
 int main() {
