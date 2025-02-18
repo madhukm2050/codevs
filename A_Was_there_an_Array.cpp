@@ -51,42 +51,29 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 
 void solve() {
     ll n;
-    cin  >> n;
-    vector<ll> vec(n);
+    cin >> n;
+    vector<ll> vec(n-2);
 
-    rep(i,n)cin >> vec[i];
+    rep(i,n-2)cin >> vec[i];
 
+    ll prev = -1;
     //debug(vec);
 
-    map<ll,ll> freq;
-    ll m = 0;
-    rep(i,n){
-        freq[vec[i]]++;
-    }
-
-    //debug(freq);
-
-    ll l = -1, h = -1, len = 0, r = 0;
-
-    for(ll i = 0; i < n; i++){
-        r = max(i,r);
-
-        while(r < n && freq[vec[r]] == 1)r++;
-        
-        //cerr << (r-i) << " " << r << " "<< i << ln;
-        if(r-i > len){
-            len = r-i;
-            l = i;
-            h = r-1;
+    rep(i,n-2){
+        if(vec[i] == 1){
+            if(prev == -1){
+                prev = i;
+            }
+            else{
+                if(i-prev == 2){
+                    NO;
+                    return;
+                }
+            }
+            prev = i;
         }
     }
-    if(l == -1){
-        cout << 0 << ln;
-    }
-    else{
-        cout << l+1 << " "<< h+1 << ln;
-    }
-      
+    YES;
 }
 
 int main() {
