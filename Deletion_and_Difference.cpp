@@ -49,42 +49,34 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
 
-    vector<vector<ll>> vec(n+1, vector<ll>(m+1));
+    rep(i,n)cin >> vec[i];
 
-    vector<ll> a(n*m+1);
+    vector<ll> a(n+1);
+
+    rep(i,n)a[vec[i]]++;
+
+    ll count = 0;
     for(ll i = 1; i <= n; i++){
-        for(ll j = 1; j <= m; j++){
-            cin >> vec[i][j];
-        }
+        a[0] += a[i]/2;
+        a[i] = a[i]%2;
+    }
+    while(a[0] > 1){
+        ll value = (a[0]/2)+(a[0]%2);
+        a[0] = value;
     }
 
-
-    for(ll i = 1; i <= n; i++){
-        for(ll j = 1; j <= m; j++){
-            if(vec[i][j] == vec[i-1][j] || vec[i][j] == vec[i][j-1]){
-                a[vec[i][j]] = 2;
-            }
-            else{
-                a[vec[i][j]] = max(1LL, a[vec[i][j]]);
-            }
-        }
+    for(ll i = 0; i <= n; i++){
+        count += a[i];
     }
+
     //debug(a);
 
-    ll sum = 0, m1 = 0;
-    for(auto e : a){
-        sum += e;
-        m1 = max(m1, e);
-    }
-
-    cout << sum-m1 << ln;
-
-    
+    cout << count << ln;
 }
 
 int main() {

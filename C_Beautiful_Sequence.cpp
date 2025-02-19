@@ -49,42 +49,59 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
 
-    vector<vector<ll>> vec(n+1, vector<ll>(m+1));
+    rep(i,n)cin >> vec[i];
 
-    vector<ll> a(n*m+1);
-    for(ll i = 1; i <= n; i++){
-        for(ll j = 1; j <= m; j++){
-            cin >> vec[i][j];
+    ll i = 0;
+    while(i < n && vec[i] != 1){
+        i++;
+    }
+
+    if(i == n){
+        cout << 0 << ln;
+        return;
+    }
+
+    vector<ll> p (n);
+    p[0] = 0;
+
+    for(ll j = 1; j < n; j++){
+        p[j] += p[j-1]+(vec[j] == 2);
+    }
+
+    ll sum = 0, count = 0, ans = 0;
+
+    for(ll j = i+1; j < n; j++){
+        if(vec[j] == 3){
+            sum += expo(2, p[j], MOD1);
+            count++;
         }
     }
 
-
-    for(ll i = 1; i <= n; i++){
-        for(ll j = 1; j <= m; j++){
-            if(vec[i][j] == vec[i-1][j] || vec[i][j] == vec[i][j-1]){
-                a[vec[i][j]] = 2;
-            }
-            else{
-                a[vec[i][j]] = max(1LL, a[vec[i][j]]);
-            }
+    for(ll j = i; j < n; j++){
+        if(vec[j] == 1){
+            ans += mod_div(sum,expo(2,p[j], MOD1), MOD1) - count;
+            ans %= MOD1;
+        }
+        else if(vec[j] == 3){
+            sum -= pow(2, p[j]);
+            count--;
         }
     }
-    //debug(a);
 
-    ll sum = 0, m1 = 0;
-    for(auto e : a){
-        sum += e;
-        m1 = max(m1, e);
-    }
+    cout << ans << ln;
 
-    cout << sum-m1 << ln;
-
-    
 }
 
 int main() {

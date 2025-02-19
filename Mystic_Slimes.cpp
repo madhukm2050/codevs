@@ -49,41 +49,35 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
 
-    vector<vector<ll>> vec(n+1, vector<ll>(m+1));
+    vector<pair<ll,ll>> vec;
+    vector<ll> arr(n);
 
-    vector<ll> a(n*m+1);
-    for(ll i = 1; i <= n; i++){
-        for(ll j = 1; j <= m; j++){
-            cin >> vec[i][j];
+    rep(i,n){
+        ll a;
+        cin >> a;
+        arr[i] = a;
+        vec.pb({a,i});
+    }
+
+    sort(all(vec));
+
+    ll maxi = 0;
+    rep(i,n){
+        ll v = vec[i].ff, ind = vec[i].ss;
+        if(ind == 1){
+            v -= arr[0];
         }
-    }
-
-
-    for(ll i = 1; i <= n; i++){
-        for(ll j = 1; j <= m; j++){
-            if(vec[i][j] == vec[i-1][j] || vec[i][j] == vec[i][j-1]){
-                a[vec[i][j]] = 2;
-            }
-            else{
-                a[vec[i][j]] = max(1LL, a[vec[i][j]]);
-            }
+        if(ind == n-2){
+            v -= arr[n-1];
         }
+        //cerr << v << ln;
+        maxi = max(maxi, v);
     }
-    //debug(a);
-
-    ll sum = 0, m1 = 0;
-    for(auto e : a){
-        sum += e;
-        m1 = max(m1, e);
-    }
-
-    cout << sum-m1 << ln;
-
+    cout << maxi << ln;
     
 }
 
