@@ -49,7 +49,7 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-class MaxHeap{
+class Max_Heap{
     vector<ll> heap;
 
     void heapify_down(ll ind){
@@ -77,7 +77,6 @@ class MaxHeap{
 
     void heapify_up(ll ind){
         if(ind == 0)return;
-
         ll parent = (ind-1)/2;
         if(heap[ind] > heap[parent]){
             swap(heap[ind], heap[parent]);
@@ -85,54 +84,73 @@ class MaxHeap{
         }
     }
 
-public:
-    MaxHeap(vector<ll> arr){
-        heap = arr;
-    }
 
-    void build(){
-        ll n = heap.size();
-
-        for(ll i = n/2-1; i >= 0; i--){
-            heapify_down(i);
+    public:
+        Max_Heap(vector<ll> arr){
+            heap = arr;
         }
-    }
 
-    ll get_max(){
-        if(heap.size() == 0)return -1;
-        return heap[0];
-    }
+        void build(){
+            ll n  = heap.size();
+            for(ll i = n/2 -1; i >= 0; i--){
+                heapify_down(i);
+            }
+        }
 
-    void insert(ll val){
-        heap.pb(val);
-        heapify_up(heap.size()-1);
-    }
+        void heapify(ll ind, ll last){
+            ll n = heap.size();
 
-    void remove(){
-        ll n = heap.size();
-        swap(heap[0], heap[n-1]);
-        heap.pop_back();
-        if(heap.size() == 0) return;
-        heapify_down(0);
-    }
+            ll left = 2*ind+1;
+            ll right = 2*ind+2;
+
+            ll largest = heap[ind];
+            ll index = ind;
+
+            if(left < last && heap[left] > largest){
+                largest = heap[left];
+                index = left;
+            }
+
+            if(right < last && heap[right] > largest){
+                largest = heap[right];
+                index = right;
+            }
+
+            if(index == ind)return;
+
+            swap(heap[ind], heap[index]);
+            heapify(index, last);
+        }
+
+        void sort(ll ind, ll last){
+            swap(heap[ind], heap[last]);
+            last--;
+            heapify(ind, last);
+        }
+        void print(){
+            rep(i, heap.size()){
+                cout << heap[i] << " ";
+            }
+            cout << ln;
+        }
 
 };
-
 void solve() {
     ll n;
     cin >> n;
+
     vector<ll> vec(n);
 
     rep(i,n)cin >> vec[i];
 
-    MaxHeap pq(vec);
+    Max_Heap pq(vec);
     pq.build();
-    cout<< pq.get_max() << ln;
-    pq.remove();
-    cout<< pq.get_max() << ln;
-    pq.insert(34);
-    cout<< pq.get_max() << ln;
 
+    for(ll i = 0; i < n; i++){
+        pq.sort(0, n-1-i);
+    }
+    pq.print();
+    debug(vec);
 
 
 }

@@ -49,91 +49,29 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-class MaxHeap{
-    vector<ll> heap;
-
-    void heapify_down(ll ind){
-        ll n = heap.size();
-        ll left = 2*ind+1;
-        ll right = 2*ind+2;
-
-        ll l = heap[ind];
-        ll index = ind;
-
-        if(left < n && heap[left] > l){
-            l = heap[left];
-            index = left;
-        }
-
-        if(right < n && heap[right] > l){
-            l = heap[right];
-            index = right;
-        }
-
-        if(index == ind)return;
-        swap(heap[index], heap[ind]);
-        heapify_down(index);
+struct cmp {
+    bool operator()(pair<ll,ll>& a, pair<ll,ll>& b)  {
+        if(a.ff == b.ff) return a.ss > b.ss;
+        return a.ff < b.ff;
     }
-
-    void heapify_up(ll ind){
-        if(ind == 0)return;
-
-        ll parent = (ind-1)/2;
-        if(heap[ind] > heap[parent]){
-            swap(heap[ind], heap[parent]);
-            heapify_up(parent);
-        }
-    }
-
-public:
-    MaxHeap(vector<ll> arr){
-        heap = arr;
-    }
-
-    void build(){
-        ll n = heap.size();
-
-        for(ll i = n/2-1; i >= 0; i--){
-            heapify_down(i);
-        }
-    }
-
-    ll get_max(){
-        if(heap.size() == 0)return -1;
-        return heap[0];
-    }
-
-    void insert(ll val){
-        heap.pb(val);
-        heapify_up(heap.size()-1);
-    }
-
-    void remove(){
-        ll n = heap.size();
-        swap(heap[0], heap[n-1]);
-        heap.pop_back();
-        if(heap.size() == 0) return;
-        heapify_down(0);
-    }
-
 };
 
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
-
-    rep(i,n)cin >> vec[i];
-
-    MaxHeap pq(vec);
-    pq.build();
-    cout<< pq.get_max() << ln;
-    pq.remove();
-    cout<< pq.get_max() << ln;
-    pq.insert(34);
-    cout<< pq.get_max() << ln;
+    priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, cmp> pq;
 
 
+    rep(i,n){
+        ll a, b;
+        cin >> a>> b;
+        pq.push({a,b});
+    }
+
+    cout << pq.top().ff << " "<< pq.top().ss <<ln;
+    pq.pop();
+    cout << pq.top().ff << " "<< pq.top().ss <<ln;
+   
 
 }
 

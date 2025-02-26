@@ -49,92 +49,50 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-class MaxHeap{
-    vector<ll> heap;
-
-    void heapify_down(ll ind){
-        ll n = heap.size();
-        ll left = 2*ind+1;
-        ll right = 2*ind+2;
-
-        ll l = heap[ind];
-        ll index = ind;
-
-        if(left < n && heap[left] > l){
-            l = heap[left];
-            index = left;
-        }
-
-        if(right < n && heap[right] > l){
-            l = heap[right];
-            index = right;
-        }
-
-        if(index == ind)return;
-        swap(heap[index], heap[ind]);
-        heapify_down(index);
-    }
-
-    void heapify_up(ll ind){
-        if(ind == 0)return;
-
-        ll parent = (ind-1)/2;
-        if(heap[ind] > heap[parent]){
-            swap(heap[ind], heap[parent]);
-            heapify_up(parent);
-        }
-    }
-
-public:
-    MaxHeap(vector<ll> arr){
-        heap = arr;
-    }
-
-    void build(){
-        ll n = heap.size();
-
-        for(ll i = n/2-1; i >= 0; i--){
-            heapify_down(i);
-        }
-    }
-
-    ll get_max(){
-        if(heap.size() == 0)return -1;
-        return heap[0];
-    }
-
-    void insert(ll val){
-        heap.pb(val);
-        heapify_up(heap.size()-1);
-    }
-
-    void remove(){
-        ll n = heap.size();
-        swap(heap[0], heap[n-1]);
-        heap.pop_back();
-        if(heap.size() == 0) return;
-        heapify_down(0);
-    }
-
-};
-
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
+    string s;
+    cin >> s;
+    ll one = 0, zero = 0;
+    if(s[0] == '1'){
+        one++;
+    }
+    else{
+        zero++;
+    }
 
-    rep(i,n)cin >> vec[i];
+    bool flag = true;
+    for(ll i = 1;i < s.length(); i++){
+        if(s[i] == s[i-1]){
+            flag = false;
+        }
+        if(s[i] == '1'){
+            one++;
+        }
+        else{
+            zero++;
+        }
+    }
+    //cerr << flag << ln;
+    if(flag){
+        cout << 0 << ln;
+        return;
+    }
 
-    MaxHeap pq(vec);
-    pq.build();
-    cout<< pq.get_max() << ln;
-    pq.remove();
-    cout<< pq.get_max() << ln;
-    pq.insert(34);
-    cout<< pq.get_max() << ln;
+    if(abs(one-zero) <= 1){
+        cout << 1 << ln;
+        return;
+    }
 
+    ll a = abs(one-zero)/2;
 
+    if(a == 1){
+        cout << 2 << ln;
+        return;
+    }
 
+    //cerr << a << ln;
+
+    cout << 3 << ln;
 }
 
 int main() {

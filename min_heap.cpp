@@ -60,12 +60,12 @@ class MaxHeap{
         ll l = heap[ind];
         ll index = ind;
 
-        if(left < n && heap[left] > l){
+        if(left < n && heap[left] < l){
             l = heap[left];
             index = left;
         }
 
-        if(right < n && heap[right] > l){
+        if(right < n && heap[right] < l){
             l = heap[right];
             index = right;
         }
@@ -79,7 +79,7 @@ class MaxHeap{
         if(ind == 0)return;
 
         ll parent = (ind-1)/2;
-        if(heap[ind] > heap[parent]){
+        if(heap[ind] < heap[parent]){
             swap(heap[ind], heap[parent]);
             heapify_up(parent);
         }
