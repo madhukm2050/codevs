@@ -1,0 +1,1 @@
+{"name":"Local: inversionCount","url":"d:\\codevs\\algorithms\\inversionCount.cpp","tests":[{"id":1741092144973,"input":"6\n2 9 6 4 5 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\codevs\\algorithms\\inversionCount.cpp","group":"local","local":true}
