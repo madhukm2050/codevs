@@ -50,25 +50,56 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll a, b;
-    cin >> a >> b;
-    ll c = 0, sum = 0;
-    
-    while(a > 0 || b > 0){
-        //cerr << (1LL << c) << ln;
-        sum += (1LL << c);
-        if((a&1) != (b&1)){
-            break;
+    ll n, m;
+    cin >> n >> m;
+
+    vector<vector<ll>> vec(n, vector<ll>(m));
+
+    rep(i,n){
+        rep(j,m){
+            cin >> vec[i][j];
         }
-        a = a >> 1;
-        b = b >> 1;
-        c++;
     }
 
+    // while(1){
+    //     bool flag = false;
 
-    //cerr << ln;
+        rep(i,n){
+            rep(j,m){
+                bool flag1 = true;
+                ll max1 = 0;
+                
+                if(i > 0 ){
+                    if(vec[i][j] <= vec[i-1][j]) flag1 = false;
+                    max1 = max(max1, vec[i-1][j]);
+                }
+                if(j > 0){
+                    if(vec[i][j] <= vec[i][j-1]) flag1 = false;
+                    max1 = max(max1, vec[i][j-1]);
+                }
+                if(i < n-1){
+                    if(vec[i][j] <= vec[i+1][j]) flag1 = false;
+                    max1 = max(max1, vec[i+1][j]);
+                }
+                if(j < m-1){  
+                    if(vec[i][j] <= vec[i][j+1]) flag1 = false;
+                    max1 = max(max1, vec[i][j+1]);
+                }
+                if(flag1){
+                    vec[i][j] = max1;
+                    // flag = true;
+                }
+            }
+        }
+    //}
 
-    cout <<(1<<c) << ln;
+    rep(i,n){
+        rep(j,m){
+            cout << vec[i][j] << " ";
+        }
+        cout << ln;
+    }
+    //cout << ln;
 }
 
 int main() {
