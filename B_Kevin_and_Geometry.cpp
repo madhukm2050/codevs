@@ -50,20 +50,44 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, l, r;
-    cin >> n >> l >> r;
-
+    ll n;
+    cin >> n;
     vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
 
-    ll sum1 = 0, sum2 = 0;
-    for(ll i = 0; i < r; i++){
-        sum1 += vec[i];
+    rep(i,n){
+        cin >> vec[i];
     }
-    for(ll i = l-1; i < n; i++){
-        sum2 += vec[i];
+    sort(vec.begin(), vec.end());
+
+
+    ll k = -1;
+    for(ll i = 1; i < n; i++){
+       if(vec[i] == vec[i-1]){
+        k = i-1;
+        break;
+       }
     }
-    cout << min(sum1, sum2) << ln;
+    if(k == -1){
+        cout << k << ln;
+        return;
+    }
+
+
+    ll v = vec[k];
+    vec.erase(vec.begin()+k);
+    // debug(vec);
+
+    vec.erase(vec.begin()+k);
+
+    // debug(vec);
+
+    for(ll i = 1; i < vec.size(); i++){
+        if(vec[i] - vec[i-1] < (2LL* v)){
+            cout << v << " "<< v << " "<< vec[i-1] << " "<< vec[i] << ln;
+            return;
+        }
+    }
+    cout << -1 << ln;
 }
 
 int main() {
