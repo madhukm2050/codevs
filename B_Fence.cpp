@@ -52,25 +52,23 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n, k;
     cin >> n >> k;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
+    ll sum1 = 0;
+    rep(i,k)sum1 += vec[i];
+    ll m1 = sum1, l = 0, ans = 0;
 
-    if(k%2 == 1){
-        rep(i,n-1){
-            cout << n << " ";
-        }
-        cout <<n-1<< " "<< ln;
-        return;
-    }
+    for(ll i = k; i < n; i++){
+        sum1 -= vec[l];
+        sum1 += vec[i];
 
-    rep(i,n){
-        if(i+1 == n-1){
-            cout << n << " ";
-        }
-        else{
-            cout << (n-1) << " ";
+        l++;
+        if(sum1 < m1){
+            m1 = sum1;
+            ans = l;
         }
     }
-    cout << ln;
-    
+    cout << ans+1 << ln;
 }
 
 int main() {
@@ -78,7 +76,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

@@ -48,29 +48,27 @@ template <class T> void _print(vector<T> v) {cerr << "[ "; for (T i : v) {_print
 template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
-
 void solve() {
-    ll n, k;
-    cin >> n >> k;
+    ll n;
+    cin >> n;
 
-    if(k%2 == 1){
-        rep(i,n-1){
-            cout << n << " ";
-        }
-        cout <<n-1<< " "<< ln;
-        return;
-    }
+    ll sum = 0;
+    vector<ll> vec(n);
 
     rep(i,n){
-        if(i+1 == n-1){
-            cout << n << " ";
-        }
-        else{
-            cout << (n-1) << " ";
-        }
+        cin >> vec[i];
+        sum += vec[i];
     }
-    cout << ln;
-    
+
+    if(n <= 2){
+        cout << -1 << ln;
+        return;
+    }
+    ll mid = vec[n/2];
+
+    cout << max(0LL, 2LL*mid*n-sum+1) << ln;
+   
+
 }
 
 int main() {

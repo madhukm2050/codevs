@@ -59,7 +59,7 @@ void solve() {
         sum += vec[i];
     }
 
-    if(((sum%x) == 0) || (sum/n) == 0){
+    if(sum == n*x){
         YES;
     }
     else{
