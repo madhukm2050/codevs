@@ -59,14 +59,16 @@ void solve() {
         cin >> vec[i];
         sum += vec[i];
     }
+    sort(all(vec));
 
     if(n <= 2){
         cout << -1 << ln;
         return;
     }
-    ll mid = vec[n/2];
+    ll mid = n/2+1;
+    ll ak = vec[mid-1];
 
-    cout << max(0LL, 2LL*mid*n-sum+1) << ln;
+    cout << max(0LL, 2*ak*n-sum+1) << ln;
    
 
 }
