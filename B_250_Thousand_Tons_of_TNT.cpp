@@ -56,18 +56,24 @@ void solve() {
     rep(i,n)cin >> vec[i];
     ll m1 = 0;
 
-    vector<ll> pre(n+1);
-    for(ll i = 1; i <= n; i++){
-        pre[i] += pre[i-1]+vec[i-1];
-    }
-    debug(pre);
     
-    // for(ll i = 1; i < n/2L; i++){
-    //     if((n%i) == 0){
-    //         ll min1 = INT_MAX, max1 = 0;
-    //         for(ll j = 0; j <=)
-    //     }
-    // }
+    for(ll i = 1; i <= n; i++){
+        if((n%i) == 0){
+            ll min1 = 1e18, max1 = -1e18;
+            for(ll j = 0; j < n; j += i){
+                ll d = 0;
+                for(ll k = j; k < j+i; k++){
+                    d += vec[k];
+                }
+                //cerr << d << ln;
+                min1 = min(min1, d);
+                max1 = max(max1, d);
+            }
+            //cerr << min1 << " "<<max1 << ln;
+            m1 = max(m1, max1-min1);
+        }
+    }
+    cout << m1 << ln;
 
 }
 
