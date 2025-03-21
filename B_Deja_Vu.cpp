@@ -50,47 +50,41 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
+    ll n, q;
+    cin >> n >> q;
+
+    vector<ll> vec(n), x(q);
     rep(i,n)cin >> vec[i];
-    
-    if(n >= 35){
-        rep(i,n)cout << "0";
-        cout<<ln;
-        return;
-    }
+    rep(i,q)cin >> x[i];
+    vector<vector<ll>> div(31);
+    vector<ll> done(n);
 
-    for(ll j = 0; j < n; j++){
-        vector<ll> v = vec;
-        v.erase(v.begin()+j);
-        
-        bool flag = true;
-        while(v.size() > 1){
-           // debug(v);
-            for(ll i = 0; i < v.size()-1; i++){
-                if(v[i] >= v[i+1]){
-                    flag = false;
-                    break;
-                }
+    for(ll i = 30; i >= 0; i--){
+        for(ll j = 0; j < n; j++){
+            if(done[j])continue;
+
+            if((vec[j]%(1LL<<i)) == 0){
+                done[j] = 1;
+                div[i].pb(j);
             }
-            //cerr << flag << ln;
-            if(!flag){
-                break;
-            }
-            else{
-                vector<ll> u ;
-                for(ll i = 0; i < v.size()-1; i++){
-                    u.pb(v[i+1]-v[i]);
-                }
-                swap(v,u);
-            }
-            //debug(v);
         }
-        cout << flag;
     }
-    cout << ln;
 
+
+    for(auto e : x){
+        for(ll i = e; i <= 30; i++){
+            for(auto a : div[i]){
+                div[e-1].pb(a);
+                vec[a] += (1LL<<(e-1));
+            }
+            div[i].clear();
+        }
+    }
+
+    for(auto e : vec){
+        cout << e << " ";
+    }
+    cout<<ln;
 }
 
 int main() {

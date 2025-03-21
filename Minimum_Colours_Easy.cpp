@@ -54,58 +54,19 @@ void solve() {
     cin >> n;
     vector<ll> vec(n);
 
-    vector<ll> first(n+1, -1), last(n+1);
-    set<ll> s;
-    vector<ll>a(n);
+    rep(i,n)cin >> vec[i];
 
-    rep(i,n){
-        cin >> vec[i];
-        if(first[vec[i]] == -1){
-            first[vec[i]] = i;
-        }
-        last[vec[i]] = i;
-        s.insert(vec[i]);
-        a[i] = s.size();
-    }
-    priority_queue<pair<ll,pair<ll,ll>>> pq;
-    for(auto e : vec){
-        ll d = a[last[e]]-a[first[e]]+1;
-        //cerr << d << ln;
-        pq.push({d, {first[e], last[e]}});
+    vector<ll> dp(n), m(n+1, INF);
+
+    dp[0] = 1;
+    m[vec[0]] = 0;
+
+    for(ll i = 1; i < n; i++){
+        dp[i] = min(m[vec[i]]+1, dp[i-1]+1);
+        m[vec[i]] = min(m[vec[i]], dp[i-1]);
     }
 
-    pair<ll,pair<ll,ll>> p1 = pq.top();
-    pq.pop();
-    ll m1 = p1.ss.ff, m2 = p1.ss.ss;
-    for(ll i = m1; i<= m2; i++){
-        vec[i] = vec[m1];
-    }
-    while(!pq.empty()){
-        pair<ll,pair<ll,ll>> p2 = pq.top();
-        pq.pop();
-        ll f = p2.ss.ff, l = p2.ss.ss;
-        if(l < m1){
-            for(ll i = f; i <= l; i++){
-                vec[i] = vec[f];
-            }
-        }
-        else if(f > m2){
-            for(ll i = f; i <= l; i++){
-                vec[i] = vec[f];
-            }
-        }
-    }
-    debug(vec);
-    set<ll> st;
-    for(auto e : vec){
-        st.insert(e);
-    }
-
-    cout << st.size() << ln;
-
-
-    
-
+    cout << dp[n-1] << ln;
 }
 
 int main() {

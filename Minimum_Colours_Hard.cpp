@@ -53,44 +53,27 @@ void solve() {
     ll n;
     cin >> n;
     vector<ll> vec(n);
+
     rep(i,n)cin >> vec[i];
-    
-    if(n >= 35){
-        rep(i,n)cout << "0";
-        cout<<ln;
-        return;
-    }
 
-    for(ll j = 0; j < n; j++){
-        vector<ll> v = vec;
-        v.erase(v.begin()+j);
-        
-        bool flag = true;
-        while(v.size() > 1){
-           // debug(v);
-            for(ll i = 0; i < v.size()-1; i++){
-                if(v[i] >= v[i+1]){
-                    flag = false;
-                    break;
-                }
-            }
-            //cerr << flag << ln;
-            if(!flag){
-                break;
-            }
-            else{
-                vector<ll> u ;
-                for(ll i = 0; i < v.size()-1; i++){
-                    u.pb(v[i+1]-v[i]);
-                }
-                swap(v,u);
-            }
-            //debug(v);
+    vector<ll> dp(n), m(n+1, INF);
+
+    dp[0] = 1;
+    m[vec[0]] = 0;
+
+    for(ll i = 1; i < n; i++){
+
+        if(vec[i] == 0){
+            dp[i] = 1;
+            m[0] = min(m[0], dp[i-1]);
         }
-        cout << flag;
+        else {
+            dp[i] = min(min(m[0],m[vec[i]])+1, dp[i-1]+1);
+            m[vec[i]] = min(m[vec[i]], dp[i-1]);
+        }
     }
-    cout << ln;
 
+    cout << dp[n-1] << ln;
 }
 
 int main() {
