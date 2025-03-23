@@ -52,52 +52,60 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
+
     vector<ll> vec(n);
     rep(i,n)cin >> vec[i];
 
-    bool flag1 = false, flag2 = false;
-    vector<bool> pre(n), suff(n);
+    set<vector<ll>> pq0,pq1;
+    set<pair<ll,ll>> st;
 
-    ll count = 0;
+    auto push = [&](ll X, ll Y){
+        if(st.find({X,Y}) != st.end())return;
+
+        pq0.insert({3*X+3*Y+2, X, Y});
+
+        pq1.insert({3*X+3*Y+2, 3*X+1, 3*Y+1});
+        pq1.insert({3*X+3*Y+3, 3*X+2, 3*Y+1});
+        pq1.insert({3*X+3*Y+3, 3*X+1, 3*Y+2});
+        pq1.insert({3*X+3*Y+6, 3*X+2, 3*Y+2});
+        st.insert({X,Y});
+    };
+
+    push(0,0);
+    push(0,1);
+    push(1,0);
 
     for(ll i = 0; i < n; i++){
         if(vec[i] == 0){
-            count++;
-            flag1 = true;
-        }
-        pre[i] = flag1;
-    }
-    for(ll i = n-1; i >= 0; i--){
-        if(vec[i] == 0)flag2 = true;
-        suff[i] = flag2;
-    }
-    if(!flag1){
-        cout << 1 << ln;
-        cout << 1 << " "<< n <<ln;
-        return;
-    }
-    
-        if(vec[0] != 0){
-            cout << 2 << ln;
-            cout << 2 << " "<< n << ln;
-            cout << 1 << " "<< 2 << ln;
-            return;
-        }
-        if(vec[n-1] != 0){
-            cout << 2 << ln;
-            cout << 1 << " "<< n-1 << ln;
-            cout << 1 << " "<< 2 << ln;
-            return;
-            
+            auto v = *pq0.begin();
+            ll x = v[1], y = v[2];
+            pq0.erase(v);
+            pq1.erase({3*x+3*y+2, 3*x+1, 3*y+1});
+            cout << 3*x+1 << " "<< 3*y+1 << ln;
+
+            push(x+1,y);
+            push(x+2,y);
+            push(x, y+1);
+            push(x, y+2);
+            push(x+1,y+1);
         }
         else{
-            cout << 3 << ln;
-            cout << 3<<" " <<  n<< " "<< ln;
-            cout << 1<<" "<< 2 << " "<< ln;
-            cout << 1 << " "<< 2<<ln;
-            return;
+            auto v = *pq1.begin();
+
+            ll x = v[1]/3, y = v[2]/3;
+            pq0.erase({3*x+3*y+2, x,y});
+            pq1.erase(v);
+
+            cout << v[1] << " "<<v[2] << ln;
+
+            push(x+1,y);
+            push(x+2,y);
+            push(x, y+1);
+            push(x, y+2);
+            push(x+1,y+1);
         }
-    
+    }
+
 }
 
 int main() {

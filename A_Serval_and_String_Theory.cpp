@@ -55,46 +55,38 @@ void solve() {
     string s;
     cin >> s;
 
-    string s1 = "";
-    for(ll i = n-1; i >= 0; i--){
-        s1 += s[i];
+    bool flag = false;
+
+    for(ll i = 1; i < n; i++){
+        if(s[i] != s[i-1]){
+            flag = true;
+            break;
+        }
     }
-    if(s < s1){
-        YES;
-        return;
-    }
-    if(k == 0){
-        NO;
+    if(k >= 1){
+        if(flag){
+            YES;
+        }
+        else{
+            NO;
+        }
         return;
     }
 
-    bool flag = false;
-    ll count = 0;
-    for(ll i = 0; i < n; i++){
-        if(s[i] < s1[i]){
-            YES;
-        }
-        ll ind = -1;
-        for(ll j = i; j < n; j++){
-            if(s[j] < s1[i]){
-                YES;
-                return;
-            }
-            if(ind == -1 && s[j] == s1[i]){
-                ind = j;
-            }
-        }
-        if(ind != -1){
-            swap(s[ind], s[i]);
-            count++;
-        }
-        if(count == k){
-            NO;
-            return;
-        }
+    if(!flag){
+        NO;
+        return;
     }
+    string t = s;
+    reverse(all(t));
+    if(s < t){
+        YES;
+    }
+    else{
+        NO;
+    }
+
     
-    NO;
     
 }
 

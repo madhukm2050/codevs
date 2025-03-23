@@ -50,54 +50,26 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    ll x,y,a;
 
-    bool flag1 = false, flag2 = false;
-    vector<bool> pre(n), suff(n);
-
-    ll count = 0;
-
-    for(ll i = 0; i < n; i++){
-        if(vec[i] == 0){
-            count++;
-            flag1 = true;
-        }
-        pre[i] = flag1;
+    cin >> x >> y >> a;
+    ll sum = (a%(x+y));
+    //cerr << sum << ln;
+    // if(x+y > a){
+    //     if(x > a){
+    //         NO;
+    //     }
+    //     else{
+    //         YES;
+    //     }
+    //     return;
+    // }
+    if(x > sum){
+        NO;
     }
-    for(ll i = n-1; i >= 0; i--){
-        if(vec[i] == 0)flag2 = true;
-        suff[i] = flag2;
+    else{
+        YES;
     }
-    if(!flag1){
-        cout << 1 << ln;
-        cout << 1 << " "<< n <<ln;
-        return;
-    }
-    
-        if(vec[0] != 0){
-            cout << 2 << ln;
-            cout << 2 << " "<< n << ln;
-            cout << 1 << " "<< 2 << ln;
-            return;
-        }
-        if(vec[n-1] != 0){
-            cout << 2 << ln;
-            cout << 1 << " "<< n-1 << ln;
-            cout << 1 << " "<< 2 << ln;
-            return;
-            
-        }
-        else{
-            cout << 3 << ln;
-            cout << 3<<" " <<  n<< " "<< ln;
-            cout << 1<<" "<< 2 << " "<< ln;
-            cout << 1 << " "<< 2<<ln;
-            return;
-        }
-    
 }
 
 int main() {
