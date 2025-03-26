@@ -49,32 +49,39 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll mid, ll k , ll n , ll m){
-    mid++;
-    ll count = (mid*(m/mid) + (m%mid) - (m/mid))*n;
-    if(count >= k)return true;
-    return false;
-}
 void solve() {
-    ll n,m,k;
-    cin >> n >> m >> k;
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> a(n), b(n);
+    rep(i,n)cin >> a[i];
+    rep(i,n)cin >> b[i];
 
-    ll l = 1, h = m, ans = m;
-    //cerr << n << " "<< m << " "<< k<<ln;
-
-    while(l <= h){
-        ll mid = (l+h)/2LL;
-        // cerr << l << " "<< h<<ln;
-        // cerr << mid << ln;
-        if(helper(mid, k, n, m)){
-            ans = mid;
-            h = mid-1;
-        }
-        else{
-            l = mid+1;
-        }
+    ll count = 0;
+    vector<ll> a1(n),b1(n);
+    rep(i,n){
+        ll m = min(abs(a[i]-b[i]), 9-b[i]+a[i]);
+        count += m;
+        a1[i] = m;
+        b1[i] = 9-b[i]+a[i]+abs(a[i]-b[i]) - m;
     }
-    cout << ans << ln;
+    if(k < count){
+        No;
+        return;
+    }
+    if((k-count)%2 == 0){
+        Yes;
+        return;
+    }
+    else{
+        for(ll i = 0; i < n; i++){
+            if(abs(a1[i]-b1[i])<= (k-count)){
+                Yes;
+                return;
+            }
+        }
+        No;
+    }
+
 }
 
 int main() {

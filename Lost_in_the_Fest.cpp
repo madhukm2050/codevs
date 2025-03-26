@@ -49,32 +49,19 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll mid, ll k , ll n , ll m){
-    mid++;
-    ll count = (mid*(m/mid) + (m%mid) - (m/mid))*n;
-    if(count >= k)return true;
-    return false;
-}
 void solve() {
-    ll n,m,k;
-    cin >> n >> m >> k;
-
-    ll l = 1, h = m, ans = m;
-    //cerr << n << " "<< m << " "<< k<<ln;
-
-    while(l <= h){
-        ll mid = (l+h)/2LL;
-        // cerr << l << " "<< h<<ln;
-        // cerr << mid << ln;
-        if(helper(mid, k, n, m)){
-            ans = mid;
-            h = mid-1;
-        }
-        else{
-            l = mid+1;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
+    //debug(vec);
+    ll ind = n-1;
+    for(ll i = n-2; i >= 0; i--){
+        if(vec[i] >= vec[n-1]){
+            ind = i;
         }
     }
-    cout << ans << ln;
+    cout << n-ind-1 << ln;
 }
 
 int main() {

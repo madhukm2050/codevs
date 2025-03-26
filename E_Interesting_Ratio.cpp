@@ -49,38 +49,38 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll mid, ll k , ll n , ll m){
-    mid++;
-    ll count = (mid*(m/mid) + (m%mid) - (m/mid))*n;
-    if(count >= k)return true;
-    return false;
-}
-void solve() {
-    ll n,m,k;
-    cin >> n >> m >> k;
+const ll  N = 10000001;
+vector<ll> primes;
+vector<ll> seive(N,1);
 
-    ll l = 1, h = m, ans = m;
-    //cerr << n << " "<< m << " "<< k<<ln;
-
-    while(l <= h){
-        ll mid = (l+h)/2LL;
-        // cerr << l << " "<< h<<ln;
-        // cerr << mid << ln;
-        if(helper(mid, k, n, m)){
-            ans = mid;
-            h = mid-1;
-        }
-        else{
-            l = mid+1;
+void factorization(){
+    for(ll i = 2; i <= N; i++){
+        if(seive[i] == 1){
+            for(ll j = i; j <= N; j+= i){
+                seive[j] = 0;
+            }
+            primes.pb(i);
         }
     }
-    cout << ans << ln;
+}
+
+void solve() {
+    ll n;
+
+    cin >> n;
+    ll count = 0;
+
+    for(ll i = 0; i < primes.size() && primes[i] <= n; i++){
+        count += (n/primes[i]);
+    }
+    cout << count << ln;
+
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
-
+    factorization();
     int t=1;
     cin >> t;
     while (t--) {
