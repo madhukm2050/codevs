@@ -50,31 +50,26 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    vector<ll> a(n), b(n);
-    rep(i,n)cin >> a[i];
-    rep(i,n)cin >> b[i];
+    ll n, k ,a, b;
+    cin >> n >> k >> a >> b;
 
-    ll count = 0, d = INF;
+    vector<ll> s(n), e(n);
     rep(i,n){
-        ll ab = abs(a[i]-b[i]);
-        count += min(ab, 9-ab);
-        d = min(d, max(ab,9-ab)-min(ab,9-ab));
+        cin >> s[i] >> e[i];
     }
-    if(k < count){
-        No;
-    }
-    else{
-        if((k-count)%2 == 0 || (k-count)>= d){
-            Yes;
-        }
-        else{
-            No;
-        }
-    }
-    
 
+    a--;
+    b--;
+    ll count = abs(s[a]-s[b])+abs(e[a]-e[b]);
+    ll m1 = INT_MAX, m2 = INT_MAX;
+    for(ll i = 0; i < k; i++){
+        m1 = min(m1, abs(s[a]-s[i])+abs(e[a]-e[i]));
+        m2 = min(m2, abs(s[b]-s[i])+abs(e[b]-e[i]));
+    }
+
+    count = min(count, m1+m2);
+
+    cout << count << ln;
 }
 
 int main() {
