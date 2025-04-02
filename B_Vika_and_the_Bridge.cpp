@@ -49,23 +49,41 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
-    ll n;
-    cin >> n;
-    ll m = n*(n-1)/2ll;
-    vector<ll> vec(m);
-    rep(i,m){
-        cin >> vec[i];
-    }
-    sort(all(vec));
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> vec(n);
 
-    for(ll i = 0 ; i < m; i += --n){
-        cout << vec[i] << " ";
-    }
-    cout << 1000000000<< ln;
+    rep(i,n)cin >> vec[i];
+    //debug(vec);
+    vector<vector<ll>> col(k+1);
 
-    
+    rep(i,n){
+        if(col[vec[i]].size() == 0){
+            col[vec[i]].pb(0);
+        }
+        col[vec[i]].pb(i+1);
+    }
+    rep(i,k+1)col[i].pb(n+1);
+
+    //debug(col);
+
+    ll ans = n;
+    for(ll i = 1; i < k+1; i++){
+        vector<ll> l;
+        //debug(col[i]);
+        for(ll j = 1; j < col[i].size(); j++){
+            l.pb(col[i][j]-col[i][j-1]-1);
+        }
+        sort(l.rbegin(),l.rend());
+        ll m1 = l[0], m2 = l[1];
+        //debug(l);
+        ll avg = m1/2ll;
+        if(m1 != 0 && m1%2 == 0)avg++;
+       // cerr << avg <<" "<< m2<<ln;
+        ans = min(ans, max(avg, m2));
+    }
+    cout << ans << ln;
 }
 
 int main() {

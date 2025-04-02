@@ -49,23 +49,48 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
     ll n;
     cin >> n;
-    ll m = n*(n-1)/2ll;
-    vector<ll> vec(m);
-    rep(i,m){
-        cin >> vec[i];
-    }
-    sort(all(vec));
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    for(ll i = 0 ; i < m; i += --n){
-        cout << vec[i] << " ";
+    if(n < 4){
+        cout << -1 << ln;
+        return;
     }
-    cout << 1000000000<< ln;
+    ll l = 0, r = n-1;
+    ll min1 = 1, max1 = n;
+    while(l < r){
+        if(r-l+1 < 4){
+            cout << -1 << ln;
+            return;
+        }
 
-    
+        if(vec[l] == min1 || vec[l] == max1 || vec[r] == min1 || vec[r] == max1){
+            if(vec[l] == min1){
+                l++;
+                min1++;
+            }
+            else if(vec[l] == max1){
+                l++;
+                max1--;
+            }
+
+            if(vec[r] == min1){
+                r--;
+                min1++;
+            }
+            else if(vec[r] == max1){
+                r--;
+                max1--;
+            }
+        }
+        else{
+            break;
+        }
+    }
+    cout << (l+1) << " "<< (r+1) << ln;
 }
 
 int main() {

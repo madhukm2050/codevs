@@ -49,24 +49,39 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
     ll n;
     cin >> n;
-    ll m = n*(n-1)/2ll;
-    vector<ll> vec(m);
-    rep(i,m){
-        cin >> vec[i];
+    map<ll,ll> map;
+    rep(i,n){
+        ll a;
+        cin >> a;
+        map[a]++;
     }
-    sort(all(vec));
 
-    for(ll i = 0 ; i < m; i += --n){
-        cout << vec[i] << " ";
+    ll count = 0;
+    while(!map.empty()){
+        auto first = *map.begin();
+        //cerr << first.ff << " "<<first.ss <<ln;
+
+        int val = first.ff;
+        while(map.find(val)!= map.end()){
+            int v = map[val];
+            if(v  == 1){
+                map.erase(val);
+            }
+            else{
+                map[val] -=1;
+            }
+            val++;
+        }
+        count++;
     }
-    cout << 1000000000<< ln;
+    cout << count << ln;
 
-    
+
 }
+
 
 int main() {
     ios::sync_with_stdio(false);
