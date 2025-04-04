@@ -52,34 +52,34 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    char c;
-    cin >> c;
-    string s;
-    cin >> s;
-    
+    vector<pair<ll,ll>> vec(n);
 
-    ll ind = 0;
-    bool flag = true;
     rep(i,n){
-        if(s[i] == c){
-            ind = i+1;
+        ll a;
+        cin >> a;
+        vec[i] = {a, i+1};
+    }
+    sort(all(vec));
+
+    if(vec[0].ff == vec[n-1].ff){
+        NO
+        return;
+    }
+    YES
+    cout << vec[0].ss << " "<< vec[n-1].ss << ln;
+    for(ll i = 1; i < n-1; i++){
+        if(vec[0].ff == vec[i].ff){
+            cout << vec[n-1].ss << " "<<vec[i].ss << ln;
         }
         else{
-            flag = false;
+            cout << vec[0].ss << " "<< vec[i].ss << ln;
         }
+    }
+    
+    //debug(vec);
 
-    }
-    if(flag){
-        cout << 0 << ln;
-    }
-    else if(ind > n/2ll){
-        cout << 1 << ln;
-        cout << ind << ln;
-    }
-    else{
-        cout << 2 << ln;
-        cout << n-1 << " "<< n << ln;
-    }
+
+
 }
 
 int main() {

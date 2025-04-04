@@ -50,36 +50,38 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    char c;
-    cin >> c;
-    string s;
-    cin >> s;
-    
+    ll n, k, x;
+    cin >> n >> k >> x;
 
-    ll ind = 0;
-    bool flag = true;
-    rep(i,n){
-        if(s[i] == c){
-            ind = i+1;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
+
+    vector<ll> v;
+    sort(all(vec));
+
+    for(ll i = 1; i < n; i++){
+        if(vec[i]-vec[i-1] > x){
+            v.pb(vec[i]-vec[i-1]);
+        }
+    }
+    ll count = v.size()+1;
+
+    sort(all(v));
+    debug(v);
+    ll n1 = v.size();
+    for(ll i = 0; i < n1; i++){
+        ll c = ((v[i]+(x-1ll))/x)-1ll;
+        if(c <= k){
+            count--;
+            k -= c;
         }
         else{
-            flag = false;
+            break;
         }
+    }
+    cout << count << ln;
 
-    }
-    if(flag){
-        cout << 0 << ln;
-    }
-    else if(ind > n/2ll){
-        cout << 1 << ln;
-        cout << ind << ln;
-    }
-    else{
-        cout << 2 << ln;
-        cout << n-1 << " "<< n << ln;
-    }
+
 }
 
 int main() {
@@ -87,7 +89,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

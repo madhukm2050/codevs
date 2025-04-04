@@ -52,34 +52,25 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    char c;
-    cin >> c;
-    string s;
-    cin >> s;
-    
+    vector<ll> vec(n);
+    vector<ll> a(32, 0);
 
-    ll ind = 0;
-    bool flag = true;
     rep(i,n){
-        if(s[i] == c){
-            ind = i+1;
-        }
-        else{
-            flag = false;
-        }
+        cin >> vec[i];
+        int n = 31-__builtin_clz(vec[i]);
+        //cerr << n << ln;
+        a[n]++;
+    }
+    //debug(a);
 
+    ll ans = 0;
+    for(ll i = 0; i < 32; i++){
+        if(a[i] > 0 )ans += (a[i]*(a[i]-1))/2ll;
     }
-    if(flag){
-        cout << 0 << ln;
-    }
-    else if(ind > n/2ll){
-        cout << 1 << ln;
-        cout << ind << ln;
-    }
-    else{
-        cout << 2 << ln;
-        cout << n-1 << " "<< n << ln;
-    }
+
+    cout << ans << ln;
+
+
 }
 
 int main() {

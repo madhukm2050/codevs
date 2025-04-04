@@ -49,43 +49,65 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+struct cmp{
+    bool operator()(string a, string b){
+        if(a.length() != b.length())return a.length() < b.length();
+        return a < b;
+    }
+};
+
+set<string, cmp> st2;
+
+void build(){
+    for(ll i = 0; i < 26; i++){
+        for(ll j = 0; j < 26; j++){
+            for(ll k = 0; k < 26; k++){
+                string str = string(1, 'a'+i);
+                st2.insert(str);
+                str += string(1,'a'+j);
+                st2.insert(str);
+                str += string(1,'a'+k);
+                st2.insert(str); 
+            }
+        }
+    }
+    // cout << st2.size() << ln;
+    // for(auto e : st2){
+    //     cout << e << " ";
+    // }
+}
+
 void solve() {
     ll n;
     cin >> n;
-    char c;
-    cin >> c;
     string s;
     cin >> s;
+
+    set<string> st1;
+
+    for(ll i = 0; i < n; i++){
+        string s1 = "";
+        for(ll j = i; j < n; j++){
+            s1 += s[j];
+            st1.insert(s1);
+        }
+    }
+    for(auto e : st2){
+        if(st1.find(e) == st1.end()){
+            cout << e << ln;
+            return;
+        }
+    }
     
 
-    ll ind = 0;
-    bool flag = true;
-    rep(i,n){
-        if(s[i] == c){
-            ind = i+1;
-        }
-        else{
-            flag = false;
-        }
+    
 
-    }
-    if(flag){
-        cout << 0 << ln;
-    }
-    else if(ind > n/2ll){
-        cout << 1 << ln;
-        cout << ind << ln;
-    }
-    else{
-        cout << 2 << ln;
-        cout << n-1 << " "<< n << ln;
-    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
-
+    build();
     int t=1;
     cin >> t;
     while (t--) {
