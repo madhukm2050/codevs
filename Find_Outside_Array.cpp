@@ -50,50 +50,25 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, k;
-    cin >> n >> k;
+    ll n;
+    cin >> n;
+
     vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    rep(i,n){
-        cin >> vec[i];
+    sort(all(vec));
+
+    if(vec[0] == 0 && vec[n-1] == 0){
+        cout << -1 << ln;
     }
-
-    ll l = 0, h = n;
-
-    while(l <= h){
-        ll mid = (l+h)/2ll;
-
-        ll count = 0, c = 0;
-        vector<ll> vis(mid+1);
-
-        for(ll i = 0; i < n; i++){
-            if(vec[i] <= mid && vis[vec[i]] == 0){
-                vis[vec[i]] = 1;
-                c++;
-            }
-            if(c == mid+1){
-                c = 0;
-                for(ll j = 0; j <= mid; j++){
-                    vis[j] = 0;
-                }
-                count++;
-            }
-            //cerr << c << ln;
-        }
-        //debug(mid);
-        //debug(vis);
-        //cerr << l << " " << h << " " << count <<ln;
-        if(count >= k){
-            l = mid+1;
-        }
-        else{
-            h = mid-1;
-        }
+    else if(vec[n-1] > 0){
+        cout << vec[n-1] << " "<<vec[n-1] << ln;
     }
-
-    cout << l << ln;
-
-
+    else{
+        cout << vec[0] << " "<<vec[0] << ln;
+    }
+    
+    
 }
 
 int main() {

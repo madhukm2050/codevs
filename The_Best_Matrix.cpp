@@ -50,50 +50,35 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    vector<ll> vec(n);
+    ll n, m;
+    cin >> n >> m;
+    vector<vector<ll>> vec(n, vector<ll>(m));
 
     rep(i,n){
-        cin >> vec[i];
+        rep(j,m){
+            cin >> vec[i][j];
+        }
     }
 
-    ll l = 0, h = n;
+    vector<ll> d = {1,-1};
 
-    while(l <= h){
-        ll mid = (l+h)/2ll;
-
-        ll count = 0, c = 0;
-        vector<ll> vis(mid+1);
-
-        for(ll i = 0; i < n; i++){
-            if(vec[i] <= mid && vis[vec[i]] == 0){
-                vis[vec[i]] = 1;
-                c++;
-            }
-            if(c == mid+1){
-                c = 0;
-                for(ll j = 0; j <= mid; j++){
-                    vis[j] = 0;
+    ll ans = n*m;
+    for(auto r : d){
+        for(auto c : d){
+            map<ll,ll> map;
+            ll m1 = 0;
+            for(ll i = 0; i < n; i++){
+                for(ll j = 0; j < m; j++){
+                    map[vec[i][j] -r*i - c*j]++;
+                    m1 = max(m1, map[vec[i][j] -r*i - c*j]);
                 }
-                count++;
             }
-            //cerr << c << ln;
-        }
-        //debug(mid);
-        //debug(vis);
-        //cerr << l << " " << h << " " << count <<ln;
-        if(count >= k){
-            l = mid+1;
-        }
-        else{
-            h = mid-1;
+            ans = min(ans, n*m-m1);
+            //debug(m1);
+            //debug(map);
         }
     }
-
-    cout << l << ln;
-
-
+    cout << ans << ln;
 }
 
 int main() {
