@@ -50,26 +50,53 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m, k;
-    cin >> n >> m >> k;
+    ll n;
+    cin >> n;
+    string s;
+    cin >> s;
 
-    if(m%k == 0){
-        rep(i,n){
-            rep(j,m){
-                cout << 1 +(i+j)%k <<" ";
-            }
-            cout << ln;
+    vector<ll> vec(n);
+
+    rep(i,n)cin >> vec[i];
+
+    ll sum = 0;
+
+    for(ll i = 0; i < n-1; ){
+        //debug(vec[i]);
+        if(s[i] == '1'){
+            sum += vec[i];
+            i++;
         }
-    }
-    else{
-        rep(i,n){
-            rep(j,m){
-                cout << 1 +(m*i+j)%k <<" ";
+
+        else{
+            multiset<ll> set;
+            set.insert(vec[i]);
+            bool flag = true;
+            while(i < n-1 && s[i+1] == '1'){
+                //cerr << vec[i] << ln;
+                s[i+1]= '0';
+                set.insert(vec[i+1]);
+                i++;
+                flag = false;
+                //debug(set);
             }
-            cout << ln;
+            //debug(set);
+            i++;
+            set.erase(set.begin());
+            for(auto e : set){
+                sum += e;
+            }
         }
+        //cerr << sum << ln;
     }
+    //cerr << s[n-1] << " "<<vec[n-1] << ln;
+    if(s[n-1] == '1')sum += vec[n-1];
+
+    //debug(s);
+
     
+
+    cout << sum << ln;
 
 }
 

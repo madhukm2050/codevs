@@ -50,25 +50,45 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m, k;
-    cin >> n >> m >> k;
+    ll n, k;
+    cin >> n >> k;
 
-    if(m%k == 0){
-        rep(i,n){
-            rep(j,m){
-                cout << 1 +(i+j)%k <<" ";
-            }
-            cout << ln;
-        }
+    set<ll> s;
+
+    rep(i,n){
+        ll a;
+        cin >> a;
+        s.insert(a);
+    }
+
+    ll m1 = *s.rbegin();
+    ll ele = 0;
+    while(s.find(ele) != s.end()){
+        ele++;
+    }
+    ll m = (m1+ele+1l)/2ll;
+    ll n1 = sz(s);
+
+    if(s.find(m) == s.end() && k > 0){
+        n1++;
+        m1 = max(m1, ele);
+        ele++;
+        k--;
+    }
+
+    while(s.find(ele) != s.end()){
+        m1 = max(m1, ele);
+        ele++;
+    }
+    //cerr << m << " "<<m1 << ln;
+    if(ele == m1+1){
+        cout << n1 + k << ln;
     }
     else{
-        rep(i,n){
-            rep(j,m){
-                cout << 1 +(m*i+j)%k <<" ";
-            }
-            cout << ln;
-        }
+        cout << n1 << ln;
     }
+
+
     
 
 }
