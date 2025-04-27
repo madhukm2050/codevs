@@ -52,38 +52,16 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    ll m1 = 0;
-    map<ll,ll> map;
-
+    ll sum = 0;
     rep(i,n){
         ll a;
         cin >> a;
-        map[a]++;
-        m1 = max(m1, map[a]);
-    }
-    if(m1 >= 4){
-        Yes;
-        return;
-    }
-    bool flag = false, flag1 = false;
-    ll prev = -1e9;
-    for(auto e : map){
-        if(e.ff != prev+1){
-            flag = false;
+        if(i%2 == 0){
+            sum += a;
         }
-        
-        if(e.ss > 1){
-            if(flag){
-                Yes;
-                return;
-            }
-            else{
-                flag = true;
-            }
-        }
-        prev = e.ff;
     }
-    No;
+    cout << sum << ln;
+
 }
 
 int main() {
@@ -91,7 +69,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

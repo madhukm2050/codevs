@@ -50,40 +50,52 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    ll m1 = 0;
-    map<ll,ll> map;
+    ll n, m, q;
+    cin >> n >> m >> q;
+    map<ll,set<ll>> map;
 
-    rep(i,n){
-        ll a;
-        cin >> a;
-        map[a]++;
-        m1 = max(m1, map[a]);
-    }
-    if(m1 >= 4){
-        Yes;
-        return;
-    }
-    bool flag = false, flag1 = false;
-    ll prev = -1e9;
-    for(auto e : map){
-        if(e.ff != prev+1){
-            flag = false;
+    while(q--){
+        ll n1;
+        cin >> n1;
+        if(n1 == 1){
+            ll x, y;
+            cin >> x >> y;
+            //cerr << x << " "<< y <<ln;
+            map[x].insert(y);
         }
-        
-        if(e.ss > 1){
-            if(flag){
+        else if(n1 == 2){
+            ll x;
+            cin >> x;
+            //cerr << x <<ln;
+            map[x].insert(0);
+        }
+        else{
+            ll x, y;
+            cin >> x >> y;
+            //cerr << x << " "<< y <<ln;
+            if(map.find(x) == map.end()){
+                No;
+                continue;
+            }
+            auto it = map[x].lower_bound(y);
+            if(map[x].count(0)){
                 Yes;
-                return;
+            }
+            else if(it != map[x].end()){
+                ll v = *it;
+                if(v == y){
+                    Yes;
+                }
+                else{
+                    No;
+                }
             }
             else{
-                flag = true;
+                No;
             }
         }
-        prev = e.ff;
+        //debug(map);
     }
-    No;
 }
 
 int main() {
@@ -91,7 +103,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

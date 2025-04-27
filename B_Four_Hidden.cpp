@@ -50,40 +50,30 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    ll m1 = 0;
-    map<ll,ll> map;
+    string s, t;
+    cin >> s >> t;
 
-    rep(i,n){
-        ll a;
-        cin >> a;
-        map[a]++;
-        m1 = max(m1, map[a]);
-    }
-    if(m1 >= 4){
-        Yes;
-        return;
-    }
-    bool flag = false, flag1 = false;
-    ll prev = -1e9;
-    for(auto e : map){
-        if(e.ff != prev+1){
-            flag = false;
-        }
-        
-        if(e.ss > 1){
-            if(flag){
-                Yes;
-                return;
+    ll i = 0, j = 0;
+    ll n = s.length(), m = t.length();
+    
+    for(ll i = 0; i <= n-m; i++){
+        bool flag = true;
+        for(ll j = 0; j < m; j++){
+            if(s[i+j] == t[j] || s[i+j] == '?'){
+
             }
             else{
-                flag = true;
+                flag = false;
+                break;
             }
         }
-        prev = e.ff;
+        if(flag){
+            Yes;
+            return;
+        }
     }
     No;
+
 }
 
 int main() {
@@ -91,7 +81,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

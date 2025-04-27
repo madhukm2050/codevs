@@ -49,49 +49,50 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-void solve() {
-    ll n;
-    cin >> n;
-    ll m1 = 0;
-    map<ll,ll> map;
 
+void solve() {
+    ll n, d;
+    cin >> n >> d;
+    set<ll> set;
+    ll N = 1000001;
+    vector<ll> vec(N);
     rep(i,n){
         ll a;
         cin >> a;
-        map[a]++;
-        m1 = max(m1, map[a]);
+        set.insert(a);
+        vec[a]++;
     }
-    if(m1 >= 4){
-        Yes;
-        return;
-    }
-    bool flag = false, flag1 = false;
-    ll prev = -1e9;
-    for(auto e : map){
-        if(e.ff != prev+1){
-            flag = false;
-        }
-        
-        if(e.ss > 1){
-            if(flag){
-                Yes;
-                return;
-            }
-            else{
-                flag = true;
-            }
-        }
-        prev = e.ff;
-    }
-    No;
-}
+    ll sum = 0;
+    //debug(vec);
 
+    if(d == 0){
+        cout << n-sz(set) << ln;
+    }
+    else{
+        vector<ll> dp1(N), dp2(N);
+        ll sum = 0;
+        for(int j=0;j<d;j++){
+            ll i;
+            for(i = j; i < N; i+=d){
+                if(i >= d){
+                    dp1[i] = min(dp1[i-d], dp2[i-d])+vec[i];
+                    dp2[i] = dp1[i-d];
+                }
+                else{
+                    dp1[i] = vec[i];
+                }
+            }
+            sum += min(dp1[i-d],dp2[i-d]);
+        }
+        cout << sum << ln;
+    }
+}
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
