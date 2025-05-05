@@ -50,28 +50,43 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    
-    ll ans = 0;
+    ll n, k;
+    cin >> n >> k;
 
-    for(ll i = n; i >= 0; i--){
-        ll sum = 0, max1 = 0, ind = 1;
+    ll max1 = 0, min1 = INF;
+    ll sum = 0;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-        for(ll j = 1; j <= i; j++){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
-        }
-
-        for(ll j = n; j > i; j--){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
-        }
-        ans = max(ans, sum-max1);
+    rep(i,n){
+        max1 = max(max1, vec[i]);
+        min1 = min(min1, vec[i]);
+        sum += vec[i];
     }
-    cout << ans << ln;
+    ll count = 0;
+    //cerr << max1 << " "<<min1 << ln;
+    //debug(vec);
+    rep(i,n){
+        if(vec[i] == max1)count++;
+    }
+    
+    //max1--;
+    ll m1 = max1;
+    m1--;
+    //cerr << max1 << " "<<min1 << ln;
+    if(abs(m1-min1) > k || (abs(max1-min1) > k && count > 1)){
+        cout << "Jerry" << ln;
+        return;
+    }
+
+    if(sum%2 == 1){
+        cout << "Tom" << ln;
+    }
+    else{
+        cout << "Jerry" << ln;
+    }
+
+
 }
 
 int main() {

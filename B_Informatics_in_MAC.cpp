@@ -52,26 +52,43 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    
-    ll ans = 0;
+    vector<ll> vec(n);
 
-    for(ll i = n; i >= 0; i--){
-        ll sum = 0, max1 = 0, ind = 1;
+    rep(i,n)cin >> vec[i];
 
-        for(ll j = 1; j <= i; j++){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
+    vector<ll> vis1(n+1), vis2(n+1), pre(n), suff(n);
+
+    ll x = 0;
+    for(ll i = 0; i < n; i++){
+        vis1[vec[i]] = 1;
+
+        while(x <= n && vis1[x] == 1){
+            x++;
         }
-
-        for(ll j = n; j > i; j--){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
-        }
-        ans = max(ans, sum-max1);
+        pre[i] = x;
     }
-    cout << ans << ln;
+    x = 0;
+    for(ll i = n-1; i >= 0; i--){
+        vis2[vec[i]] = 1;
+
+        while(x <= n && vis2[x] == 1){
+            x++;
+        }
+        suff[i] = x;
+    }
+
+    for(ll i = 0; i < n-1; i++){
+        if(pre[i] == suff[i+1]){
+            cout << 2 << ln;
+            cout << 1 << " "<< i+1 << ln;
+            cout << i+2 << " "<< n << ln;
+            return;
+        }
+    }
+    cout << -1 << ln;
+
+    //debug(pre);
+    //debug(suff);
 }
 
 int main() {

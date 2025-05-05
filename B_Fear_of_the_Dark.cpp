@@ -49,29 +49,29 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+double distance(double x1, double y1, double x2, double y2){
+    return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+}
+
 void solve() {
-    ll n;
-    cin >> n;
+    double px, py, ax, ay, bx, by;
+
+    cin >> px >> py >> ax >> ay >> bx >> by;
+
+    double pa = distance(px,py, ax, ay), oa = distance(0,0 , ax, ay);
+    double pb1 = distance(px, py, bx, by), ob = distance(0, 0, bx, by);
+    double ab = distance(ax,ay, bx, by);
     
-    ll ans = 0;
+    double ans  = 1e9;
 
-    for(ll i = n; i >= 0; i--){
-        ll sum = 0, max1 = 0, ind = 1;
+    ans = min(ans, max(pa, oa));
+    ans = min(ans, max(pb1, ob));
+    ans = min(ans, max({ab/2, pa, ob}));
+    ans = min(ans, max({ab/2, pb1, oa}));
 
-        for(ll j = 1; j <= i; j++){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
-        }
+    cout << setprecision(10) << fixed << ans << ln;
 
-        for(ll j = n; j > i; j--){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
-        }
-        ans = max(ans, sum-max1);
-    }
-    cout << ans << ln;
+
 }
 
 int main() {

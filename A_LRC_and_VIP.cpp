@@ -52,26 +52,40 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    
-    ll ans = 0;
 
-    for(ll i = n; i >= 0; i--){
-        ll sum = 0, max1 = 0, ind = 1;
+    vector<ll> vec(n);
 
-        for(ll j = 1; j <= i; j++){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
+    rep(i,n)cin >> vec[i];
+
+    vector<ll> v(n);
+    ll m1 = 0, ind = 0;
+    set<ll> st;
+    rep(i,n){
+        st.insert(vec[i]);
+        if(vec[i] > m1){
+            m1 = vec[i];
+            ind = i;
         }
-
-        for(ll j = n; j > i; j--){
-            sum += j*ind;
-            max1 = max(max1, j*ind);
-            ind++;
-        }
-        ans = max(ans, sum-max1);
+        //cerr << m1 << " "<< ind << ln;
     }
-    cout << ans << ln;
+
+    if(sz(st) == 1){
+        NO;
+    }
+    else{
+        YES;
+        rep(i,n){
+            if(i == ind){
+                cout << 2 << " ";
+            }
+            else{
+                cout << 1 << " ";
+            }
+        }
+        cout << ln;
+    }
+
+
 }
 
 int main() {
