@@ -49,48 +49,52 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+vector<ll> vec1 = {0,1,4,7,11,16};
+bool flag = true;
+ll interactor(ll mid){
+    return vec1[mid];
+}
+
+ll ask(ll l,ll n){
+    cout << "? "<< n-l+1<< " ";
+    for(ll i = l; i <= n; i++){
+        cout << i << " "; 
+    }
+    cout << endl;
+    //if(flag)return interactor(n);
+    ll a;
+    cin >> a;
+    return a;
+}
+
+
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    map<ll,ll> map;
+    vector<ll> pre(n+1);
 
-    rep(i, m){
-        ll a, b;
-        cin >> a >> b;
-        map[a]++;
-        map[b]++;
+    for(ll i =1; i <= n; i++){
+        pre[i] += pre[i-1]+vec[i-1];
     }
-    //debug(map);
 
-    set<ll> set;
+    ll l = 1, h = n, mid = 1, ans = 1;
 
-    for(auto e: map){
-        set.insert(e.ss);
-    }
-    set.erase(set.begin());
-    //debug(set);
-    ll n1 = sz(set);
-    if(n1 == 1){
-        cout << *set.begin() << " "<< *set.begin()-1 << ln;
-    }
-    else{
-        ll a = *set.begin();
-        set.erase(set.begin());
-        ll b = *set.begin();
-        //cerr << a << " "<< b-1 << ln;
-        ll count1 = 0, count2 = 0;
-        for(auto e : map){
-            if(e.ss == a)count1++;
-            if(e.ff == b)count2++;
-        }
-        if(count1 == 1){
-            cout << a << " "<< b-1<<ln;
+    while(l <= h){
+        mid = (l+h)/2;
+        ll v = ask(l ,mid);
+        if(pre[mid]-pre[l-1] == v){
+            l = mid+1;
         }
         else{
-            cout << b << " "<< a-1 << ln;
+            ans = mid;
+            h = mid-1;
         }
     }
+    cout << "! "<< ans << endl;
+
 
 }
 

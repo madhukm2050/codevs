@@ -50,47 +50,69 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n, d;
+    cin >> n >> d;
 
-    map<ll,ll> map;
-
-    rep(i, m){
+    vector<ll> one, two;
+    rep(i,n){
         ll a, b;
         cin >> a >> b;
-        map[a]++;
-        map[b]++;
-    }
-    //debug(map);
 
-    set<ll> set;
-
-    for(auto e: map){
-        set.insert(e.ss);
-    }
-    set.erase(set.begin());
-    //debug(set);
-    ll n1 = sz(set);
-    if(n1 == 1){
-        cout << *set.begin() << " "<< *set.begin()-1 << ln;
-    }
-    else{
-        ll a = *set.begin();
-        set.erase(set.begin());
-        ll b = *set.begin();
-        //cerr << a << " "<< b-1 << ln;
-        ll count1 = 0, count2 = 0;
-        for(auto e : map){
-            if(e.ss == a)count1++;
-            if(e.ff == b)count2++;
-        }
-        if(count1 == 1){
-            cout << a << " "<< b-1<<ln;
+        if(a == 1){
+            one.pb(b);
         }
         else{
-            cout << b << " "<< a-1 << ln;
+            two.pb(b);
         }
     }
+    ll v1 = 0, v2 = 0, z1 = 0;
+
+    sort(one.rbegin(), one.rend());
+    sort(two.rbegin(), two.rend());
+
+    ll n1 = sz(one), n2 = sz(two);
+    if(n1 > 0)v1 = one[0];
+    if(n1 > 1)v2 = one[1];
+    if(n2 > 0)z1 = two[0];
+
+
+    v1 = max(v1, v2), v2 = min(v1, v2);
+    if(v1 >= d){
+        cout << 1 << ln;
+        return;
+    }
+    ll c1 = INF, c2 = INF, c3 = INF, c4 = INF, c5 = INF;
+
+    if(z1 > 0){
+        c1 = ((d+z1-1)/z1)*2ll;
+
+        ll dd = d;
+        if(v1+v2 > 0){
+            c2 = (dd/z1)*2ll;
+            dd = dd%z1;
+            c2 += (dd+v1-1)/v1;
+        }
+    }
+    
+    ll dd1 = d;
+
+    if(v1+v2 > 0) {
+        ll z2 = v1+v2;
+        c3 = ((d+z2-1)/z2)*2;
+        if(v1+v2 > 0){
+            c4 = (d/z2)*2;
+            d = d%z2;
+            c4 += (d+v1-1)/v1;
+        }
+    }
+    if(v1 > 0){
+        c5 = (dd1+v1-1)/v1;
+    }
+
+    //cerr << c1 << " "<<c2 << " "<<c3 << " "<<c4 << " "<<c5 << ln;
+
+    cout << min({c1,c2,c3,c4, c5}) << ln;
+
 
 }
 

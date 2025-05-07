@@ -49,49 +49,51 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+vector<ll> row = {1, -1, 0}, col = {0, 0, 1};
+
+bool dfs(ll i,ll j, vector<vector<string>> s, ll count, ll n, ll c1, vector<vector<ll>> &vis){
+    c1++;
+    if(c1 == count)return true;
+
+    for(ll x = 0; x < 3; x++){
+        ll r = i+row[x], c = j+col[x];
+
+        if(r >= 0 && r < 2 && c >= 0 && c < n && s[r][c] == "B"){
+            if(dfs(r, c, s, count,n, c1, vis))return true;
+        }
+    }
+    return false;
+}
+
+bool helper(ll i, ll j, vector<vector<string>> s, ll count, ll n){
+    if(j == -1)return false;
+    vector<vector<ll>> vis(2, vector<ll>(n));
+    //return dfs(i, j, s, count, n,  );
+}
+
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
+    string s1, s2;
+    cin >> s1 >> s2;
 
-    map<ll,ll> map;
-
-    rep(i, m){
-        ll a, b;
-        cin >> a >> b;
-        map[a]++;
-        map[b]++;
-    }
-    //debug(map);
-
-    set<ll> set;
-
-    for(auto e: map){
-        set.insert(e.ss);
-    }
-    set.erase(set.begin());
-    //debug(set);
-    ll n1 = sz(set);
-    if(n1 == 1){
-        cout << *set.begin() << " "<< *set.begin()-1 << ln;
-    }
-    else{
-        ll a = *set.begin();
-        set.erase(set.begin());
-        ll b = *set.begin();
-        //cerr << a << " "<< b-1 << ln;
-        ll count1 = 0, count2 = 0;
-        for(auto e : map){
-            if(e.ss == a)count1++;
-            if(e.ff == b)count2++;
+    ll count = 0, ind1 = -1, ind2 = -1;
+    rep(i,n){
+        if(s1[i] == 'B'){
+            if(ind1 == -1) ind1 = i;
+            count++;
         }
-        if(count1 == 1){
-            cout << a << " "<< b-1<<ln;
-        }
-        else{
-            cout << b << " "<< a-1 << ln;
+        if(s2[i] == 'B'){
+            if(ind2 == -1)ind2 = i;
+            count++;
         }
     }
+    vector<vector<string>> s;
+    s[0].pb(s1);
+    s[1].pb(s2);
 
+
+    
 }
 
 int main() {

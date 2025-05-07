@@ -53,45 +53,27 @@ void solve() {
     ll n, m;
     cin >> n >> m;
 
-    map<ll,ll> map;
-
-    rep(i, m){
-        ll a, b;
-        cin >> a >> b;
-        map[a]++;
-        map[b]++;
-    }
-    //debug(map);
-
-    set<ll> set;
-
-    for(auto e: map){
-        set.insert(e.ss);
-    }
-    set.erase(set.begin());
-    //debug(set);
-    ll n1 = sz(set);
-    if(n1 == 1){
-        cout << *set.begin() << " "<< *set.begin()-1 << ln;
-    }
-    else{
-        ll a = *set.begin();
-        set.erase(set.begin());
-        ll b = *set.begin();
-        //cerr << a << " "<< b-1 << ln;
-        ll count1 = 0, count2 = 0;
-        for(auto e : map){
-            if(e.ss == a)count1++;
-            if(e.ff == b)count2++;
-        }
-        if(count1 == 1){
-            cout << a << " "<< b-1<<ln;
-        }
-        else{
-            cout << b << " "<< a-1 << ln;
-        }
+    if(n-1 > m){
+        cout << -1<< ln;
+        return;
     }
 
+    ll v = m-(n-2);
+
+    vector<ll> vec(n);
+    vec[0] = v;
+    vec[1] = v*2ll;
+
+    ll j =vec[1]+1;
+    for(ll i = 2; i < n; i++){
+        //if(j == vec[1])j--;
+        vec[i] = j;
+        j++;
+    }
+    for(auto e : vec){
+        cout << e << " ";
+    }
+    cout << ln;
 }
 
 int main() {
