@@ -50,48 +50,25 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, d;
-    cin >> n >> d;
+    ll n;
+    cin >> n;
 
-    vector<ll> one, two;
-    rep(i,n){
-        ll a, b;
-        cin >> a >> b;
+    n = 2*n;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-        if(a == 1){
-            one.pb(b);
-        }
-        else{
-            two.pb(b);
-        }
+    priority_queue<ll> q;
+
+    ll ans = 0;
+    for(ll i = n-1; i > 0; i-=2){
+        q.push(vec[i]);
+        q.push(vec[i-1]);
+
+        //cerr << q.top() << ln;
+        ans += q.top();
+        q.pop();
     }
-    ll v1 = 0, v2 = 0, z1 = 0;
-
-    sort(one.rbegin(), one.rend());
-    sort(two.rbegin(), two.rend());
-
-    ll n1 = sz(one), n2 = sz(two);
-    if(n1 > 0)v1 = one[0];
-    if(n2 > 0)z1 = two[0];
-    
-    ll c1 = INF, c2 = INF, c3 = INF;
-
-    if(z1 > 0){
-        c1 = 2 *((d+z1-1)/z1);
-    }
-    if(v1 > 0){
-        c2 = (d+v1-1)/v1;
-    }
-    if(z1 >0 && v1 > 0){
-        c3 = (d/z1)*2;
-        d = d%z1;
-
-        c3 += (d+v1-1)/v1;
-    }
-    
-    cout << min({c1, c2, c3}) << ln;
-
-
+    cout << ans << ln;
 }
 
 int main() {

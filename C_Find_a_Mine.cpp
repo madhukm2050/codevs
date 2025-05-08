@@ -49,49 +49,31 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+ll ask(ll x, ll y){
+    cout <<"? "<< x << " "<<y << endl;
+    ll n;
+    cin >> n;
+    return n;
+}
+
 void solve() {
-    ll n, d;
-    cin >> n >> d;
+    ll n, m;
+    cin >> n >> m;
 
-    vector<ll> one, two;
-    rep(i,n){
-        ll a, b;
-        cin >> a >> b;
+    ll d1 = ask(1,1);
 
-        if(a == 1){
-            one.pb(b);
-        }
-        else{
-            two.pb(b);
-        }
+    ll x1 = min(n, 1+d1), y1 = d1-x1+2;
+    ll y2 = min(m, 1+d1), x2 = d1-y2+2;
+
+    ll d2 = ask(x1, y1), d3 = ask(x2, y2);
+
+    ll dd = ask(x1 - (d2/2), y1 + (d2/2));
+    if (dd == 0) {
+        cout << "! " << (x1 - (d2/2)) << " " << (y1 + (d2/2)) << endl;
     }
-    ll v1 = 0, v2 = 0, z1 = 0;
-
-    sort(one.rbegin(), one.rend());
-    sort(two.rbegin(), two.rend());
-
-    ll n1 = sz(one), n2 = sz(two);
-    if(n1 > 0)v1 = one[0];
-    if(n2 > 0)z1 = two[0];
-    
-    ll c1 = INF, c2 = INF, c3 = INF;
-
-    if(z1 > 0){
-        c1 = 2 *((d+z1-1)/z1);
+    else {
+        cout << "! " << (x2 + (d3/2)) << " " << (y2 - (d3/2)) << endl;
     }
-    if(v1 > 0){
-        c2 = (d+v1-1)/v1;
-    }
-    if(z1 >0 && v1 > 0){
-        c3 = (d/z1)*2;
-        d = d%z1;
-
-        c3 += (d+v1-1)/v1;
-    }
-    
-    cout << min({c1, c2, c3}) << ln;
-
-
 }
 
 int main() {
