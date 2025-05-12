@@ -50,15 +50,57 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m, p, q;
-    cin >> n >> m >> p >> q;
-    
-    if(n%p == 0 && (n/p)*q != m){
-        NO;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
+    map<ll,set<ll>> map;
+
+    rep(i,n){
+        cin >> vec[i];
     }
-    else{
-        YES;
+    sort(vec.rbegin(), vec.rend());
+    for(ll i = 0; i < n; i++){
+        map[vec[i]].insert(i);
     }
+    //debug(map);
+    vector<ll> vis(n);
+
+    ll count = 0;
+    for(ll i = 0; i < n; i++){
+        if(vis[i] == 1)continue;
+        //cerr << (vec[i] &(1 <<31)) << ln;
+        if((vec[i] &(1 <<30)) == 0){
+            count++;
+            continue;
+        }
+
+        ll x = vec[i], j = 0;
+        ll ans = 0;
+        while(x != 0){
+            if((x&1) == 0){
+                ans += (1 << j);
+            }
+            j++;
+            x = x >> 1;
+        }
+        //ans = ans >> 1;
+        // cerr << " "<< bitset<31>(vec[i]) << ln;
+        // cerr << " "<< bitset<31>(ans)<< ln;
+        // cerr<<ln;
+        map[vec[i]].erase(i);
+        //debug(map);
+        //debug(map[0]);
+        if(map.find(ans) != map.end() && map[ans].size() > 0){
+            ll a = *map[ans].begin();
+            map[ans].erase(map[ans].begin());
+            vis[a] = 1;
+        }
+        //debug(vis);
+        count++;
+    }
+    cout << count << ln;
+
+
 }
 
 int main() {

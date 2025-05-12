@@ -50,15 +50,48 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, m, p, q;
-    cin >> n >> m >> p >> q;
-    
-    if(n%p == 0 && (n/p)*q != m){
-        NO;
+    ll n, x, y;
+    cin >> n >> x >> y;
+
+    x--;
+    y--;
+    vector<ll> vec(n);
+
+    for(ll i = y; i <= x; i++){
+        vec[i] = 1;
     }
-    else{
-        YES;
+    //debug(vec);
+    x++;
+    bool flag = true;
+    while(x < n){
+        if(flag){
+            vec[x] = -1;
+        }
+        else{
+            vec[x] = 1;
+        }
+        x++;
+        flag = !flag;
     }
+    y--;
+    flag = true;
+    //debug(vec);
+    while(y >= 0){
+        if(flag){
+            vec[y] = -1;
+        }
+        else{
+            vec[y] = 1;
+        }
+        y--;
+        flag = !flag;
+    }
+
+    for(ll i = 0; i < n; i++){
+        cout << vec[i] << " ";
+    }
+    cout << ln;
+
 }
 
 int main() {
