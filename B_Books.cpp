@@ -50,63 +50,24 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
+    ll n, t;
+    cin >> n >> t;
 
     vector<ll> vec(n);
     rep(i,n)cin >> vec[i];
 
-    vector<ll> parent(n), rank(n);
+    ll l = 0, h = 0, cost = 0, ans = 0;
 
-    for(ll i = 0; i < n; i++){
-        parent[i] = i;
-        rank[i] = 1;
-    }
-
-    auto find_parent = [&](auto find_parent,ll u) -> ll {
-        if(parent[u] == u)return u;
-        return parent[u] = find_parent(find_parent,parent[u]);
-    };
-
-    vector<bool> has_cycle(n, false);
-    auto join = [&](ll u, ll v)-> ll {
-        ll ul_pu = find_parent(find_parent, u);
-        ll ul_pv = find_parent(find_parent, v);
-
-        if(ul_pu == ul_pv){
-            has_cycle[ul_pu] = true;
-            return;
+    while(h < n){
+        cost += vec[h];
+        while(cost > t){
+            cost -= vec[l];
+            l++;
         }
-
-        if(rank[ul_pu] < rank[ul_pv]){
-            parent[ul_pu] = ul_pv;
-            rank[ul_pv] += rank[ul_pu];
-        }
-        else{
-            parent[ul_pv] = ul_pu;
-            rank[ul_pu] += rank[ul_pv];
-        }
-    };
-
-    vector<bool> self(n, false);
-
-    rep(i,n){
-        ll a, b;
-        cin >> a >> b;
-        a--;
-        b--;
-        if(a == b)self[a] = true;
+        ans = max(ans, h-l+1);
+        h++;
     }
-
-    ll ans = 0;
-    rep(i,n){
-        if(parent[i] != i)continue;
-        if(has_cycle[i])ans += rank[i];
-        else ans += rank[i]+1;
-    }
-
-    cout << ans - accumulate(all(self), 0) << ln;
-
+    cout << ans << ln;
 }
 
 int main() {
@@ -114,7 +75,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

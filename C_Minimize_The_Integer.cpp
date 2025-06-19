@@ -50,63 +50,51 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
+    string s;
+    cin >> s;
 
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-
-    vector<ll> parent(n), rank(n);
-
-    for(ll i = 0; i < n; i++){
-        parent[i] = i;
-        rank[i] = 1;
-    }
-
-    auto find_parent = [&](auto find_parent,ll u) -> ll {
-        if(parent[u] == u)return u;
-        return parent[u] = find_parent(find_parent,parent[u]);
-    };
-
-    vector<bool> has_cycle(n, false);
-    auto join = [&](ll u, ll v)-> ll {
-        ll ul_pu = find_parent(find_parent, u);
-        ll ul_pv = find_parent(find_parent, v);
-
-        if(ul_pu == ul_pv){
-            has_cycle[ul_pu] = true;
-            return;
-        }
-
-        if(rank[ul_pu] < rank[ul_pv]){
-            parent[ul_pu] = ul_pv;
-            rank[ul_pv] += rank[ul_pu];
+    ll n1 = s.length();
+    vector<ll> e, o;
+    for(ll i = 0; i < n1; i++){
+        ll a = s[i]-'0';
+        if((a%2) == 0){
+            e.pb(a);
         }
         else{
-            parent[ul_pv] = ul_pu;
-            rank[ul_pu] += rank[ul_pv];
+            o.pb(a);
         }
-    };
-
-    vector<bool> self(n, false);
-
-    rep(i,n){
-        ll a, b;
-        cin >> a >> b;
-        a--;
-        b--;
-        if(a == b)self[a] = true;
     }
 
-    ll ans = 0;
-    rep(i,n){
-        if(parent[i] != i)continue;
-        if(has_cycle[i])ans += rank[i];
-        else ans += rank[i]+1;
+    string str = "";
+
+    ll n = sz(e), m = sz(o), i = 0, j = 0;
+
+    // debug(e);
+    // debug(o);
+    // debug(n);
+    // debug(m);
+
+    while(i < n && j < m){
+        if(e[i] < o[j]){
+            str += to_string(e[i]);
+            i++;
+        }
+        else{
+            str += to_string(o[j]);
+            j++;
+        }
     }
 
-    cout << ans - accumulate(all(self), 0) << ln;
+    while(i < n){
+        str += to_string(e[i]);
+        i++;
+    }
+    while(j < m){
+        str += to_string(o[j]);
+        j++;
+    }
 
+    cout << str << ln;
 }
 
 int main() {

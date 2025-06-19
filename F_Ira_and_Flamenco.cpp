@@ -49,63 +49,52 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void solve() {
-    ll n;
-    cin >> n;
+    ll n, m;
+    cin >> n >> m;
 
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-
-    vector<ll> parent(n), rank(n);
-
-    for(ll i = 0; i < n; i++){
-        parent[i] = i;
-        rank[i] = 1;
-    }
-
-    auto find_parent = [&](auto find_parent,ll u) -> ll {
-        if(parent[u] == u)return u;
-        return parent[u] = find_parent(find_parent,parent[u]);
-    };
-
-    vector<bool> has_cycle(n, false);
-    auto join = [&](ll u, ll v)-> ll {
-        ll ul_pu = find_parent(find_parent, u);
-        ll ul_pv = find_parent(find_parent, v);
-
-        if(ul_pu == ul_pv){
-            has_cycle[ul_pu] = true;
-            return;
-        }
-
-        if(rank[ul_pu] < rank[ul_pv]){
-            parent[ul_pu] = ul_pv;
-            rank[ul_pv] += rank[ul_pu];
-        }
-        else{
-            parent[ul_pv] = ul_pu;
-            rank[ul_pu] += rank[ul_pv];
-        }
-    };
-
-    vector<bool> self(n, false);
+    map<ll,ll> map;
 
     rep(i,n){
-        ll a, b;
-        cin >> a >> b;
-        a--;
-        b--;
-        if(a == b)self[a] = true;
+        ll a;
+        cin >> a;
+        map[a]++;
     }
+    ll n1 = (ll)map.size();
+    vector<pair<ll,ll>> vec(n1);
 
-    ll ans = 0;
-    rep(i,n){
-        if(parent[i] != i)continue;
-        if(has_cycle[i])ans += rank[i];
-        else ans += rank[i]+1;
+    ll i = 0;
+    for(auto e : map){
+        vec[i].ff = e.ff;
+        vec[i].ss = e.ss;
+        i++;
     }
+    //debug(vec);
 
-    cout << ans - accumulate(all(self), 0) << ln;
+    ll l = 0, h = 0,prod = 1, count = 0;
+
+    while(h < n1){
+        prod = mod_mul(prod, vec[h].ss, MOD);
+
+        while(vec[h].ff - vec[l].ff >= m || (h-l+1)> m){
+            prod = mod_div(prod, vec[l].ss, MOD);
+            l++;
+        }
+        //cerr <<(h-l+1)<<" "<< l << " "<< h << " "<< prod << ln;
+        if(h-l+1 == m){
+            count = ((count%MOD)+(prod%MOD))%MOD;
+        }
+        h++;
+    }
+    cout << count << ln;
+
+
 
 }
 

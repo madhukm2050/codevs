@@ -50,63 +50,29 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
+    ll n, k, d;
+    cin >> n >> k >> d;
 
     vector<ll> vec(n);
     rep(i,n)cin >> vec[i];
 
-    vector<ll> parent(n), rank(n);
+    map<ll,ll> map;
 
-    for(ll i = 0; i < n; i++){
-        parent[i] = i;
-        rank[i] = 1;
+    for(ll i = 0; i < d; i++){
+        map[vec[i]]++;
     }
+    ll ans = map.size(), l = 0;
 
-    auto find_parent = [&](auto find_parent,ll u) -> ll {
-        if(parent[u] == u)return u;
-        return parent[u] = find_parent(find_parent,parent[u]);
-    };
-
-    vector<bool> has_cycle(n, false);
-    auto join = [&](ll u, ll v)-> ll {
-        ll ul_pu = find_parent(find_parent, u);
-        ll ul_pv = find_parent(find_parent, v);
-
-        if(ul_pu == ul_pv){
-            has_cycle[ul_pu] = true;
-            return;
+    for(ll i = d; i < n; i++){
+        map[vec[i]]++;
+        map[vec[l]]--;
+        if(map[vec[l]] == 0){
+            map.erase(vec[l]);
         }
-
-        if(rank[ul_pu] < rank[ul_pv]){
-            parent[ul_pu] = ul_pv;
-            rank[ul_pv] += rank[ul_pu];
-        }
-        else{
-            parent[ul_pv] = ul_pu;
-            rank[ul_pu] += rank[ul_pv];
-        }
-    };
-
-    vector<bool> self(n, false);
-
-    rep(i,n){
-        ll a, b;
-        cin >> a >> b;
-        a--;
-        b--;
-        if(a == b)self[a] = true;
+        ans = min(ans, (ll)map.size());
+        l++;
     }
-
-    ll ans = 0;
-    rep(i,n){
-        if(parent[i] != i)continue;
-        if(has_cycle[i])ans += rank[i];
-        else ans += rank[i]+1;
-    }
-
-    cout << ans - accumulate(all(self), 0) << ln;
-
+    cout << ans << ln;
 }
 
 int main() {
