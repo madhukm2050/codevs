@@ -55,26 +55,32 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-ll helper(ll sum, ll n, vector<ll>& dp){
-    if(sum == n)return 1;
-    if(sum > n)return 0;
-
-    if(dp[sum] != -1)return dp[sum];
-
-    ll ans = 0;
-    for(ll i = 1; i <= 10; i++){
-        ans = ((ans%MOD)+(helper(sum+i, n, dp)%MOD))%MOD;
-    }
-    return dp[sum] = ans;
-}
-
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> dp(n+1, -1);
 
-    cout << helper(0, n, dp) << ln;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
+    for(ll i = 0; i < n-1; i++){
+        if(abs(vec[i]-vec[i+1])<=1){
+            cout << 0 << ln;
+            return;
+        }
+    }
+    //debug(vec);
 
+    for(ll i = 0; i < n-2; i++){
+        if(vec[i] < vec[i+1] && vec[i+1] > vec[i+2]){
+            cout << 1 << ln;
+            return;
+        }
+        if(vec[i] > vec[i+1] && vec[i+1] < vec[i+2]){
+            cout << 1 << ln;
+            return;
+        }
+    }
+    
+    cout << -1 << ln;
 }
 
 int main() {
@@ -82,7 +88,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }
