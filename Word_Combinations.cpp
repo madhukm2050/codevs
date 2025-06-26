@@ -55,36 +55,46 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-ll expo(ll a, ll p){
-    ll res = 1;
-    while(p != 0){
-        if((p&1) != 0){
-            res = mod_mul(res, a, MOD);
-        }
-        a = mod_mul(a, a, MOD);
-        p = p >> 1;
+ll helper(ll ind, string s, ll n, set<string> st){
+    if(ind > n)return 0;
+    if(ind == n){
+        // debug(v);
+        return 1;
     }
-    return res;
+    // debug(ind);
+    // debug(v);
+    ll count = 0;
+
+    for(ll i = ind; i < n; i++){
+        string s1 = s.substr(ind,i-ind+1);
+        ll n1 = sz(s1);
+        //cerr << ind << " "<< s1 << ln;
+        if(st.count(s1)){
+            //cerr << s1 << ln;
+            //v.pb(s1);
+            count = ((count%MOD) + helper(ind+n1, s, n, st)%MOD)%MOD;
+        }
+    }
+    return count;
 }
 
 void solve() {
-    ll n;
-    cin >> n;
-    ll div = 1, sum = 1, prod = 1, div1 = 1;
+    string s;
+    cin >> s;
+    ll n = sz(s);
 
-    for(ll i = 0; i < n; i++){
-        ll p, k;
-        cin >> p >> k;
-        div = mod_mul(div, k+1, MOD);
-        sum = (sum%MOD)*(expo(p, k+1)-1)%MOD *expo(p-1, MOD-2)%MOD;
-        prod = mod_mul(expo(prod, k+1), expo(expo(p,(k*(k+1))/2), div1)%MOD, MOD);
-        div1 = (div1*(k+1))%(MOD-1);
-
-        //cerr <<prod << " "<< div1 << ln;
+    ll k;
+    cin >> k;
+    set<string> st;
+    rep(i,k){
+        string s1;
+        cin >> s1;
+        st.insert(s1);
     }
-    
+    //debug(st);
+    cout << helper(0, s, n, st) << ln;
 
-    cout << div << " "<< sum << " "<< prod << ln;
+
 }
 
 int main() {

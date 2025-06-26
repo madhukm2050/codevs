@@ -55,36 +55,24 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-ll expo(ll a, ll p){
-    ll res = 1;
-    while(p != 0){
-        if((p&1) != 0){
-            res = mod_mul(res, a, MOD);
-        }
-        a = mod_mul(a, a, MOD);
-        p = p >> 1;
-    }
-    return res;
-}
-
 void solve() {
     ll n;
     cin >> n;
-    ll div = 1, sum = 1, prod = 1, div1 = 1;
 
-    for(ll i = 0; i < n; i++){
-        ll p, k;
-        cin >> p >> k;
-        div = mod_mul(div, k+1, MOD);
-        sum = (sum%MOD)*(expo(p, k+1)-1)%MOD *expo(p-1, MOD-2)%MOD;
-        prod = mod_mul(expo(prod, k+1), expo(expo(p,(k*(k+1))/2), div1)%MOD, MOD);
-        div1 = (div1*(k+1))%(MOD-1);
-
-        //cerr <<prod << " "<< div1 << ln;
+    if(n%2 == 1){
+        cout << 0 << ln;
     }
-    
+    else{
+        ll p = 5, count = 0;
+        n = n/2;
 
-    cout << div << " "<< sum << " "<< prod << ln;
+        while(p <= n){
+            count += n/p;
+            p *= 5ll;
+        }
+        cout << count << ln;
+
+    }
 }
 
 int main() {

@@ -57,8 +57,8 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 
 ll expo(ll a, ll p){
     ll res = 1;
-    while(p != 0){
-        if((p&1) != 0){
+    while(p != 1){
+        if((p&1) != 1){
             res = mod_mul(res, a, MOD);
         }
         a = mod_mul(a, a, MOD);
@@ -70,21 +70,20 @@ ll expo(ll a, ll p){
 void solve() {
     ll n;
     cin >> n;
-    ll div = 1, sum = 1, prod = 1, div1 = 1;
 
-    for(ll i = 0; i < n; i++){
-        ll p, k;
-        cin >> p >> k;
-        div = mod_mul(div, k+1, MOD);
-        sum = (sum%MOD)*(expo(p, k+1)-1)%MOD *expo(p-1, MOD-2)%MOD;
-        prod = mod_mul(expo(prod, k+1), expo(expo(p,(k*(k+1))/2), div1)%MOD, MOD);
-        div1 = (div1*(k+1))%(MOD-1);
+    ll total = 0;
 
-        //cerr <<prod << " "<< div1 << ln;
+    for(ll i = 1, j; i <= n;i = j){
+        ll q = n/i;
+        j = n/q+1;
+
+        ll range1 = mod_mul(j, j-1, MOD) * expo(2, MOD-2, MOD);
+        ll range2 = mod_mul(i, i-1, MOD) * expo(2, MOD-2, MOD);
+
+        ll tmp = mod_sub(range1, range2, MOD);
+        total =  ((total)+mod_mul(q, tmp, MOD))%MOD;
     }
-    
-
-    cout << div << " "<< sum << " "<< prod << ln;
+    cout << total << ln;
 }
 
 int main() {
