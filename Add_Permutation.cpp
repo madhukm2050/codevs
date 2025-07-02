@@ -54,44 +54,24 @@ template <class T> void _print(vector<T> v) {cerr << "[ "; for (T i : v) {_print
 template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
-ll N = 200005;
-vector<ll> two(N);
-void precomputation(){
-    two[0] = 1;
-    for(ll i = 1; i < N; i++){
-        two[i] = mod_mul(2ll,two[i-1], MOD1);
-    }
-}
-void solve() {
-    precomputation();
-    //debug(two);
-    ll n;
-    cin >> n;
-    map<ll,ll> map1, map2;
-    rep(i,n){
-        ll a;
-        cin >> a;
-        if(map1.find(a) == map1.end())map1[a] = i;
-        map2[a] = i;
-    }
-    vector<pair<ll,ll>> vec;
-    for(auto e : map1){
-        vec.pb({e.ss, map2[e.ff]});
-    }
-    sort(all(vec));
-    vector<pair<ll,ll>> v;
-    for(auto e : vec){
-        if(v.size() == 0 || e.ff > v[v.size()-1].ss){
-            v.pb({e.ff, e.ss});
-        }
-        else{
-            v[v.size()-1].ss = max(e.ss, v[v.size()-1].ss);
-        }
-    }
-    ll n1 = sz(v);
-    cout <<two[n1-1]<< ln;
-    //debug(v);
 
+void solve() {
+    ll n, k;
+    cin >> n >> k;
+
+    ll m = n-k;
+    vector<ll> v;
+    for(ll i = 1; i <= m+1; i++){
+        v.pb(i);
+    }
+    reverse(all(v));
+    for(ll i = 0; i < sz(v); i++){
+        cout << v[i] << " ";
+    }
+    for(ll i = m+2; i <= n; i++){
+        cout << i << " ";
+    }
+    cout << ln;
 }
 
 int main() {
@@ -99,7 +79,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }
