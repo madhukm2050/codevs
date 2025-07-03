@@ -55,59 +55,46 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+ll N = 100005;
+vector<ll> spf(N+1);
+
+void seive(){
+    // for(ll i = 1; i <= N; i++){
+    //     spf[i] = i;
+    // }
+    for(ll i = 2; i <= N; i++){
+        if(spf[i] == 0)spf[i] = i;
+        for(ll j = 2*i; j <= N; j += i){
+            spf[j] = i;
+        }
+    }
+}
+
 void solve() {
     ll n;
     cin >> n;
-    vector<ll>vec(n+1, -1);
-    set<ll> st;
-    for(ll i = 2; i <= n; i += 2){
-        st.insert(i);
-    }
-    for(ll i = 3; i <= n; i += 2){
-        if(vec[i] != -1)continue;
-        if(i*i <= n){
-            vec[i] = i*i;
-            vec[i*i] = i;
-            st.erase((i*i));
-        }
-        else if(i*2 <= n){
-            vec[i] = 2*i;
-            vec[2*i] = i;
-            st.erase((2*i));
-        }
-        else{
-            vec[i] = i;
-        }
-    }
-    vector<ll> v(all(st));
+    //cerr << n << ln;
+    
+    vector<ll> ans(n+1);
+    for(ll i = 1; i <= n; i++)ans[i] = i;
 
-    reverse(all(v));
-    ll j = 0;
-    for(ll i = 2; i <= n; i += 2){
-        if(vec[i] == -1 && j < sz(v)){
-            if(v[j] == i){
-                vec[i] = v[j];
-                if(i > 2){
-                    swap(vec[i], vec[i-2]);
-                }
-            }
-            else{
-                vec[i] = v[j];
-            }
-            j++;
-        }
+    for(ll i = n; i > 1; i--){
+        ll x = spf[i];
+        swap(ans[i], ans[x]);
     }
-    vec[1] = 1;
+
     for(ll i = 1; i <= n; i++){
-        cout << vec[i] << " ";
+        cout << ans[i] << " ";
     }
     cout << ln;
-    //debug(vec);
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
+
+    seive();
+    //debug(spf);
 
     int t=1;
     cin >> t;

@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -50,26 +56,23 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll w, h, a, b;
-    cin >> w >> h >> a >> b;
+    ll n;
+    cin >> n;
+    
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    ll x1, y1 ,x2, y2;
-    cin >> x1 >> y1 >> x2 >> y2;
-    bool flag = false;
-    if(x1 != x2){
-        if(abs(x1-x2)%a == 0)flag = true;
+    ll i = 0, count = 0; 
+    while(i < n){
+        ll j = i;
+        count++;
+        while(j < n && vec[i]+1 >= vec[j]){
+            j++;
+        }
+        //if(vec[i]+1 < vec[j])count++;
+        i = j;
     }
-    if(y1 != y2){
-        if(abs(y1-y2)%b == 0)flag = true;
-    }
-    if(abs(x1-x2)%a == 0 && abs(y1-y2)%b == 0)flag = true;
-
-    if(flag){
-        Yes;
-    }
-    else{
-        No;
-    }
+    cout << count << ln;
 }
 
 int main() {
