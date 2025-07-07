@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-#include <numeric>
 using namespace std;
 
 #define YES cout<<"YES"<<endl;
@@ -56,19 +55,59 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+
 void solve() {
-    ll n;
-    cin >> n;
+    ll n, m;
 
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    cin >> n >> m;
+    vector<vector<ll>> adj(n+1);
 
-    ll l = 1;
-    for(ll i = 0; i < n-1; i++){
-        ll d = vec[i]/__gcd(vec[i], vec[i+1]);
-        l = (l*d)/__gcd(l,d);
+    rep(i,m){
+        ll a, b;
+        cin >> a >> b;
+        adj[a].pb(b);
+        adj[b].pb(a);
     }
-    cout << l << ln;
+
+    vector<ll> dis(n+1, INF);
+    vector<ll> parent(n+1, -1);
+    dis[1] = 0;
+    queue<ll> q;
+    q.push(1L);
+
+    while(!q.empty()){
+        ll node = q.front();
+        q.pop();
+
+        for(auto e : adj[node]){
+            if(dis[node]+ 1 < dis[e]){
+                dis[e] = dis[node]+1;
+                parent[e] = node;
+                q.push(e);
+            }
+        }
+    }
+
+    if(dis[n] == INF){
+        cout << "IMPOSSIBLE" << ln;
+    }
+    else{
+        vector<ll> v;
+        v.pb(n);
+        ll ind = parent[n];
+        while(ind != -1){
+            v.pb(ind);
+            ind = parent[ind];
+        }
+        reverse(all(v));
+        cout << sz(v) << ln;
+        for(auto e : v){
+            cout << e << " ";
+        }
+        cout << ln;
+    }
+
+    //debug(parent);
 }
 
 int main() {
@@ -76,7 +115,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

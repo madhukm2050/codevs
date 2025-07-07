@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-#include <numeric>
 using namespace std;
 
 #define YES cout<<"YES"<<endl;
@@ -57,18 +56,50 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
+    ll n, k;
+    cin >> n >> k;
 
     vector<ll> vec(n);
     rep(i,n)cin >> vec[i];
 
-    ll l = 1;
-    for(ll i = 0; i < n-1; i++){
-        ll d = vec[i]/__gcd(vec[i], vec[i+1]);
-        l = (l*d)/__gcd(l,d);
+    vector<ll> v(all(vec));
+    sort(all(v));
+    ll val = v[k-1];
+
+    deque<ll> q;
+    for(auto e : vec){
+        if(e <= val){
+            q.push_back(e);
+        }
     }
-    cout << l << ln;
+    ll cnt = q.size()-k+1;
+
+    while(q.size() > 1){
+        if(q.front() < val && q.back() < val){
+            if(q.front() != q.back()){
+                NO;
+                return;
+            }
+            q.pop_back();
+            q.pop_front();
+        }
+        else if(q.front() == val && q.back() == val){
+            q.pop_back();
+            q.pop_front();
+        }
+        else{
+            if(!cnt){
+                NO;
+                return;
+            }
+            else{
+                if(q.front() == val)q.pop_front();
+                else q.pop_back();
+                cnt--;
+            }
+        }
+    }
+    YES;
 }
 
 int main() {

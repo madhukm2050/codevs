@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-#include <numeric>
 using namespace std;
 
 #define YES cout<<"YES"<<endl;
@@ -56,19 +55,52 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-void solve() {
-    ll n;
-    cin >> n;
+vector<ll> row = {-1, 0, 1, 0}, col = {0, -1, 0, 1};
 
-    vector<ll> vec(n);
+// void dfs(ll i, ll j, vector<string> &vec, vector<vector<bool>> &vis, ll n, ll m){
+    
+//     vis[i][j] = true;
+//     for(ll x = 0; x < 4; x++){
+//         ll r = i+row[x], c = j+col[x];
+
+//         if(r >= 0 && r < n && c >= 0 && c < m && !vis[r][c] && vec[r][c] == '.'){
+//             dfs(r, c, vec, vis, n, m);
+//         }
+//     }
+// }
+
+void solve() {
+    ll n, m;
+    cin >> n >> m;
+
+    vector<string> vec(n);
     rep(i,n)cin >> vec[i];
 
-    ll l = 1;
-    for(ll i = 0; i < n-1; i++){
-        ll d = vec[i]/__gcd(vec[i], vec[i+1]);
-        l = (l*d)/__gcd(l,d);
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+
+    function<void(ll,ll)> dfs = [&](ll i, ll j){
+        vis[i][j] = true;
+        for(ll x = 0; x < 4; x++){
+            ll r = i+row[x], c = j+col[x];
+
+            if(r >= 0 && r < n && c >= 0 && c < m && !vis[r][c] && vec[r][c] == '.'){
+                dfs(r, c);
+            }
+        }
+    };
+
+    ll count = 0;
+    for(ll i = 0; i < n; i++){
+        for(ll j = 0; j < m; j++){
+            if(vec[i][j] == '.' && !vis[i][j]){
+                dfs(i, j);
+                count++;
+            }
+        }
     }
-    cout << l << ln;
+    cout << count << ln;
+
+
 }
 
 int main() {
@@ -76,7 +108,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
