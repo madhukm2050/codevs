@@ -55,42 +55,23 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
-
 void solve() {
-    ll n, m;
-    cin >> n >> m;
-    vector<pair<ll,ll>> row(n), col(m);
+    ll n;
+    cin >> n;
 
-    for(ll i = 0; i < n; i++){
-        for(ll j = 0; j < m; j++){
-            ll a;
-            cin >> a;
-            if(a == 0){
-                row[i].ff++;
-                col[j].ff++;
-            }
-            else{
-                row[i].ss++;
-                col[j].ss++;
-            }
+    ll l = 0, h = 2e18, ans = 0;
+
+    while(l <= h){
+        ll mid = l+(h-l)/2;
+        if((mid-int(sqrt(mid))) >= n){
+            ans = mid;
+            h = mid-1;
+        }
+        else{
+            l = mid+1;
         }
     }
-    ll count = 0;
-    for(ll i = 0; i < n; i++){
-        count += (1LL << row[i].ff)-1;
-        count += (1LL << row[i].ss)-1;
-    }
-    for(ll i = 0; i < m; i++){
-        count += (1LL << col[i].ff)-1;
-        count += (1LL << col[i].ss)-1;
-    }
-
-    count -= n*m;
-
-    cout << count << ln;
-    //debug(row);
-    //debug(col);
+    cout << ans << ln;
 }
 
 int main() {
@@ -98,7 +79,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

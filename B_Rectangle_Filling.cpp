@@ -55,42 +55,57 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+vector<vector<char>> helper(vector<vector<char>> s){
+    ll n = s[0].size(), m = s.size();
+    vector<vector<char>> vec(n, vector<char>(m,'#'));
+    for(ll i = 0; i < m; i++){
+        for(ll j = 0; j < n; j++){
+            vec[j][i] = s[i][j];
+        }
+    }
 
+    for(ll i = 0; i < n; i++){
+        for(ll j = 0; j < m/2; j++){
+            char tmp = vec[i][j];
+            vec[i][j] = vec[i][m-1-j];
+            vec[i][m-1-j] = tmp; 
+        }
+    }
+    return vec;
+}
 
+bool helper1(vector<vector<char>> vec){
+    ll n = vec.size(), m = vec[0].size();
+    for(ll i = 0; i < n; i++){
+        if(vec[i][0] == vec[0][m-1] && vec[i][0] == vec[n-1][m-1])return true;
+    }
+    return false;
+}
 void solve() {
     ll n, m;
     cin >> n >> m;
-    vector<pair<ll,ll>> row(n), col(m);
 
-    for(ll i = 0; i < n; i++){
-        for(ll j = 0; j < m; j++){
-            ll a;
-            cin >> a;
-            if(a == 0){
-                row[i].ff++;
-                col[j].ff++;
-            }
-            else{
-                row[i].ss++;
-                col[j].ss++;
-            }
-        }
-    }
-    ll count = 0;
-    for(ll i = 0; i < n; i++){
-        count += (1LL << row[i].ff)-1;
-        count += (1LL << row[i].ss)-1;
-    }
-    for(ll i = 0; i < m; i++){
-        count += (1LL << col[i].ff)-1;
-        count += (1LL << col[i].ss)-1;
+    vector<vector<char>> vec(n, vector<char>(m));
+    rep(i,n){
+        rep(j,m)cin >> vec[i][j];
     }
 
-    count -= n*m;
+    if(vec[0][0] == vec[n-1][m-1] || vec[n-1][0] == vec[0][m-1]){
+        YES;
+        return;
+    }
 
-    cout << count << ln;
-    //debug(row);
-    //debug(col);
+    vector<vector<char>> s1 = helper(vec);
+    vector<vector<char>> s2 = helper(s1);
+    vector<vector<char>> s3 = helper(s2);
+
+    if(helper1(vec) || helper1(s1) || helper1(s2) || helper1(s3)){
+        YES;
+    }
+    else{
+        NO;
+    }
+
 }
 
 int main() {
@@ -98,7 +113,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }
