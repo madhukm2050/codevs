@@ -55,47 +55,23 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll x, string s, ll k){
-    ll count = 0;
-    ll ans = 0, ones = 0, zeros = 0;
-    for(ll i = 0; i < sz(s); i++){
-        if(s[i] == '1'){
-            count++;
-        }
-        else{
-            zeros++;
-            count = max(zeros, count);
-        }
-        if(count == x){
-            ans++;
-            count = 0;
-            zeros = 0;
-        }
-        //cerr << count << " "<< zeros << ln;
-    }
-    //cerr << "mid " << x << " "<< count << ln;
-    if(ans >= k)return true;
-    return false;
-}
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    string s;
-    cin >> s;
+    ll n;
+    cin >> n;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    ll l = 1, h = n, ans = -1;
-    while(l <= h){
-        ll mid = (l+h)/2;
-        if(helper(mid, s, k)){
-            ans = mid;
-            l = mid+1;
+    ll sum = 0;
+    for(ll i = 0; i < n; i++){
+        if(vec[i] == 0){
+            sum++;
         }
         else{
-            h = mid-1;
+            sum += vec[i];
         }
-        //cerr << l << " "<< h << ln;
     }
-    cout << ans << ln;
+    
+    cout << sum << ln;
 }
 
 int main() {

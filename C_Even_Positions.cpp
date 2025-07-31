@@ -55,47 +55,42 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll x, string s, ll k){
-    ll count = 0;
-    ll ans = 0, ones = 0, zeros = 0;
-    for(ll i = 0; i < sz(s); i++){
-        if(s[i] == '1'){
-            count++;
-        }
-        else{
-            zeros++;
-            count = max(zeros, count);
-        }
-        if(count == x){
-            ans++;
-            count = 0;
-            zeros = 0;
-        }
-        //cerr << count << " "<< zeros << ln;
-    }
-    //cerr << "mid " << x << " "<< count << ln;
-    if(ans >= k)return true;
-    return false;
-}
 void solve() {
-    ll n, k;
-    cin >> n >> k;
+    ll n;
+    cin >> n;
     string s;
     cin >> s;
+    queue<ll> st;
 
-    ll l = 1, h = n, ans = -1;
-    while(l <= h){
-        ll mid = (l+h)/2;
-        if(helper(mid, s, k)){
-            ans = mid;
-            l = mid+1;
+    ll count = 0, sum = 0;
+    for(ll i = 0; i < sz(s); i++){
+        if(i%2 == 0){
+            if(count == 0){
+                st.push(i);
+                count++;
+            }
+            else{
+                //cerr << i << " "<< st.front() << ln;
+                sum += i-st.front();
+                st.pop();
+                count--;
+            }
         }
         else{
-            h = mid-1;
+            if(s[i] == '('){
+                count++;
+                st.push(i);
+            }
+            else{
+                //cerr << i << " "<< st.front() << ln;
+                count--;
+                sum += i-st.front();
+                st.pop();
+            }
         }
-        //cerr << l << " "<< h << ln;
+        
     }
-    cout << ans << ln;
+    cout << sum << ln;
 }
 
 int main() {

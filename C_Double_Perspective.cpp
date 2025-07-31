@@ -55,47 +55,36 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll x, string s, ll k){
-    ll count = 0;
-    ll ans = 0, ones = 0, zeros = 0;
-    for(ll i = 0; i < sz(s); i++){
-        if(s[i] == '1'){
-            count++;
-        }
-        else{
-            zeros++;
-            count = max(zeros, count);
-        }
-        if(count == x){
-            ans++;
-            count = 0;
-            zeros = 0;
-        }
-        //cerr << count << " "<< zeros << ln;
-    }
-    //cerr << "mid " << x << " "<< count << ln;
-    if(ans >= k)return true;
-    return false;
-}
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    string s;
-    cin >> s;
-
-    ll l = 1, h = n, ans = -1;
-    while(l <= h){
-        ll mid = (l+h)/2;
-        if(helper(mid, s, k)){
-            ans = mid;
-            l = mid+1;
-        }
-        else{
-            h = mid-1;
-        }
-        //cerr << l << " "<< h << ln;
+    ll n;
+    cin >> n;
+    vector<pair<ll, pair<ll,ll>>> vec(n);
+    rep(i,n){
+        vec[i].ff = i;
+        cin >> vec[i].ss.ff >> vec[i].ss.ss;
     }
-    cout << ans << ln;
+    sort(all(vec),[](const pair<ll, pair<ll,ll>> &a, const pair<ll, pair<ll,ll>> &b){
+        if(a.ss.ff == b.ss.ff)return a.ss.ss > b.ss.ss;
+        return a.ss.ff < b.ss.ff;
+    });
+    vector<pair<ll, pair<ll,ll>>> v;
+    v.pb(vec[0]);
+    ll max1 = vec[0].ss.ss;
+    for(ll i = 1; i < n; i++){
+        if(vec[i].ss.ss > max1){
+            if(vec[i].ss.ff > max1){
+                v.pb(vec[i]);
+            }
+            else{
+                vec[i].ss.ss = max(vec[i].ss.ss, max1);
+            }
+        }
+        max1 = v[sz(v)-1].ss.ss;
+    }
+    ll f = 0, g = 0;
+    
+    debug(v);
+
 }
 
 int main() {

@@ -55,47 +55,31 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll x, string s, ll k){
-    ll count = 0;
-    ll ans = 0, ones = 0, zeros = 0;
-    for(ll i = 0; i < sz(s); i++){
-        if(s[i] == '1'){
-            count++;
-        }
-        else{
-            zeros++;
-            count = max(zeros, count);
-        }
-        if(count == x){
-            ans++;
-            count = 0;
-            zeros = 0;
-        }
-        //cerr << count << " "<< zeros << ln;
-    }
-    //cerr << "mid " << x << " "<< count << ln;
-    if(ans >= k)return true;
-    return false;
-}
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    string s;
-    cin >> s;
+    ll n;
+    cin >> n;
+    vector<double> a(n), b(n);
+    rep(i,n)cin >> a[i];
+    rep(i,n)cin >> b[i];
 
-    ll l = 1, h = n, ans = -1;
-    while(l <= h){
-        ll mid = (l+h)/2;
-        if(helper(mid, s, k)){
-            ans = mid;
-            l = mid+1;
+    double l = 0, h = 1e18, ans = 0;
+    rep(i,100){
+        double mid = (l+h)/2;
+        double sum = 0,next = 0;
+        for(ll i = n-1; i >= 0; i--){
+            double curr = min(next+a[i], mid/(n+1)+b[i]);
+            sum += curr;
+            next = curr;
+        }
+        ans = next;
+        if(sum < mid){
+            h = mid;
         }
         else{
-            h = mid-1;
+            l = mid;
         }
-        //cerr << l << " "<< h << ln;
     }
-    cout << ans << ln;
+    cout << setprecision(15) <<  ans << ln;
 }
 
 int main() {

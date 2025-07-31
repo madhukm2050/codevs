@@ -55,47 +55,32 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-bool helper(ll x, string s, ll k){
-    ll count = 0;
-    ll ans = 0, ones = 0, zeros = 0;
-    for(ll i = 0; i < sz(s); i++){
-        if(s[i] == '1'){
-            count++;
-        }
-        else{
-            zeros++;
-            count = max(zeros, count);
-        }
-        if(count == x){
-            ans++;
-            count = 0;
-            zeros = 0;
-        }
-        //cerr << count << " "<< zeros << ln;
-    }
-    //cerr << "mid " << x << " "<< count << ln;
-    if(ans >= k)return true;
-    return false;
-}
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    string s;
-    cin >> s;
+    string s1, s2;
+    cin >> s1 >> s2;
 
-    ll l = 1, h = n, ans = -1;
-    while(l <= h){
-        ll mid = (l+h)/2;
-        if(helper(mid, s, k)){
-            ans = mid;
-            l = mid+1;
+    string s11 = "", s22 = "";
+    ll n = sz(s1);
+    bool flag = true;
+    for(ll i = 0; i < n; i++){
+        ll a = s1[i]-'0', b = s2[i]-'0';
+        if(a == b){
+            continue;
         }
         else{
-            h = mid-1;
+            if(flag){
+                s1[i] = max(a, b)+'0';
+                s2[i] = min(a,b)+'0';
+                flag = false;
+            }
+            else{
+                s1[i] = min(a, b)+'0';
+                s2[i] = max(a,b)+'0';
+            }
         }
-        //cerr << l << " "<< h << ln;
     }
-    cout << ans << ln;
+    cout << s1 << ln;
+    cout << s2 << ln;
 }
 
 int main() {
