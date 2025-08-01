@@ -56,32 +56,33 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<pair<ll, pair<ll,ll>>> vec(n);
-    rep(i,n){
-        vec[i].ff = i;
-        cin >> vec[i].ss.ff >> vec[i].ss.ss;
-    }
-    sort(all(vec),[](const pair<ll, pair<ll,ll>> &a, const pair<ll, pair<ll,ll>> &b){
-        if(a.ss.ff == b.ss.ff)return a.ss.ss > b.ss.ss;
-        return a.ss.ff < b.ss.ff;
-    });
-    vector<pair<ll, pair<ll,ll>>> v;
-    ll max1 = -1e18;
-    for(ll i = 0; i < n; i++){
-        if(vec[i].ss.ff > max1){
-            v.pb(vec[i]);
-           max1 = vec[i].ss.ff;
-        }
-    }
-    cout << sz(v) << ln;
-    for(auto e : v){
-        cout << e.ff+1 << " ";
-    }    
-    cout << ln;
-    //debug(v);
+    ll n, k;
+    cin >> n >> k;
 
+    vector<pair<ll,ll>> vec(n);
+
+    rep(i,n){
+        cin >> vec[i].ff >> vec[i].ss;
+    }
+    sort(all(vec), [](const pair<ll,ll> &a, pair<ll,ll> &b){
+        return a.ss < b.ss;
+    });
+
+    multiset<ll> st;
+
+    for(ll i = 0; i < k; i++)st.insert(0);
+
+    ll count = 0;
+    for(ll i = 0; i < n; i++){
+        auto it = st.upper_bound(vec[i].ff);
+        if(it == st.begin())continue;
+        --it;
+        st.erase(it);
+        st.insert(vec[i].ss);
+        count++;
+        //debug(st);
+    }
+    cout << count << ln;
 }
 
 int main() {
@@ -89,7 +90,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

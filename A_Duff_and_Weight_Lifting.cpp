@@ -58,30 +58,23 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<pair<ll, pair<ll,ll>>> vec(n);
-    rep(i,n){
-        vec[i].ff = i;
-        cin >> vec[i].ss.ff >> vec[i].ss.ss;
-    }
-    sort(all(vec),[](const pair<ll, pair<ll,ll>> &a, const pair<ll, pair<ll,ll>> &b){
-        if(a.ss.ff == b.ss.ff)return a.ss.ss > b.ss.ss;
-        return a.ss.ff < b.ss.ff;
-    });
-    vector<pair<ll, pair<ll,ll>>> v;
-    ll max1 = -1e18;
-    for(ll i = 0; i < n; i++){
-        if(vec[i].ss.ff > max1){
-            v.pb(vec[i]);
-           max1 = vec[i].ss.ff;
-        }
-    }
-    cout << sz(v) << ln;
-    for(auto e : v){
-        cout << e.ff+1 << " ";
-    }    
-    cout << ln;
-    //debug(v);
 
+    vector<ll> vec(2000005);
+    rep(i,n){
+        ll a;
+        cin >> a;
+        vec[a]++;
+    }
+    ll count = 0;
+    //debug(vec);
+    for(ll i = 0; i < 2000004; i++){
+        //cerr << vec[i] << " "<< vec[i+1] << ln;
+        if(vec[i]%2 == 1)count++;
+        vec[i+1] += vec[i]/2ll;
+    }
+
+    cout << count << ln;
+    
 }
 
 int main() {
@@ -89,7 +82,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
