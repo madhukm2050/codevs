@@ -55,57 +55,36 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
     ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-   
-    
-    string s = "";
-    
-    ll i = 0, j = n-1,prev = 0;
-
-    while (i <= j)
-    {
-        //cerr << vec[i] << " "<< vec[j] << " "<< prev << ln;
-        if(vec[i] < vec[j]){
-            if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else break;
-        }
-        else if(vec[i] > vec[j]){
-            if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else break;
-        }
-        else{
-            if(vec[i] <= prev)break;
-            ll new_left = i+1;
-            ll new_right = j-1;
-
-            while(new_left <= j && vec[new_left] > vec[new_left-1]){
-                new_left++;
+    cin >>n;
+    ll sum =0LL, p = 1LL;
+    ll n1 = n;
+    vector<ll> v;
+    for(ll i =2 ; i*i <= n; i++){
+        if((n%i) == 0){
+            v.pb(i);
+            sum += i;
+            p *= i;
+            while((n%i) == 0){
+                //sum+=i;
+                n = n/i;
             }
-
-            while( new_right >= i  && vec[new_right] > vec[new_right+1]){
-                new_right--;
-            }
-
-            ll n1 = new_left-i, n2 = j-new_right;
-            if(n1 > n2){
-                s += string(n1, 'L');
-            }
-            else{
-                s += string(n2, 'R');
-            }
-            break;
         }
     }
-    cout << sz(s)<<ln;
-    cout << s << ln;
+    if(n > 1){
+        v.pb(n);
+        sum += n;
+        p *= n;
+    }
+    if(sz(v) == 1){
+        cout << v[0] << ln;
+    }
+    else{
+        cout << 1 << ln;
+    }
 
+    //cout << __gcd(sum, n1) << ln;
 }
 
 int main() {

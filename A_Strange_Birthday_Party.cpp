@@ -55,56 +55,36 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-   
-    
-    string s = "";
-    
-    ll i = 0, j = n-1,prev = 0;
+    ll n, m;
+    cin >> n >> m;
 
-    while (i <= j)
-    {
-        //cerr << vec[i] << " "<< vec[j] << " "<< prev << ln;
-        if(vec[i] < vec[j]){
-            if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else break;
-        }
-        else if(vec[i] > vec[j]){
-            if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else break;
-        }
-        else{
-            if(vec[i] <= prev)break;
-            ll new_left = i+1;
-            ll new_right = j-1;
+    vector<ll> vec1(n), vec2(m);
+    rep(i,n)cin >> vec1[i];
+    rep(i,m)cin >> vec2[i];
 
-            while(new_left <= j && vec[new_left] > vec[new_left-1]){
-                new_left++;
-            }
+    sort(vec1.rbegin(), vec1.rend());
 
-            while( new_right >= i  && vec[new_right] > vec[new_right+1]){
-                new_right--;
-            }
+    ll j = 0, cost = 0;;
 
-            ll n1 = new_left-i, n2 = j-new_right;
-            if(n1 > n2){
-                s += string(n1, 'L');
+    for(ll i = 0; i < n; i++){
+        if(vec1[i] >= j){
+            if(vec2[j] < vec2[vec1[i]-1]){
+                cost += vec2[j];
+                j++;
             }
             else{
-                s += string(n2, 'R');
+                cost += vec2[vec1[i]-1];
             }
-            break;
         }
+        else{
+            cost += vec2[vec1[i]-1];
+        }
+        //cerr << vec1[i] << " "<< cost << ln;
     }
-    cout << sz(s)<<ln;
-    cout << s << ln;
+    cout << cost << ln;
+
+    //debug(vec1);
 
 }
 
@@ -113,7 +93,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

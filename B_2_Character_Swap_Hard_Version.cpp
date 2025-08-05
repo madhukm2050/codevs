@@ -55,57 +55,59 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-   
-    
-    string s = "";
-    
-    ll i = 0, j = n-1,prev = 0;
 
-    while (i <= j)
-    {
-        //cerr << vec[i] << " "<< vec[j] << " "<< prev << ln;
-        if(vec[i] < vec[j]){
-            if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else break;
-        }
-        else if(vec[i] > vec[j]){
-            if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else break;
+    string s, t;
+    cin >> s >> t;
+
+    bool flag = true;
+    vector<pair<ll,ll>> v;
+    for(ll i = 0; i < n; i++){
+        if(s[i] == t[i]){
+            continue;
         }
         else{
-            if(vec[i] <= prev)break;
-            ll new_left = i+1;
-            ll new_right = j-1;
-
-            while(new_left <= j && vec[new_left] > vec[new_left-1]){
-                new_left++;
+            bool flag1 = false;
+            for(ll j = i+1; j < n; j++){
+                if(s[i] == s[j]){
+                    swap(t[i], s[j]);
+                    v.pb({j,i});
+                    flag1 = true;
+                    break;
+                }
             }
-
-            while( new_right >= i  && vec[new_right] > vec[new_right+1]){
-                new_right--;
+            if(!flag1){
+                for(ll j = i+1; j < n; j++){
+                    if(s[i] == t[j]){
+                        swap(s[j], t[j]);
+                        v.pb({j,j});
+                        swap(t[i], s[j]);
+                        v.pb({j,i});
+                        flag1 = true;
+                        break;
+                    }
+                }
             }
-
-            ll n1 = new_left-i, n2 = j-new_right;
-            if(n1 > n2){
-                s += string(n1, 'L');
-            }
-            else{
-                s += string(n2, 'R');
-            }
-            break;
+            if(!flag1)flag = false;
+        }
+        // debug(s);
+        // debug(t);
+        // debug(v);
+    }
+    //debug(s);
+    //debug(t);
+    if(!flag){
+        No;
+    }
+    else{
+        Yes;
+        cout << sz(v) << ln;
+        for(auto e : v){
+            cout << e.ff+1 << " "<< e.ss+1 << ln;
         }
     }
-    cout << sz(s)<<ln;
-    cout << s << ln;
-
 }
 
 int main() {
@@ -113,7 +115,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

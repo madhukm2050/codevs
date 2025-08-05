@@ -55,57 +55,17 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-   
-    
-    string s = "";
-    
-    ll i = 0, j = n-1,prev = 0;
 
-    while (i <= j)
-    {
-        //cerr << vec[i] << " "<< vec[j] << " "<< prev << ln;
-        if(vec[i] < vec[j]){
-            if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else break;
-        }
-        else if(vec[i] > vec[j]){
-            if(vec[j] > prev)s += "R", prev = vec[j], j--;
-            else if(vec[i] > prev) s += "L",prev=vec[i], i++;
-            else break;
-        }
-        else{
-            if(vec[i] <= prev)break;
-            ll new_left = i+1;
-            ll new_right = j-1;
-
-            while(new_left <= j && vec[new_left] > vec[new_left-1]){
-                new_left++;
-            }
-
-            while( new_right >= i  && vec[new_right] > vec[new_right+1]){
-                new_right--;
-            }
-
-            ll n1 = new_left-i, n2 = j-new_right;
-            if(n1 > n2){
-                s += string(n1, 'L');
-            }
-            else{
-                s += string(n2, 'R');
-            }
-            break;
-        }
+    ll p = (n/2)+1;
+    if(n%2 == 0){
+        cout << (p*p) << ln;
     }
-    cout << sz(s)<<ln;
-    cout << s << ln;
-
+    else{
+        cout << 2ll*(p*(p+1)) << ln;
+    }
 }
 
 int main() {
