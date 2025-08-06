@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -50,41 +56,44 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
+    ll n, c, d;
+    cin >> n >> c >> d;
 
+    map<ll,ll> mp;
     ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
-        sum += vec[i];
+    for(ll i = 0; i < n; i++){
+        ll a;
+        cin >> a;
+        mp[a]++;
+        if(mp[a] > 1ll)sum += c;
     }
-
-    ll sum1 = 0, sum2 = 0, maxsum1 = -INF, maxsum2 = -INF;
-
+    //debug(mp);
+    vector<ll> v;
+    for(auto e : mp){
+        v.pb(e.ff);
+    }
+    debug(v);
+    if(v[0] == 1 && sz(v) == 1){
+        cout << sum << ln;
+        return;
+    }
+    if(v[0] != 1){
+        v.pb(1);
+        sum += d;
+    }
+    ll in = (v[1]-v[0]-1), min1 = (v[1]-v[0]-1)*c;
     for(ll i = 0; i < n-1; i++){
-        sum1 += vec[i];
-        maxsum1 = max(maxsum1, sum1);
-        if(sum1 < 0)sum1 = 0;
+        ll v1 = (in+v[i+1]-v[i]-1)*d;
+        ll v2 = (n-i-1)*c;
+        
+        in += v[i+1]-v[i]-1;
+        ll t = v1+v2;
+        min1 = min(min1, t);
+        cerr << sum << " "<< min1 << ln;
     }
-    for(ll i = n-1; i > 0; i--){
-        sum2 += vec[i];
-        maxsum2 = max(maxsum2, sum2);
-        if(sum2 < 0)sum2 = 0;
-        //cerr << sum2 << ln;
-    }
-    //cerr << ln;
+    //debug(sum);
+    cout << sum+min1 << ln;
 
-    ll s = max(maxsum1, maxsum2);
-    //cerr << sum << ln;
-    //cerr << sum1 << " "<< sum2 << ln;
-
-    if(s >= sum){
-        NO;
-    }
-    else{
-        YES;
-    }
 
 }
 

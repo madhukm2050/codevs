@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -52,40 +58,72 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
 
-    ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
-        sum += vec[i];
+    // ll min1 = INF;
+    // pair<ll,ll> p;
+    // for(ll i = 1; i <= n/2; i++){
+    //     //cout << i << " "<< (n-i) << ln;
+    //     ll g = __gcd(i, n-i);
+    //     ll l = (i*(n-i))/g;
+    //     if(l < min1){
+    //        min1 = l;
+    //        p.ff = i;
+    //        p.ss = n-i;
+    //        min1 = l; 
+    //     }
+    // }
+    // // debug(p);
+    // cout << p.ff << " "<< p.ss << ln;
+    // cerr << min1 << ln;
+
+    if(n%2 == 0){
+        cout << n/2 << " "<< n/2 << ln;
+        return;
+    }
+    ll n1 = n;
+    ll min1 = INF;
+    pair<ll,ll> p;
+    vector<ll> v;
+    for(ll i = 2; i*i <= n; i++){
+        ll prod = 1;
+        if((n%i) == 0){
+            //v.pb(i);
+            while((n%i) == 0){
+                n /= i;
+                prod *= i;
+                v.pb(prod);
+            }
+        }
+    }
+    if(n > 1)v.pb(n);
+    //debug(v);
+    if(sz(v) == 1 && v[0] == n1){
+        cout << 1 << " "<< n1-1 << ln;
+        return;
     }
 
-    ll sum1 = 0, sum2 = 0, maxsum1 = -INF, maxsum2 = -INF;
+    for(auto e : v){
+        if(e == n1)continue;
+        ll g = __gcd(e, n1-e);
+        ll l = (e*(n1-e))/g;
 
-    for(ll i = 0; i < n-1; i++){
-        sum1 += vec[i];
-        maxsum1 = max(maxsum1, sum1);
-        if(sum1 < 0)sum1 = 0;
-    }
-    for(ll i = n-1; i > 0; i--){
-        sum2 += vec[i];
-        maxsum2 = max(maxsum2, sum2);
-        if(sum2 < 0)sum2 = 0;
-        //cerr << sum2 << ln;
-    }
-    //cerr << ln;
+        ll v1 = n1/e;
+        ll g1 = __gcd(v1, n1-v1);
+        ll l1 = (v1*(n1-v1))/g1;
+        if(l < min1){
+            min1 = l;
+            p.ff = e;
+            p.ss = n1-e;
+        }
+        if(l1 < min1){
+            min1 = l1;
+            p.ff = v1;
+            p.ss = n1-v1;
+        }
 
-    ll s = max(maxsum1, maxsum2);
-    //cerr << sum << ln;
-    //cerr << sum1 << " "<< sum2 << ln;
-
-    if(s >= sum){
-        NO;
-    }
-    else{
-        YES;
     }
 
+    cout << p.ff << " "<< p.ss << ln;
 }
 
 int main() {

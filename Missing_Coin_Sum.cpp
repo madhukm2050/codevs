@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -53,39 +59,19 @@ void solve() {
     ll n;
     cin >> n;
     vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
+
+    sort(all(vec));
 
     ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
+    
+    for(ll i = 0; i < n; i++){
+        if(vec[i] > sum+1){
+            break;
+        }
         sum += vec[i];
     }
-
-    ll sum1 = 0, sum2 = 0, maxsum1 = -INF, maxsum2 = -INF;
-
-    for(ll i = 0; i < n-1; i++){
-        sum1 += vec[i];
-        maxsum1 = max(maxsum1, sum1);
-        if(sum1 < 0)sum1 = 0;
-    }
-    for(ll i = n-1; i > 0; i--){
-        sum2 += vec[i];
-        maxsum2 = max(maxsum2, sum2);
-        if(sum2 < 0)sum2 = 0;
-        //cerr << sum2 << ln;
-    }
-    //cerr << ln;
-
-    ll s = max(maxsum1, maxsum2);
-    //cerr << sum << ln;
-    //cerr << sum1 << " "<< sum2 << ln;
-
-    if(s >= sum){
-        NO;
-    }
-    else{
-        YES;
-    }
-
+    cout << sum+1 << ln;
 }
 
 int main() {
@@ -93,7 +79,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
