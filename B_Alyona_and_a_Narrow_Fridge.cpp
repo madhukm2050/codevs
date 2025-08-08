@@ -56,34 +56,36 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
+    ll n, hi;
+    cin >> n >> hi;
 
-    string s;
-    cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
-        }
-        x1--;
-    }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
-        }
-        x2++;
-    }
-    //cerr << left << " "<< right << ln;
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
-    
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
+    ll l = 0,h = n-1, ans = -1;
+    while(l <= h){
+        //cerr << l << " "<< h << ln;
+        ll mid = (l+h)/2;
+        vector<ll> v;
+        for(ll i = 0; i <= mid; i++)v.pb(vec[i]);
+        sort(all(v));
+        ll m = mid, height = 0;
+        while (m >= 0)
+        {   
+            //cerr << m << ln;
+            height += v[m];
+            m -= 2;
+            if(height > hi)break;
+        }
+        if(height > hi){
+            h = mid-1;
+        }
+        else{
+            ans = mid;
+            l = mid+1;
+        }
+    } 
+    cout << ans+1 << ln;
 }
 
 int main() {
@@ -91,7 +93,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

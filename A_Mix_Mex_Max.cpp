@@ -63,29 +63,25 @@ void solve() {
     rep(i,n)cin >> vec[i];
 
     bool flag = true;
-    for(ll i = 0; i < n-2; i++){
-        ll a = vec[i], b = vec[i+1], c = vec[i+2];
-        set<ll> st;
-        st.insert(a);
-        st.insert(b);
-        st.insert(c);
-        if(a == 0 || b == 0 || c == 0)flag = false;
-        if(sz(st) == 1){
-            if(*st.begin() == 0ll)flag = false;
-        }
-        else if(sz(st) == 2ll){
-            if(*st.begin() != -1ll || *next(st.begin(), 1) == 0ll)flag = false;
+    set<ll> st;
+    for(ll i = 0; i < n; i++){
+        if(vec[i] != -1)st.insert(vec[i]);
+    }
+
+    if(sz(st) == 0){
+        YES;
+    }
+    else if(sz(st) == 1){
+        if((*st.begin()) != 0){
+            YES;
         }
         else{
-            flag = false;
+            NO;
         }
-        
     }
-    if(flag){
-        YES;
-        return;
+    else{
+        NO;
     }
-    NO;
 }
 
 int main() {

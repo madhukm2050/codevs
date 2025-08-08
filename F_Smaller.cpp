@@ -56,34 +56,39 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
+    ll n;
+    cin >> n;
 
-    string s;
-    cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
+    ll s1 = 0, t1 = 0;
+    vector<ll> s(26,0), t(26,0);
+    bool flag1 = false, flag2 = false;
+    rep(i,n){
+        ll a, k;
+        string s;
+        cin >> a >> k >> s;
+        if(a == 1){
+            for(auto e : s){
+                if(e != 'a')flag1 = true;
+                else s1 += k;
+            } 
         }
-        x1--;
-    }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
+        else{
+            for(auto e : s){
+                if(e != 'a')flag2 = true;
+                else t1 += k;
+            } 
         }
-        x2++;
+        if(flag2){
+        YES;
+        }
+        else if(!flag1 && s1 < t1){
+            YES;
+        }
+        else{
+            NO;
+        }
     }
-    //cerr << left << " "<< right << ln;
-
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
     
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
 }
 
 int main() {

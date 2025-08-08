@@ -56,34 +56,39 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
+    int n;
+    scanf("%d",&n);
+    vector<ll> vec(n);
+    rep(i,n)scanf("%d",&vec[i]);
 
-    string s;
-    cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
-        }
-        x1--;
-    }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
-        }
-        x2++;
-    }
-    //cerr << left << " "<< right << ln;
+    vector<pair<int,int>> v;
+    map<int,int> mp;
 
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
-    
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
+    ll j = 0;
+    for(ll i = 0; i < n; i++){
+        if(mp.find(vec[i]) != mp.end()){
+            v.pb({j,i});
+            j = i+1;
+            mp.clear();
+        }
+        else{
+            mp[vec[i]] = i;
+        }
+    }
+    if(v.size() > 0)v.back().ss = n-1;
+
+    //debug(v);
+    if(sz(v) == 0){
+        printf("%d\n",-1);
+        return;
+    }
+
+    printf("%d\n", sz(v));
+    for(auto e : v){
+        //cout << e.ff+1 << " "<< e.ss+1 << ln;
+        printf("%d %d\n", e.ff + 1, e.ss + 1);
+    }
+
 }
 
 int main() {
@@ -91,7 +96,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

@@ -56,34 +56,39 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
-
     string s;
     cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
-        }
-        x1--;
-    }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
-        }
-        x2++;
-    }
-    //cerr << left << " "<< right << ln;
 
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
+    ll n = sz(s);
+
+    vector<ll> pre(n), suff(n);
+
+    ll p = 0, su = 0, suffcount = 0;
     
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
+    for(ll i = n-1; i >= 0; i--){
+        if(s[i] == 'v')su++;
+        else{
+            suffcount += max(0ll, su-1);
+            su = 0;
+            suff[i] = suffcount;
+        }
+    }
+    //debug(suff);
+    ll count = 0, precount = 0;
+    for(ll i = 0; i < n; i++){
+        if(s[i] == 'o'){
+            precount += max(0ll,p-1ll);
+            p=0;
+            //cerr << i << " "<< precount << " "<< suff[i] << ln;
+            count += (precount)*(suff[i]);
+        }
+        else{
+            p++;
+        }
+
+    }
+    cout << count << ln;
+    
 }
 
 int main() {
@@ -91,7 +96,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

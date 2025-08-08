@@ -56,34 +56,71 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
+    ll n;
+    cin >> n;
 
-    string s;
-    cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
+    vector<ll> vec;
+    vector<pair<ll,ll>> v;
+    for(ll i = 2; i*i <= n; i++){
+        if(n%i == 0){
+            ll count = 0;
+            while(n%i == 0){
+                vec.pb(i);
+                n = n/i;
+                count++;
+            }
+            v.pb({i, count});
         }
-        x1--;
     }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
+    //cerr << n << ln;
+    if(n > 1){
+        v.pb({n, 1});
+        vec.pb(n);
+    }
+    //debug(v);
+    if(sz(vec) < 3){
+        NO;
+        return;
+    }
+    if(sz(v) == 1){
+        ll val = v[0].ff;
+        ll count = v[0].ss;
+        if(count >= 6){
+            YES;
+            cout << val << " "<<(val*val) << " "<< pow(val, count-3) << ln;
+            return;
         }
-        x2++;
+        NO;
     }
-    //cerr << left << " "<< right << ln;
+    else if(sz(v) == 2){
+        if(v[0].ss+v[1].ss > 3){
+            ll p = 1;
+            while(v[0].ss > 1)p*=v[0].ff, v[0].ss = v[0].ss-1;
+            while(v[1].ss > 1)p*=v[1].ff , v[1].ss = v[1].ss-1;
+            YES;
+            cout << v[0].ff << " "<< v[1].ff << " "<< p << ln;
+            return;
+        }
+        NO;
+    }
+    else{
+        //debug(v);
+        for(ll i = 0; i < 3; i++){
+            //cerr << v[i].ff << " "<< v[i].ss << " "<< pow(v[i].ff, v[i].ss) << ln;
+            ll p = expo(v[i].ff, v[i].ss, INF);
+            v[i].ff = p;
+            //debug(v[i].ff);
+        }
+        //debug(v);
 
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
-    
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
+        for(ll i = 3; i < sz(v); i++){
+            v[2].ff *= expo(v[i].ff, v[i].ss, INF);
+        }
+        YES;
+        cout << v[0].ff << " "<<v[1].ff << " "<< v[2].ff << ln;
+    }
+    //debug(v);
+    //debug(vec);
 }
 
 int main() {

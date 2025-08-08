@@ -56,34 +56,28 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
+    ll n, k;
+    cin >> n >> k;
 
-    string s;
-    cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
-        }
-        x1--;
-    }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
-        }
-        x2++;
-    }
-    //cerr << left << " "<< right << ln;
+    vector<pair<ll,ll>> vec(n);
+    rep(i,n)cin >> vec[i].ff;
+    rep(i,n)cin >> vec[i].ss;
 
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
-    
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
+    for(ll i = 0; i < n; i++)if(vec[i].ss < vec[i].ff)swap(vec[i].ff, vec[i].ss);
+    ll ans = 0;
+    sort(all(vec));
+    rep(i,n)ans += abs(vec[i].ss-vec[i].ff);
+    ll min1 = INF;
+    for(ll i = 0; i < n-1; i++){
+        if(vec[i+1].ff <= vec[i].ss){
+            cout << ans << ln;
+            return;
+        }
+        else{
+            min1 = min(min1, vec[i+1].ff-vec[i].ss);
+        }
+    }
+    cout << ans + (2ll*min1) << ln;
 }
 
 int main() {

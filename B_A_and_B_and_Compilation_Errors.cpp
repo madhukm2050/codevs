@@ -56,34 +56,40 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, x;
-    cin >> n >> x;
+    ll n;
+    cin >> n;
+    vector<ll> vec1(n), vec2(n-1), vec3(n-2);
+    rep(i,n)cin >> vec1[i];
+    //debug(vec1);
+    rep(i,n-1)cin >> vec2[i];
+    rep(i,n-2)cin >> vec3[i];
 
-    string s;
-    cin >> s;
-    ll left = -1, right = n;
-    x--;
-    ll x1 = x, x2 = x;
-    while(x1 >= 0){
-        if(s[x1] == '#'){
-            left = x1;
-            break;
-        }
-        x1--;
-    }
-    while(x2 < n){
-        if(s[x2] == '#'){
-            right = x2;
-            break;  
-        }
-        x2++;
-    }
-    //cerr << left << " "<< right << ln;
+    ll i = 0,j = 0, n1 = n, m = n-2;
+    sort(all(vec1));
+    sort(all(vec3));
 
-    ll l = left+1, r = n-right;
-    //cerr << l << " "<< r << ln;
-    
-    cout << max(min(l, n-x-1), min(x, r))+1 << ln;
+    //debug(vec1);
+    //debug(vec3);
+
+    vector<ll> v;
+    while(i < n1&& j < m){
+        //cerr << vec1[i] << " "<< vec3[j] << ln;
+        if(vec1[i] == vec3[j]){
+            i++;
+            j++;
+        }
+        else if(vec1[i] < vec3[j]){
+            v.pb(vec1[i]);
+            i++;
+        }
+    }
+    while(i < n1){
+        v.pb(vec1[i]);
+        i++;
+    }
+    cout << v[0] << ln;
+    cout << v[1] << ln;
+
 }
 
 int main() {
@@ -91,7 +97,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
