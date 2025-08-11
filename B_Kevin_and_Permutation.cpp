@@ -55,47 +55,27 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-ll dfs(ll node, ll p, vector<vector<ll>> adj){
-    if(sz(adj[node]) == 1)return 1;
-    ll count = 0;
-    for(auto e : adj[node]){
-        if(e != p)count += dfs(e, node, adj);
-    }
-    return count;
-}
-
 void solve() {
     ll n;
     cin >> n;
 
-    vector<vector<ll>> adj(n+1);
+    ll n1 = (n+1)/2;
 
-    vector<ll> freq(n+1);
-    rep(i,n-1){
-        ll a, b;
-        cin >> a >> b;
-        adj[a].pb(b);
-        adj[b].pb(a);
-        freq[a]++;
-        freq[b]++;
+    vector<ll> vec(n);
+    for(ll i = 0; i < n; i += 2){
+        vec[i] = n1;
+        n1--;
     }
-    ll total = 0;
-    for(ll i = 1; i <= n; i++){
-        if(freq[i] == 1)total++;
+    ll n2 = n;
+    for(ll i = 1; i < n; i+= 2){
+        vec[i] = n2;
+        n2--;
     }
-
-    //debug(total);
-    ll max1 = 0;
-   for(ll i = 1; i <=n; i++){
-    ll count = 0;
-    if(adj[i].size() == 1)count++;
-    for(auto e : adj[i]){
-        if(sz(adj[e]) == 1)count++;
+    for(auto e : vec){
+        cout << e << " ";
     }
-    max1 = max(max1, count);
-   }
-    cout << total- max1 << ln;
-    //debug(freq);
+    cout << ln;
+    //debug(vec);
 }
 
 int main() {

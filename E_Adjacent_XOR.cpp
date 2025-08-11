@@ -62,38 +62,29 @@ void solve() {
 
     rep(i,n)cin >> a[i];
     rep(i,n)cin >> b[i];
-    debug(a);
-    debug(b);
 
-    vector<ll> prev(n), suff(n);
+    if(a[n-1] != b[n-1]){
+        NO;
+        return;
+    }
     for(ll i = 0; i < n-1; i++){
-        if(a[i] != b[i]){
-            prev[i] = a[i]^a[i+1];
-        }
-        else{
-            prev[i] = -1;
+        if((a[i]^a[i+1]) == b[i]){
+            a[i] = b[i];
         }
     }
+    
     for(ll i = n-2; i >= 0; i--){
-        if(a[i] != b[i]){
-            suff[i] = a[i]^b[i];
-        }
-        else{
-            suff[i] = -1;
+        if((a[i]^a[i+1]) == b[i]){
+            a[i] = b[i];
         }
     }
-    for(ll i = 0; i < n-1; i++){
-        if(a[i] == b[i] || prev[i] == a[i] || suff[i] == a[i] || prev[i]^suff[i] == b[i]){
-
-        }
-        else{
+    for(ll i = 0; i < n; i++){
+        if(a[i] != b[i]){
             NO;
             return;
         }
     }
-    YES
-    debug(prev);
-    debug(suff);
+    YES;
 }
 
 int main() {
