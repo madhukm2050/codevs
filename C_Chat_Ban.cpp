@@ -55,34 +55,34 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+ll calc(ll n){
+    return n*1ll*(n+1)/2ll;
+}
+
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> a(n), b(n);
-    rep(i,n)cin >> a[i];
-    rep(i,n)cin >> b[i];
+    ll k, x;
 
-    rep(i,n){
-        ll x = a[i], y = b[i];
-        a[i] = min(x, y);
-        b[i] = max(x, y);
-    }
+    cin >> k >> x;
 
-    vector<vector<ll>> dp(n, vector<ll>(2,0));
-    for(ll i = 0; i < n; i++)dp[i][0] = 1;
-    ll ans = 1;
-    for(ll i = 1; i < n; i++){
-        if(a[i] > b[i-1]){
-            dp[i][0] += dp[i-1][0] + dp[i-1][1];
-        }else if(a[i] > a[i-1]){
-            dp[i][0] += dp[i-1][0];
-            if(b[i] > b[i-1]) dp[i][1] += dp[i-1][1];
+    ll l = 1, h = 2*k-1, ans = 2*k-1;
+
+    while(l <= h){
+        ll mid = (l+h)/2ll;
+        ll cnt;
+        if(mid >= k){
+            cnt = calc(k)+calc(k-1)-calc(2*k-1-mid);
         }
         else{
-            if(b[i] > a[i-1])dp[i][1] += dp[i-1][0];
-            if(b[i] > b[i-1])dp[i][1] += dp[i-1][1];
+            cnt = calc(mid);
         }
-        ans += dp[i][0]+dp[i][1];
+
+        if(cnt >= x){
+            ans = mid;
+            h = mid-1;
+        }   
+        else{
+            l = mid+1;
+        }
     }
     cout << ans << ln;
 }

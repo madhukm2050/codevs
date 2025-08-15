@@ -58,33 +58,33 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> a(n), b(n);
-    rep(i,n)cin >> a[i];
-    rep(i,n)cin >> b[i];
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    rep(i,n){
-        ll x = a[i], y = b[i];
-        a[i] = min(x, y);
-        b[i] = max(x, y);
+    vector<ll> v;
+    v.pb(vec[0]);
+    ll i = 1;
+    while(i < n){
+        ll j1 = i, j2 = i;
+        while(j1 < n && vec[j1] >= vec[j1-1]){
+            j1++;
+        }
+        while(j2 < n && vec[j2] <= vec[j2-1]){
+            j2++;
+        }
+        //cerr << j1 << " "<< j2 << ln;
+        j1 = max(j1, j2)-1;
+        i = j1;
+        if(i < n)v.pb(vec[i]);
+        i++;
     }
+    if(v[sz(v)-1] != vec[n-1])v.pb(vec[n-1]);
 
-    vector<vector<ll>> dp(n, vector<ll>(2,0));
-    for(ll i = 0; i < n; i++)dp[i][0] = 1;
-    ll ans = 1;
-    for(ll i = 1; i < n; i++){
-        if(a[i] > b[i-1]){
-            dp[i][0] += dp[i-1][0] + dp[i-1][1];
-        }else if(a[i] > a[i-1]){
-            dp[i][0] += dp[i-1][0];
-            if(b[i] > b[i-1]) dp[i][1] += dp[i-1][1];
-        }
-        else{
-            if(b[i] > a[i-1])dp[i][1] += dp[i-1][0];
-            if(b[i] > b[i-1])dp[i][1] += dp[i-1][1];
-        }
-        ans += dp[i][0]+dp[i][1];
+    cout << sz(v) << ln;
+    for(auto e : v){
+        cout << e << " ";
     }
-    cout << ans << ln;
+    cout << ln;
 }
 
 int main() {

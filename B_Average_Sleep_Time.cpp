@@ -56,35 +56,28 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> a(n), b(n);
-    rep(i,n)cin >> a[i];
-    rep(i,n)cin >> b[i];
+    ll n, k;
+    cin >> n >> k;
 
-    rep(i,n){
-        ll x = a[i], y = b[i];
-        a[i] = min(x, y);
-        b[i] = max(x, y);
-    }
+    vector<double> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    vector<vector<ll>> dp(n, vector<ll>(2,0));
-    for(ll i = 0; i < n; i++)dp[i][0] = 1;
-    ll ans = 1;
-    for(ll i = 1; i < n; i++){
-        if(a[i] > b[i-1]){
-            dp[i][0] += dp[i-1][0] + dp[i-1][1];
-        }else if(a[i] > a[i-1]){
-            dp[i][0] += dp[i-1][0];
-            if(b[i] > b[i-1]) dp[i][1] += dp[i-1][1];
-        }
-        else{
-            if(b[i] > a[i-1])dp[i][1] += dp[i-1][0];
-            if(b[i] > b[i-1])dp[i][1] += dp[i-1][1];
-        }
-        ans += dp[i][0]+dp[i][1];
+    double sum = 0, s = 0;
+    for(ll i = 0; i < k; i++)s += vec[i];
+    sum += s;
+    //cerr << sum << ln;
+    ll l = 0;
+    for(ll i = k; i < n; i++){
+        s -= vec[l];
+        s += vec[i];
+        sum += s;
+        l++;
+        //cerr << sum << ln;
     }
-    cout << ans << ln;
+    double n1 = n-k+1;
+
+    cout << fixed << setprecision(7) << (sum/n1) << ln;
+
 }
 
 int main() {
@@ -92,7 +85,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
