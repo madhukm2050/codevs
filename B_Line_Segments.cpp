@@ -62,32 +62,28 @@ void solve() {
     ll px, py, qx, qy;
     cin >> px >> py >> qx >> qy;
 
-    vector<ll> a(n);
-    set<ll> st;
-    ll sum = 0;
+    ll d = (px-qx)*(px-qx)+(py-qy)*(py-qy);
+
+    ll sum = 0, max1 = 0;
     rep(i,n){
-        cin >> a[i];
-        st.insert(a[i]);
-        sum += (a[i]*a[i]);
+        ll a;
+        cin >> a;
+        sum += a;
+        max1 = max(max1,a);
     }
 
-    if(px == qx && py == qy){
-        if(sz(st) == 1){
-            No;
-        }
-        else{
-            Yes;
-        }
+    if(sum*sum < d){
+        No;
         return;
     }
-    ll d = (abs(px-qx)*abs(px-qx))+(abs(py-qy)*abs(py-qy));
-    //cerr << d << ln;
-    if(sum < d){
+
+    ll mn = max(2*max1-sum, 0ll);
+
+    if(mn*mn > d){
         No;
+        return;
     }
-    else{
-        Yes;
-    }
+    Yes;
 
 
 }
