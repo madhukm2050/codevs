@@ -59,24 +59,36 @@ void solve() {
     ll n, m;
     cin >> n >> m;
 
-    vector<ll> vec(n);
+    vector<ll> a(n), b(m);
+    rep(i,n)cin >> a[i];
+    rep(i,m)cin >> b[i];
+
+    //debug(a);
+    //debug(b);
+
+    sort(a.rbegin(), a.rend());
+    sort(all(b));
     ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
-        sum += vec[i];
+    ll j = 0;
+    for(ll i = 0; i < m; i++){
+        ll x = b[i]-1;
+        //cerr << x << " "<< sum << ln;
+        while(x > 0){
+            if(j >= n)break;
+            sum += a[j];
+            j++;
+            x--;
+        }
+        j++;
+        if(j >= n)break;
     }
-    sort(all(vec));
-    ll min1 = sum;
-
-    //int j = 0, count = 0;
-    for(ll i = 0; i <= m; i++){
-        ll count = upper_bound(all(vec), m - i - 1) - vec.begin();
-        min1 = min(min1, sum+n*i-(m*(n-count)));
-        cerr << n*i-(m*(n-count)) << ln;
+    while(j < n){
+        sum += a[j];
+        j++;
     }
-    cout << min1 << ln;
+    cout << sum << ln;
 
-    
+
 }
 
 int main() {
