@@ -58,51 +58,43 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<vector<char>> vec(3, vector<char> (n));
-    for(ll i = 0; i < 3; i++){
-        for(ll j = 0; j < n; j++){
-            cin >> vec[i][j];
-        }
+
+    string s;
+    cin >> s;
+
+    ll count = 0;
+    for(ll i = 0; i < n; i++){
+        if(s[i] == 'a')count++;
+        else count--;
     }
-    //debug(vec);
-    string s = "";
-    for(ll i = 0; i < n;i++){
-        if((vec[0][i] == '*' || vec[1][i] == '*' || vec[2][i] == '*') && (i+2 < n)){
-            ll count = 0;
-            for(ll j = 0; j < 3; j++){
-                for(ll k = 0; k < 3; k++){
-                    //cerr << vec[j][i+k] << " ";
-                    if(vec[j][i+k] == '*')count++;
-                }
-                //cerr << ln;
-            }
-            //cerr << count << ln;
-            if(count == 6){
-                s += "A";
-            }
-            else if(count == 8){
-                s += "O";
-            }
-            else if(count == 9){
-                s += "E";
-            }
-            else if(count == 7){
-                if(vec[1][i+1] == '*'){
-                    s += 'I';
-                }
-                else{
-                    s += 'U';
-                }
-            }
-            i += 2;
-        }
-        else if(vec[0][i] == '#'){
-            s += "#";
-            
-        }
+    if(count == n || count == -n){
+        cout << -1 << ln;
+        return;
     }
-    cout << s << ln;
+    if(count == 0){
+        cout << 0 << ln;
+        return;
+    }
     
+    map<ll,ll> mp;
+    mp[0] = -1;
+
+    ll curr = 0,ans = n;
+    for(ll i = 0; i < n; i++){
+        if(s[i] == 'a')curr++;
+        else curr--;
+
+        if(mp.find(curr-count) != mp.end()){
+            ans = min(ans, i-mp[curr-count]);
+        }
+        mp[curr] = i;
+    }
+    if(ans == n){
+        cout << -1 << ln;
+    }
+    else{
+        cout << ans << ln;
+    }
 }
 
 int main() {
@@ -110,7 +102,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

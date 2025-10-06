@@ -56,53 +56,51 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<vector<char>> vec(3, vector<char> (n));
-    for(ll i = 0; i < 3; i++){
-        for(ll j = 0; j < n; j++){
-            cin >> vec[i][j];
+    ll n, k;
+    cin >> n >> k;
+
+    string s;
+    cin >> s;
+
+    vector<string> vec(n, "+");
+
+    ll i = 0, j = n-1, count = 0;
+    for(ll x = 0; x < k; x++){
+        if(s[x] == '0'){
+            vec[i++] = '-';
         }
+        else if(s[x] == '1'){
+            vec[j--]='-';
+        }
+        else{
+            count++;
+        }
+    }
+    if(count == n || (j-i+1 == count)){
+        for(ll x = 0; x < n; x++)cout << '-';
+        cout << ln;
+        return;
+    }
+    
+    ll count1 = count;
+    ll i1 = i;
+    while(i <= j && count1 > 0){
+        vec[i++] = '?';
+        count1--;
     }
     //debug(vec);
-    string s = "";
-    for(ll i = 0; i < n;i++){
-        if((vec[0][i] == '*' || vec[1][i] == '*' || vec[2][i] == '*') && (i+2 < n)){
-            ll count = 0;
-            for(ll j = 0; j < 3; j++){
-                for(ll k = 0; k < 3; k++){
-                    //cerr << vec[j][i+k] << " ";
-                    if(vec[j][i+k] == '*')count++;
-                }
-                //cerr << ln;
-            }
-            //cerr << count << ln;
-            if(count == 6){
-                s += "A";
-            }
-            else if(count == 8){
-                s += "O";
-            }
-            else if(count == 9){
-                s += "E";
-            }
-            else if(count == 7){
-                if(vec[1][i+1] == '*'){
-                    s += 'I';
-                }
-                else{
-                    s += 'U';
-                }
-            }
-            i += 2;
-        }
-        else if(vec[0][i] == '#'){
-            s += "#";
-            
-        }
+    while(j >= i1 && count > 0){
+        vec[j--] = '?';
+        count--;
     }
-    cout << s << ln;
+
+    string str = "";
+    for(ll i = 0; i < n; i++){
+        str += vec[i];
+    }
+    cout << str << ln;
     
+
 }
 
 int main() {
@@ -110,7 +108,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    //cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }
