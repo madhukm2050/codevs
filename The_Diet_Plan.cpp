@@ -56,40 +56,21 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    string p, c, f;
+    cin >> p >> c >> f;
+    ll p1 = stoll(p.substr(0, p.length()-1));
+    ll c1 = stoll(c.substr(0, c.length()-1));
+    ll f1 = stoll(f.substr(0, f.length()-1));
+    cerr << p1 << " "<< c1 << " "<< f1 << ln;
 
-    ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        pre[i] = ind;
-    }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        suff[i] = ind;
-    }
-    for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
-    }
-    cout << count << ln;
+    string s, t;
+    getline(cin, s);
+    cout << s << ln;
+
+    stringstream ss(s);
+    // while (getline(ss, t, '|')) {
+    //     cerr << t << ln;
+    // }
 }
 
 int main() {
@@ -97,7 +78,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

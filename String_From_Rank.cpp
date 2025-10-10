@@ -56,38 +56,39 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    ll n, m;
+    cin >> n >> m;
 
+    vector<pair<ll,ll>> vec1(n), vec2(m);
+
+    rep(i,n){
+        cin >> vec1[i].ss >> vec1[i].ff;
+    }
+    rep(i,m){
+        cin >> vec2[i].ss >> vec2[i].ff;
+    }
+    sort(all(vec1));
+    sort(all(vec2));
+
+    debug(vec1);
+    debug(vec2);
+
+    vector<bool> vis(m, true);
     ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        pre[i] = ind;
-    }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        suff[i] = ind;
-    }
     for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
+        ll p = vec1[i].ff, q = vec1[i].ss, ind = -1;
+        
+        for(ll j = 0; j < m; j++){
+            if(!vis[j] && vec2[j].ff <= p &&  vec2[j].ss >= q){
+                if(ind == -1 || vec2[j].ss < vec2[ind].ss){
+                    ind = j;
+                }
+            }
+        }
+        if(ind != -1){
+            vis[ind] = true;
+            count++;
+        }
     }
     cout << count << ln;
 }
@@ -97,7 +98,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

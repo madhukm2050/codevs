@@ -58,38 +58,13 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-
-    ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        pre[i] = ind;
+    set<ll> st;
+    rep(i,n){
+        ll a;
+        cin >> a;
+        st.insert(a);
     }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        suff[i] = ind;
-    }
-    for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
-    }
-    cout << count << ln;
+    cout << sz(st) << ln;
 }
 
 int main() {

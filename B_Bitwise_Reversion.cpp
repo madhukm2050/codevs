@@ -56,40 +56,30 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    ll x, y, z;
+    cin >> x >> y >> z;
 
-    ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
+    vector<ll> vec(33,0);
+    for(ll i = 0; i <= 32; i++){
+        if((x&(1LL<<i)) != 0){
+            vec[i]++;
         }
-        else{
-            ind = 1;
+        if((y&(1LL<<i)) != 0){
+            vec[i]++;
         }
-        pre[i] = ind;
+        if((z&(1LL<<i)) != 0){
+            vec[i]++;
+        }
+
     }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
+    //debug(vec);
+    for(ll i = 0; i <= 32; i++){
+        if(vec[i] == 2ll){
+            NO;
+            return;
         }
-        else{
-            ind = 1;
-        }
-        suff[i] = ind;
     }
-    for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
-    }
-    cout << count << ln;
+    YES;
 }
 
 int main() {

@@ -56,40 +56,18 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    ll l, k;
+    cin >> l >> k;
 
-    ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        pre[i] = ind;
+    ll ans = INF, ind = 1;
+    while(true){
+        if(ind*k > l)break;
+        //cerr << (ind-1) << " "<< (l-(ind*k)) << ln;
+        ll v = max(ind-1, l-(ind*k));
+        if(ans > v)ans = v;
+        ind++;
     }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        suff[i] = ind;
-    }
-    for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
-    }
-    cout << count << ln;
+    cout << ans << ln;
 }
 
 int main() {
@@ -97,7 +75,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

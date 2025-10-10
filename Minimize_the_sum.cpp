@@ -56,40 +56,31 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    ll n, k;
+    cin >> n >> k;
 
-    ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        pre[i] = ind;
-    }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        suff[i] = ind;
-    }
+    priority_queue<ll> pq;
     for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
+        ll a;
+        cin >> a;
+        pq.push(a);
     }
-    cout << count << ln;
+
+    while (k > 0){
+        ll v = pq.top();
+        pq.pop();
+        pq.push(v/2);
+        k--;
+    }
+    ll sum = 0;
+    while(!pq.empty()){
+        ll a = pq.top();
+        pq.pop();
+        sum += a;
+    }
+    cout << sum << ln;
+    
+
 }
 
 int main() {
@@ -97,7 +88,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }

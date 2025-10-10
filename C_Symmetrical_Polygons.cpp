@@ -58,38 +58,68 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-
-    ll count = 0;
     
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
+    map<ll,ll> mp;
+
+    rep(i,n){
+        ll a;
+        cin >> a;
+        mp[a]++;
+    }
+
+    ll count = 0, val = 0, sum = 0;
+    vector<ll> v;
+    for(auto e : mp){
+        count += (e.ss/2ll);
+        sum += ((e.ss/2ll)*2ll)*e.ff;
+        if((e.ss%2) == 1){
+            v.pb(e.ff);
+        }
+        if(e.ss > 1)val = e.ff;
+    }
+    if(count == 0){
+        cout << 0 << ln;
+        return;
+    }
+
+    if(count == 1){
+        ll max1 = -1;
+        sort(all(v));
+        for(auto e : v){
+            if(2*val > e){
+                max1 = e;
+            }
+        }
+        if(max1 == -1){
+            cout << 0 << ln;
         }
         else{
-            ind = 1;
-        }
-        pre[i] = ind;
+            cout << (sum+max1) << ln;
+        }   
     }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
+    else if(count > 1){
+        sort(all(v));
+        sum  = sum+ ((sz(v)>0)?v[sz(v)-1] : 0)+((sz(v)>1)?v[sz(v)-2] : 0);
+        ll max1 = 0;
+        if(sz(v) > 0){
+            max1 = v[sz(v)-1];
+        }
+        if(max1 < (sum-max1)){
+            cout << sum << ln;
         }
         else{
-            ind = 1;
+            cout << 0 << ln;
         }
-        suff[i] = ind;
     }
-    for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
+    else{
+        cout << 0 << ln;
     }
-    cout << count << ln;
+
+
+    //debug(v);
+
+
+
 }
 
 int main() {

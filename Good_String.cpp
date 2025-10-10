@@ -56,40 +56,36 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
+    string s, t;
+    cin >> s >> t;
 
-    ll count = 0;
-    
-    ll ind = 1;
-    vector<ll> pre(n, 0), suff(n, 0);
-    pre[0] = 1;
-    suff[n-1] = 1;
-    for(ll i = 1; i < n; i++){
-        if(vec[i] > vec[i-1]){
-            ind++;
-        }
-        else{
-            ind = 1;
-        }
-        pre[i] = ind;
+    vector<ll> v;
+    for(ll i = 0; i < sz(s); i++){
+        v.pb((ll)(s[i]));
     }
-    ind = 1;
-    for(ll i = n-2; i >= 0; i--){
-        if(vec[i] > vec[i+1]){
-            ind++;
+    sort(all(v));
+    debug(v);
+
+    ll sum = 0;
+    for(ll i = 0; i < sz(t); i++){
+        ll val = (ll)t[i];
+        auto it1 = lower_bound(all(v), val);
+        it1--;
+        auto it2 = lower_bound(all(v), val);
+        cerr << *it1 << " "<< val << " "<< *it2 << ln;
+        ll a1 = INF, a2 = INF;
+        if(it1 != v.end()){
+            a1 = abs(*it1-val);
         }
-        else{
-            ind = 1;
+        if(it2 != v.end()){
+            a2 = abs(*it2-val);
         }
-        suff[i] = ind;
+        cerr << min(a1, a2) << ln;
+        
+        sum += min(a1,a2);
     }
-    for(ll i = 0; i < n; i++){
-        count += max(pre[i], suff[i]);
-    }
-    cout << count << ln;
+    cout << sum << ln;
+    //debug(v);
 }
 
 int main() {
@@ -97,7 +93,7 @@ int main() {
     cin.tie(NULL);
 
     int t=1;
-    cin >> t;
+    //cin >> t;
     while (t--) {
         solve();
     }
