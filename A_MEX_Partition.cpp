@@ -58,52 +58,22 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    
-    map<ll,ll> mp;
 
+    vector<ll> vec(101);
     rep(i,n){
         ll a;
         cin >> a;
-        mp[a]++;
+        vec[a]++;
     }
 
-    ll count = 0, val = 0, sum = 0;
-    vector<ll> v;
-    for(auto e : mp){
-        count += (e.ss/2ll);
-        sum += ((e.ss/2ll)*2ll)*e.ff;
-        if((e.ss%2) == 1){
-            v.pb(e.ff);
+    for(ll i = 0; i < 101; i++){
+        if(vec[i] == 0){
+            cout << i << ln;
+            return;
         }
     }
 
-    if(count == 0){
-        cout << 0 << ln;
-        return;
-    }
-
-    sort(all(v));
-    //debug(sum);
-
-    ll ans = 0;
-    for(ll i = 0; i < sz(v); i++){
-        if(v[i] < sum)ans = max(ans, sum+v[i]);
-    }
-
-    for(ll i = 1; i < sz(v); i++){
-        if(v[i]-v[i-1] < sum)ans = max(ans, sum+v[i]+v[i-1]);
-    }
-
-    if(count > 1){
-        cout << max(ans, sum) << ln;
-    }
-    else{
-        cout << ans << ln;
-    }
-
-
-
-
+    
 }
 
 int main() {

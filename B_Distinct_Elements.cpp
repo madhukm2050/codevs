@@ -58,52 +58,30 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    
-    map<ll,ll> mp;
+    vector<ll> vec(n);
 
-    rep(i,n){
-        ll a;
-        cin >> a;
-        mp[a]++;
-    }
+    rep(i,n)cin >> vec[i];
 
-    ll count = 0, val = 0, sum = 0;
-    vector<ll> v;
-    for(auto e : mp){
-        count += (e.ss/2ll);
-        sum += ((e.ss/2ll)*2ll)*e.ff;
-        if((e.ss%2) == 1){
-            v.pb(e.ff);
+    vector<ll> a(n);
+
+    ll ind = 2;
+    a[0] = 1;
+
+    for(ll i = 1; i < n; i++){
+        ll d = vec[i]-vec[i-1];
+        //cerr << d << ln;
+        if(d > i){
+            a[i] = ind;
+            ind++;
+        }
+        else{
+            a[i] = a[i-d];
         }
     }
-
-    if(count == 0){
-        cout << 0 << ln;
-        return;
+    for(ll i = 0; i < n; i++){
+        cout << a[i] << " ";
     }
-
-    sort(all(v));
-    //debug(sum);
-
-    ll ans = 0;
-    for(ll i = 0; i < sz(v); i++){
-        if(v[i] < sum)ans = max(ans, sum+v[i]);
-    }
-
-    for(ll i = 1; i < sz(v); i++){
-        if(v[i]-v[i-1] < sum)ans = max(ans, sum+v[i]+v[i-1]);
-    }
-
-    if(count > 1){
-        cout << max(ans, sum) << ln;
-    }
-    else{
-        cout << ans << ln;
-    }
-
-
-
-
+    cout << ln;
 }
 
 int main() {

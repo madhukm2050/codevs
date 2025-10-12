@@ -55,55 +55,71 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+
 void solve() {
     ll n;
     cin >> n;
-    
-    map<ll,ll> mp;
 
-    rep(i,n){
-        ll a;
-        cin >> a;
-        mp[a]++;
-    }
-
-    ll count = 0, val = 0, sum = 0;
-    vector<ll> v;
-    for(auto e : mp){
-        count += (e.ss/2ll);
-        sum += ((e.ss/2ll)*2ll)*e.ff;
-        if((e.ss%2) == 1){
-            v.pb(e.ff);
+    string s = "";
+    for(ll i = 0LL; i <= 30LL; i++){
+        if((n&(1LL<<i))!= 0){
+            s += "1";
+        }
+        else{
+            s += "0";
         }
     }
+    reverse(all(s));
+    char c = s[0];
 
-    if(count == 0){
-        cout << 0 << ln;
+    vector<pair<char,ll>> v;
+    ll count = 1;
+    for(ll i = 1; i <=30; i++){
+        if(s[i] == c){
+            count++;
+        }
+        else{
+            v.pb({c ,count});
+            c = s[i];
+            count = 1;
+        }
+    }
+    v.pb({c, count});
+
+
+    if(v[0].ff == '0'){
+        v.erase(v.begin());
+    }
+    if(sz(v) == 0){
+        YES;
         return;
     }
 
-    sort(all(v));
-    //debug(sum);
-
-    ll ans = 0;
-    for(ll i = 0; i < sz(v); i++){
-        if(v[i] < sum)ans = max(ans, sum+v[i]);
+    while(sz(v) > 0 && v[sz(v)-1].ff == '0' ){
+        v.pop_back();
+    }
+    if(sz(v) == 0){
+        YES;
+        return;
     }
 
-    for(ll i = 1; i < sz(v); i++){
-        if(v[i]-v[i-1] < sum)ans = max(ans, sum+v[i]+v[i-1]);
-    }
-
-    if(count > 1){
-        cout << max(ans, sum) << ln;
+    ll n1 = sz(v);
+    if((n1%2) == 1 && v[n1/2].ff == '1' && (v[n1/2].ss%2) == 1){
+        NO;
     }
     else{
-        cout << ans << ln;
+        for(ll i = 0; i < n1/2; i++){
+            if(v[i].ss != v[n1-i-1].ss){
+                NO;
+                return;
+            }
+        }
+        YES;
     }
+    
+    //cout << s << ln;
 
-
-
-
+    
 }
 
 int main() {
