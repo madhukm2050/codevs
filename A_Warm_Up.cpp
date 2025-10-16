@@ -118,7 +118,6 @@ int main() {
         cerr << "input.txt opened successfully." << endl << flush;
     }
 
-    // Comment out the next line for debugging in terminal
     FILE* out = freopen("m1.txt", "w", stdout);
 
     int t=1;

@@ -55,34 +55,34 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+
+ll helper(ll a, ll b){
+    if(a+1 == b)return b-2;
+    return b-1;
+}
+
 void solve() {
     ll n;
     cin >> n;
 
-    set<ll> st;
+    vector<ll> vec(n);
+    ll max1 = 0;
     rep(i,n){
-        ll a;
-        cin >> a;
-        st.insert(a);
+        cin >> vec[i];
+        max1 = max(max1, vec[i]);
     }
 
-    vector<ll> v(all(st));
-    
-    if(sz(v) == 1){
-        cout << v[0]-1 << ln;
-        return;
+    ll ans = 0;
+    bool flag = false;
+    for(auto e : vec){
+        if(e == max1 && !flag){
+            flag = true;
+        }
+        else{
+            ans = max(ans, helper(e, max1));
+        }
     }
-    ll f = v[sz(v)-1];
-    ll s = v[sz(v)-1];
-
-    ll val = f-1;
-
-    while(st.count(val)){
-        val--;
-    }
-    if(sz(v) > )
-
-
+    cout << ans << ln;
 }
 
 int main() {

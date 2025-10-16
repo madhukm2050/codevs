@@ -59,18 +59,33 @@ void solve() {
     ll n, c;
     cin >> n >> c;
 
-    vector<ll> b(n), d(n);
-    rep(i,n)cin >> b[i];
+    vector<ll> b(n), d(n), b1(n);
+    rep(i,n){
+        cin >> b[i];
+        b1[i] = b[i];
+    }
     rep(i,n)cin >> d[i];
-    ll max1 = INF;
-    for(ll i = 0; i <= n; i++){
-        ll count = i*c, k = 0;
-        for(ll j = i; j < i+n; j++){
-            cerr << d[j%n] << " ";
-            count += d[j%n]*b[k];
+
+    ll sum = 0;
+    for(ll i = 0; i < n; i++){
+        sum += b[i]*d[i];
+    }
+
+    ll max1 = sum;
+    for(ll i = 1; i < n; i++){
+        for(int j = 0; j < n; j++){
+            int ind = j-i;
+            if(ind < 0)ind += n;
+            if(b[ind] < b1[j]){
+                sum -= b1[j]*d[j];
+                b1[j] = b[ind];
+                sum += b1[j]*d[j];
+            }
         }
-        cerr << ln;
-        max1 = min(max1, count);
+        ll count = i*c+sum;
+        if(count < max1){
+            max1 = count;
+        }
     }
     cout << max1 << ln;
 }

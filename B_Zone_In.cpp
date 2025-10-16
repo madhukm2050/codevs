@@ -55,66 +55,99 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-vector<ll> rows = {-1, 0, 1, 0}, cols = {0, -1, 0, 1};
-ll c1 = 0, max1 = 0;
-void dfs(ll i , ll j, vector<vector<char>> &vec, vector<vector<bool>> &vis){
-    ll n = sz(vec), m = sz(vec[0]);
-    vis[i][j] = true;
-    c1++;
-    max1 = max(max1, c1);
+ll count1 = 0, max1 = 0;
+vector<ll> row = {-1, 0, 1, 0}, col = {0, -1, 0, 1};
+
+void helper(ll i,ll j, vector<vector<bool>> &vis, vector<vector<bool>> &v){
+    ll n = sz(v), m = sz(v[0]);
+    v[i][j] = true;
+    count1++;
+    max1 = max(max1, count1);
 
     for(ll x = 0; x < 4; x++){
-        ll r = rows[x]+i;
-        ll c = cols[x]+j;
+        ll r = i+row[x];
+        ll c = j+col[x];
 
-        if(r >= 0 && r < n && c >= 0 && c < m && vec[r][c] == '*' && !vis[r][c]){
-            dfs(r, c, vec, vis);
+        if(r >= 0 && r < n && c >= 0 && c < m && !vis[r][c] && !v[r][c]){
+            helper(r, c, vis, v);
         }
     }
-}
-
-void helper(ll i , ll j , vector<vector<char>> &vec, vector<vector<bool>> &vis){
-    
 }
 
 void solve(ll t) {
     ll n, m, s;
     cin >> n >> m >> s;
-    max1 = 0;
 
     vector<vector<char>> vec(n, vector<char>(m));
     
+priority_queue<pair<int, pair<int, int>>, 
+               vector<pair<int, pair<int, int>>>, 
+               greater<pair<int, pair<int, int>>>> q;
+               
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
 
     for(ll i = 0; i < n; i++){
         for(ll j = 0; j < m; j++){
-            if(vec[i][j] == '.'){
-                
+            cin >> vec[i][j];
+            if(i == 0 || i == n-1 || j == 0 || j == m-1 || vec[i][j] == '#'){
+                //cerr << i << " "<< j << ln;
+                if(vec[i][j] == '#')q.push({0, {i, j}});
+                else q.push({1, {i,j}});
+                vis[i][j] = true;
             }
         }
     }
-    for(ll i = 0; i < n; i++){
-        for(ll j = 0; j < m; j++){
-            cout << vec[i][j] <<" ";
-        }
-        cout << ln;
-    }
+    //debug(sz(q));
 
-    vector<vector<bool>> vis(n, vector<bool> (m, false));
-    for(ll i = 0; i < n; i++){
-        for(ll j = 0; j < m; j++){
-            if(vec[i][j] == '*'){
-                c1 = 0;
-                dfs(i, j, vec, vis);
+
+
+    while(!q.empty()){
+        pair<ll,pair<ll,ll>> p = q.top();
+        q.pop();
+        ll count = p.ff, i = p.ss.ff, j = p.ss.ss;
+        if(count == s){
+            continue;
+        }
+
+        for(ll x = 0; x < 4; x++){
+            ll r = i + row[x], c = j + col[x];
+
+            if(r >= 0 && r < n && c >= 0 && c < m && !vis[r][c]){
+                vis[r][c] = true;
+                q.push({count+1, {r, c}});
             }
         }
     }
-    cout << max1 << ln;
-    //debug(vec);
+    //debug(vis);
+    ll ans = 0;
+
+    vector<vector<bool>> v(n, vector<bool>(m, false));
+
+    for(ll i = 0; i < n; i++){
+        for(ll j = 0; j < m; j++){
+            if(!vis[i][j]){
+                max1 = 0;
+                count1 = 0;
+                helper(i, j, vis, v);
+                ans = max(ans, max1);
+            }
+        }
+    }
+    cout << "Case #"<< t << ": "<<ans << ln;
+    
 }
+
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
+
+    
+    FILE* in = freopen("b1.txt", "r", stdin);
+    if(!in){ cerr << "Failed to open b1.txt\n"; return 1; }
+    FILE* out = freopen("m2.txt", "w", stdout);
+    if(!out){ cerr << "Failed to open m1.txt\n"; return 1; }
+
 
     int t=1;
     cin >> t;
