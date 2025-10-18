@@ -59,13 +59,13 @@ vector<ll> vec1 = {0,5, 6 , 9, 11, 15, 21, 28};
 vector<ll> vec2 = {0,5, 6 , 10, 13, 17, 23, 30};
 
 ll ask(ll q, ll l, ll r){
-    cout << q << " "<< l << " "<< r << endl;
+    cout << q << " "<< l+1 << " "<< r+1 << endl;
 
     // if(q == 1){
-    //     return vec1[r]-vec1[l-1];
+    //     return vec1[r+1]-vec1[l];
     // }
     // else{
-    //     return vec2[r]-vec2[l-1];
+    //     return vec2[r+1]-vec2[l];
     // }
     ll a;
     cin >> a;
@@ -74,35 +74,28 @@ ll ask(ll q, ll l, ll r){
 void solve() {
     ll n;
     cin >> n;
-    ll l1 = 1, r1 = n, ind1 = 0;
+    ll l1 = 0, r1 = n-1, ind1 = 0;
 
     while(l1 < r1){
         ll mid = (l1+r1)/2;
-        ll v1 = ask(1, l1, mid), v2 = ask(2, l1, mid);
+        ll v1 = ask(1, 0, mid), v2 = ask(2, 0, mid);
 
         if(v1 == v2){
             l1 = mid+1;
         }
         else{
-            ind1 = mid;
             r1 = mid;
         }
+        ind1 = l1;
     }
-    ll l2 = 1, r2 = n, ind2 = 0;
 
-    while(l2 < r2){
-        ll mid = (l2+r2)/2;
-        ll v1 = ask(1, mid, r2), v2 = ask(2, mid, r2);
+    cout << "2 1 "<<n << endl;
 
-        if(v1 == v2){
-            r2 = mid-1;
-        }
-        else{
-            ind2 = mid;
-            l2 = mid;
-        }
-    }
-    cout << "! "<< ind1 << " "<< ind2 << endl;
+    ll tmp ;
+    cin >> tmp;
+    ll end = ind1+tmp - (n*(n+1))/2 - 1; 
+
+    cout << "! "<< ind1+1 << " "<< end+1 << endl;
 
 }
 
