@@ -56,7 +56,7 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 
-const ll N = 2*100000; 
+const ll N = 2*100000+5; 
 vector<ll> spf(N + 1); 
 
 void sieve() {
@@ -70,6 +70,8 @@ void sieve() {
         }
     }
 }
+
+
 
 
 vector<ll> getfac(ll x) {

@@ -55,97 +55,65 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-const ll N = 200005;
-
-vector<ll> spf(N+1);
-
-void seive(){
-    for(ll i = 2; i <= N; i++)spf[i] = i;
-    for(ll i = 2; i*i <= N; i++){
-        if(spf[i] == i){
-            for(ll j = i*i; j <= N; j+= i){
-                if(spf[j] == j){
-                    spf[j] = i;
-                }
-            }
-        }
-    }
-}
-
 void solve() {
     ll n;
     cin >> n;
+    string s;
+    cin >> s;
 
-    vector<ll> a(n), b(n);
-    rep(i,n)cin >> a[i];
-    rep(i,n)cin >> b[i];
+    vector<ll> p(n);
+    //vector<pair<ll,ll>> vec;
 
-    map<ll,ll> mp;
-    set<ll> st;
-
+    ll prev = 0, count = 0;
     for(ll i = 0; i < n; i++){
-        ll x = a[i];
-        //cerr << x << ln;
-        while(x > 1){
+        if(s[i] == '1' && count == 1){
+            NO;
+            return;
+        }
+        if(s[i] == '1'){
+            p[i] = i+1;
             
-            ll p = spf[x];
-            if(st.count(p)){
-                cout << 0 << ln;
-                return;    
+            ll j = i-1, p1 = prev+1;
+            
+            while(p1 < (i+1)){
+                p[j] = p1;
+                j--;
+                p1++;
             }
-            st.insert(p);
-            while((x%p) == 0){
-                //cerr << x << " "<< spf[x] << ln;
-                x = x/p;
-                mp[p]++;
-            }
+
+            prev = i+1;
+            count = 0;
+        }
+        else{
+            count++;
         }
     }
-    //debug(mp);
-    ll ans = INF;
-
-    for(ll i = 0 ; i < n; i++){
-        ll x = a[i]+1;
-
-        while(x > 1){
-            //cerr << x << " "<< spf[x] << ln;
-            ll p = spf[x];
-            if(st.count(p)){
-                ans = min(ans, b[i]);
-            }
-            while((x%p) == 0){
-                //cerr << x << " "<< spf[x] << ln;
-                x = x/p;
-            }
-        }
+    //cerr << count << ln;
+    if(count == 1){
+        NO;
+        return;
     }
-    {
-        ll j = min_element(all(b))-b.begin();
-        ll v =a[j];
-        ll x = a[j];
-        set<ll> s;
-        while(x > 1){
-            while(x > 1 && (x%spf[x]) == 0){
-                mp[spf[x]]--;
-                if(!mp[spf[x]])mp.erase(spf[x]);
-                x = x / spf[x];
-            }
-        }
-        for(auto e : mp){
-            ans = min(ans, b[j] *(e.ff - v%e.ff));
-        }
+    prev++;
+    ll j = n-1;
+    while(prev <= n){
+        p[j] = prev;
+        prev++;
+        j--;
     }
-    sort(all(b));
-    ans = min(ans, b[0]+b[1]);
+    
 
-    cout << ans << ln;
+    YES;
+    for(auto e : p){
+        cout << e << " ";
+    }
+    cout << ln;
 
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
-    seive();
+
     int t=1;
     cin >> t;
     while (t--) {

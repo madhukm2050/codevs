@@ -108,9 +108,9 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
 
-    FILE* in = freopen("input12.txt", "r", stdin);
+    // FILE* in = freopen("input12.txt", "r", stdin);
 
-    FILE* out = freopen("m12.txt", "w", stdout);
+    // FILE* out = freopen("m12.txt", "w", stdout);
 
     int t=1;
     cin >> t;
