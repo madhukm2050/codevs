@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -50,29 +56,22 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-
+    ll n;
+    cin >> n;
     vector<ll> vec(n);
     rep(i,n)cin >> vec[i];
-    
-    ll sum = 0, s = 0, max1 = 0;
 
-    for(ll i = 0; i < n; i++){
-        sum += vec[i];
-        s += vec[i];
-        max1 = max(max1, s);
-        if(s < 0)s = 0;
+    ll min1 = INF;
+    vector<ll> primes = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53};
+    for(auto e : vec){
+        if(e > 2){
+            min1 = min(min1, e-1);
+        }
+        for(auto p : primes){
+            if(__gcd(e,p) == 1)min1 = min(min1, p);
+        }
     }
-    sum = (sum%MOD + MOD)%MOD;
-    max1 = max1 %MOD;
-    ll count = 1;
-    for(ll i = 1; i <= k; i++){
-        count = (count*2ll)%MOD;
-    }
-
-    cout << (sum + (max1*count)-max1+MOD)%MOD << ln;
-
+    cout << min1 << ln;
 }
 
 int main() {

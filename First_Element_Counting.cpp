@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -50,29 +56,33 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-
+    ll n;
+    cin >> n;
     vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-    
-    ll sum = 0, s = 0, max1 = 0;
+    map<ll,ll> map;
+    rep(i,n){
+        cin >> vec[i];
+        map[vec[i]] = i;
+    }
+    sort(all(vec));
 
+    vector<ll> ans(n, -1);
     for(ll i = 0; i < n; i++){
-        sum += vec[i];
-        s += vec[i];
-        max1 = max(max1, s);
-        if(s < 0)s = 0;
+        if(i == 0 || i == n-1){
+            ans[map[vec[i]]] = -1;
+        }
+        else{
+            ll end = (vec[i]+vec[i+1])/2, start = (vec[i]+vec[i-1])/2;
+            ans[map[vec[i]]] = end-start;
+        }
     }
-    sum = (sum%MOD + MOD)%MOD;
-    max1 = max1 %MOD;
-    ll count = 1;
-    for(ll i = 1; i <= k; i++){
-        count = (count*2ll)%MOD;
+    for(auto e : ans){
+        cout << e << " ";
     }
+    cout << ln;
 
-    cout << (sum + (max1*count)-max1+MOD)%MOD << ln;
 
+    
 }
 
 int main() {

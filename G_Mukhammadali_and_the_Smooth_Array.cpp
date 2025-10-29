@@ -29,6 +29,12 @@ using namespace std;
 
 typedef long long ll;
 
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
+ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -49,29 +55,48 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-void solve() {
-    ll n, k;
-    cin >> n >> k;
+// 2 6    2 2 2 2
+// 1 1  10000 10000 10000
 
-    vector<ll> vec(n);
+// vec[i] >= vec[i-1]
+
+
+
+
+void solve() {
+    ll n;
+    cin >> n;
+    vector<ll> vec(n), cost(n);
+
     rep(i,n)cin >> vec[i];
-    
-    ll sum = 0, s = 0, max1 = 0;
+    rep(i,n)cin >> cost[i];
+
+    ll ans = INF;
 
     for(ll i = 0; i < n; i++){
-        sum += vec[i];
-        s += vec[i];
-        max1 = max(max1, s);
-        if(s < 0)s = 0;
-    }
-    sum = (sum%MOD + MOD)%MOD;
-    max1 = max1 %MOD;
-    ll count = 1;
-    for(ll i = 1; i <= k; i++){
-        count = (count*2ll)%MOD;
+        ll min1 = vec[i], total =0;
+
+        for(ll j = 0; j < i; j++){
+            if(vec[j] > min1){
+                total += cost[j];
+                min1 = vec[j];
+            }
+        }
+        ll max1 = vec[i];
+        for(ll j = i+1; j < n; j++){
+            if(vec[j] < max1){
+                total += cost[j];
+                max1 = vec[j];
+            }
+        }
+        cerr << total <<ln;
+        ans = min(ans, total);
     }
 
-    cout << (sum + (max1*count)-max1+MOD)%MOD << ln;
+    cout << ans << ln;
+
+
+    
 
 }
 
