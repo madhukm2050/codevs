@@ -56,31 +56,26 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
+    ll r, x, d, n;
+
+    cin >> r >> x >> d >> n;
+
     string s;
     cin >> s;
-    
-    ll bal = 0, count = 0;
 
-    for(ll i = 0; i < n; i++){
-        if(s[i] == '0'){
-            bal++;
+    ll count = 0;
+    rep(i,n){
+        if(s[i] == '1' || (s[i] == '2' && r < x)){
+            r = max(0ll, r-d);
         }
-        else{
-            if(bal > 0)bal--;
-            else count++;
+        if(s[i] == '2' && r < x){
+            count++;
+        }
+        else if(s[i] == '1'){
+            count++;
         }
     }
-    if(bal == 0 && count == 0){
-        cout << 0 << ln;
-    }
-    else if(bal > 0 && count > 0){
-        cout << 2 << ln;
-    }
-    else{
-        cout << 1 << ln;
-    }
+    cout << count << ln;
 }
 
 int main() {

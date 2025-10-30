@@ -56,31 +56,50 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    string s;
-    cin >> s;
-    
-    ll bal = 0, count = 0;
+    ll n, x;
+    cin >> n >> x;
 
-    for(ll i = 0; i < n; i++){
-        if(s[i] == '0'){
-            bal++;
+    vector<ll> vec(n);
+    rep(i,n)cin  >> vec[i];
+
+    sort(all(vec));
+
+    ll s = 0, p = 0,lol = 0;
+
+    ll i = 0, j = sz(vec)-1;
+
+    vector<ll> v;
+
+    while(i <= j){
+        //cerr << ((s+vec[j])/x) << " "<< lol << ln;
+        if(((s+vec[j])/x) > lol){
+            v.pb(vec[j]);
+            p += vec[j];
+            lol = (s+vec[j])/x;
+            s += vec[j];
+            j--;
+        }
+        else if(i <= j && ((s+vec[i])/x) > lol){
+            v.pb(vec[i]);
+            p += vec[i];
+            lol = (s+vec[i])/x;
+            s += vec[i];
+            i++;
         }
         else{
-            if(bal > 0)bal--;
-            else count++;
+            v.pb(vec[i]);
+            s += vec[i];
+            i++;
         }
+        //cerr << i << " "<< j << " "<<s << ln;
     }
-    if(bal == 0 && count == 0){
-        cout << 0 << ln;
+
+    cout << p << ln;
+    for(auto e : v){
+        cout << e << " ";
     }
-    else if(bal > 0 && count > 0){
-        cout << 2 << ln;
-    }
-    else{
-        cout << 1 << ln;
-    }
+    cout << ln;
+
 }
 
 int main() {

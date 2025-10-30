@@ -54,33 +54,58 @@ template <class T> void _print(vector<T> v) {cerr << "[ "; for (T i : v) {_print
 template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
+ll count1 = 0;
 
+vector<ll> row = {-1, 0, 1, 0}, col = {0, -1, 0, 1};
+
+void dfs(ll i, ll j, vector<string> &vec, vector<vector<bool>> &vis){
+    //cerr << i << " "<< j << ln;
+    ll n = sz(vec), m = sz(vec[0]);
+    vis[i][j] = true;
+    count1++;
+
+    for(ll x = 0; x < 4; x++){
+        ll r = i + row[x];
+        ll c = j + col[x];
+
+        if(r >= 0 && r < n && c >= 0 && c < m && vec[r][c] == '1' && !vis[r][c]){
+            dfs(r, c, vec, vis);
+        }
+    }
+}
 void solve() {
-    ll n;
-    cin >> n;
-    string s;
-    cin >> s;
-    
-    ll bal = 0, count = 0;
+    ll n, m;
+    cin >> n >> m;
+
+    vector<string> vec(n);
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+    rep(i,n){
+        cin >> vec[i];
+    }
+
+    vector<ll> v;
 
     for(ll i = 0; i < n; i++){
-        if(s[i] == '0'){
-            bal++;
+        for(ll j = 0; j < m; j++){
+            if(vec[i][j] == '1' && !vis[i][j]){
+                //cerr << i << " "<< j << ln;
+                count1 = 0;
+                dfs(i, j, vec, vis);
+                //cerr << count1 << ln;
+                v.pb(count1);
+            }
         }
-        else{
-            if(bal > 0)bal--;
-            else count++;
-        }
     }
-    if(bal == 0 && count == 0){
-        cout << 0 << ln;
+    sort(v.rbegin(), v.rend());
+    //debug(v);
+
+    ll ans = 0;
+    for(ll i = 1; i < sz(v); i += 2){
+        ans += v[i];
     }
-    else if(bal > 0 && count > 0){
-        cout << 2 << ln;
-    }
-    else{
-        cout << 1 << ln;
-    }
+    cout << ans << ln;
+
+
 }
 
 int main() {

@@ -56,31 +56,52 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    string s;
-    cin >> s;
-    
-    ll bal = 0, count = 0;
+    ll n, m;
+    cin >> n >> m;
 
-    for(ll i = 0; i < n; i++){
-        if(s[i] == '0'){
-            bal++;
+    vector<vector<ll>> vec(n, vector<ll>(m));
+    ll max1 = 0;
+
+    rep(i,n){
+        rep(j,m){
+            cin >> vec[i][j];
+            max1 = max(max1, vec[i][j]);
         }
-        else{
-            if(bal > 0)bal--;
-            else count++;
+    }
+
+    priority_queue<pair<ll, pair<ll, ll>>, vector<pair<ll, pair<ll, ll>>>, greater<pair<ll, pair<ll, ll>>>> q;
+    rep(i,n){
+        rep(j,m){
+            if(vec[i][j] == max1){
+                q.push({ 0,{i,j}});
+            }
         }
     }
-    if(bal == 0 && count == 0){
-        cout << 0 << ln;
+
+    vector<ll> row = {-1, 0, 1, 0, -1, -1, 1, 1}, col = {0, -1, 0, 1, -1, 1, -1, 1};
+
+    ll ans = 0;
+
+    while(!q.empty()){
+        pair<ll,pair<ll,ll>> p = q.top();
+        q.pop();
+        ll cost = p.ff;
+        ans = max(ans, cost);
+
+        ll i = p.ss.ff, j = p.ss.ss;
+
+        for(ll x = 0; x < 8; x++){
+            ll r = i + row[x];
+            ll c = j + col[x];
+
+            if(r >= 0 && r < n && c >= 0 && c < m && vec[r][c] != max1){
+                vec[r][c] = max1;
+                q.push({cost+1, {r,c}});
+            }
+        }
     }
-    else if(bal > 0 && count > 0){
-        cout << 2 << ln;
-    }
-    else{
-        cout << 1 << ln;
-    }
+
+    cout << ans << ln;
 }
 
 int main() {

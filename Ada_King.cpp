@@ -56,31 +56,49 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    string s;
-    cin >> s;
-    
-    ll bal = 0, count = 0;
+    ll r, c, k;
+    cin >> r >> c >> k;
 
-    for(ll i = 0; i < n; i++){
-        if(s[i] == '0'){
-            bal++;
+    //cerr << r << " "<< c << " "<< k << ln;
+
+    queue<pair<ll,pair<ll,ll>>> q;
+   q.push({k, {r,c}});
+
+    vector<vector<bool>> vis(9, vector<bool>(9, false));
+    vis[r][c] = true;
+
+    vector<ll> row = {-1, 0, 1, 0, -1, -1, 1, 1}, col = {0, -1, 0, 1, -1, 1, -1, 1};
+
+
+
+    while(!q.empty()){
+        pair<ll,pair<ll,ll>> p = q.front();
+        q.pop();
+        //debug(p);
+        ll cost = p.ff, i = p.ss.ff, j = p.ss.ss;
+        //cerr<< cost << " "<< i <<" "<< j << ln;
+
+        if(cost == 0)continue;
+
+        for(ll x = 0; x < 8; x++){
+            ll r = i + row[x];
+            ll c = j + col[x];
+
+            if(r > 0 && r < 9 && c > 0 && c < 9 && !vis[r][c]){
+                vis[r][c] = true;
+                q.push({cost-1,{r, c}});
+            }
         }
-        else{
-            if(bal > 0)bal--;
-            else count++;
+    }
+    ll count = 0;
+    for(ll i = 1; i <= 8; i++){
+        for(ll j = 1; j <= 8; j++){
+            if(vis[i][j])count++;
         }
     }
-    if(bal == 0 && count == 0){
-        cout << 0 << ln;
-    }
-    else if(bal > 0 && count > 0){
-        cout << 2 << ln;
-    }
-    else{
-        cout << 1 << ln;
-    }
+    cout << count << ln;
+
+
 }
 
 int main() {
