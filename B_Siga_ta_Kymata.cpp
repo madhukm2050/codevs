@@ -70,52 +70,33 @@ void solve() {
         return;
     }
 
-    vector<ll> first(n, -1);
-    stack<ll> st;
-    for (ll i = 0; i < n; i++) {
-        while (!st.empty() && vec[st.top()] >= vec[i])
-            st.pop();
-        if (!st.empty()) first[i] = st.top();
-        st.push(i);
+    ll maxvalue = vec[0], minvalue = vec[0], maxIndex = 0, minIndex = 0;
+
+    for(ll i = 1; i < n; i++){
+        if(vec[i] > maxvalue){
+            maxvalue = vec[i];
+            maxIndex = i;
+        }
+        if(vec[i] < minvalue){
+            minvalue = vec[i];
+            minIndex = i;
+        }
+    }
+    //cerr << minIndex << " "<< maxIndex << ln;
+
+    if(s[maxIndex] == '1' || s[minIndex] == '1'){
+        cout << -1 << ln;
+        return;
     }
 
-    vector<ll> last(n, -1);
+    cout << 5 << ln;
 
-    while (!st.empty()) st.pop();
+    cout << min(minIndex+1, maxIndex+1) << " "<< max(minIndex+1, maxIndex+1) << ln;
+    cout << 1 <<" "<< minIndex+1 << ln;
+    cout << 1 <<" "<< maxIndex+1 << ln;
+    cout << minIndex+1 << " "<< n << ln;
+    cout << maxIndex+1 << " "<< n << ln;
 
-    for (ll i = n - 1; i >= 0; i--) {
-        while (!st.empty() && vec[st.top()] <= vec[i])
-            st.pop();
-        if (!st.empty()) last[i] = st.top();
-        st.push(i);
-    }
-
-    debug(first);
-    debug(last);
-
-    //set<string> st;
-
-    // for(ll i = 1; i < n-1; i++){
-    //     if(s[i] == '1'){
-    //         if(first[i] == -1 || last[i] == -1){
-    //             cout << -1 << ln;
-    //             return;
-    //         }
-    //         string str = to_string(first[i]) 
-    //     }
-    // }
-    // if(sz(st) > 5){
-    //     cout << -1 << ln;
-    //     return;
-    // }
-
-    // cout << sz(st) << ln;
-
-    // for(auto e : st){
-    //     cout << e[0] << " " << e[2] << ln;
-    // }
-
-    
 }
 
 int main() {
