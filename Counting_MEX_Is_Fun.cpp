@@ -55,45 +55,33 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-ll cost(ll ind, ll x, vector<ll> &a){
-    if(a[ind] > x)return INF/2;
-    return x-a[ind];
-}
+ll N = 5000;
+
+vector<vector<ll>> dp(N+1, vector<ll>(N+2, 0));
 
 void solve() {
-    ll n;
-    cin >> n;
 
-    vector<ll> vec(n);
-    rep(i,n)cin >> vec[i];
-
-    ll count = 0;
-
-    vector<vector<ll>> dp(n, vector<ll>(3, INF/2));
-   
-    
-    dp[0][0] = cost(0,0,vec);dp[0][1] = cost(0,1,vec); dp[0][2] = cost(0,2,vec);
-
-    for(ll i = 1; i < n; i++){
-        for(ll j = 0; j < 3; j++){
-            for(ll k = 0; k < 3; k++){
-                if(k == j)continue;
-                dp[i][j] = min(dp[i][j], dp[i-1][k]+cost(i, j, vec));
-            }
-        }
-    }
-
-    cout << min({dp[n-1][0], dp[n-1][1], dp[n-1][2]}) << ln;
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
 
+    dp[1][1] = 1;dp[2][3] = 2;
+
+    for(ll i = 3; i <= N; i++){
+        for(ll j = 1; j <= N; j++){
+            dp[i][j] = (2ll * dp[i-1][j-1]) + ((i-2ll)*dp[i-1][j]);
+        }
+    }
+
     int t=1;
     cin >> t;
     while (t--) {
-        solve();
+        //solve();
+        ll n, k;
+        cin >> n >> k;
+        cout << dp[n][k] << ln;
     }
     return 0;
 }
