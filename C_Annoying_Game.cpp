@@ -74,24 +74,22 @@ void solve() {
         cout << max1 << ln;
     }
     else{
-        ll m1 = -INF, ind = 0;
-        for(ll i = 0; i < n; i++){
-            if(b[i] > m1){
-                m1 = b[i];
-                ind = i;
-            }
-        }
-        a[ind] += m1;
-        //debug(a);
+        vector<ll> left(n), right(n);
 
-        ll max2 = -INF, sum1 = 0;
+        left[0] = a[0];
+        for(ll i = 1; i < n; i++){
+            left[i] = max(a[i], left[i-1]+a[i]);
+        }
+        right[n-1] = a[n-1];
+
+        for(ll i = n-2; i >= 0; i--){
+            right[i] = max(a[i], right[i+1]+a[i]);
+        }
 
         for(ll i = 0; i < n; i++){
-            sum1 += a[i];
-            max2 = max(max2, sum1);
-            if(sum1 < 0)sum1 = 0;
+            max1 = max(max1, left[i]+right[i]-a[i]+b[i]);
         }
-        cout << max2 << ln;
+        cout << max1 << ln;
     }
 
 }

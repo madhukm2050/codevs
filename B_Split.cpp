@@ -59,48 +59,34 @@ void solve() {
     ll n;
     cin >> n;
 
-    //vector<ll> vec(n);
     map<ll,ll> mp;
     rep(i,2*n){
         ll a;
         cin >> a;
         mp[a]++;
     }
-    debug(mp);
-    ll count = 0;
-    map<ll,ll> mp2;
-    for(auto e : mp){
-        ll v = e.ss;
-        mp2[v]++;
-    }
-    debug(mp2);
 
-    for(auto e : mp2){
-        if(e.ff == 1){
-            count += e.ss;
-        }
-        else if(e.ff == 2){
-            count += e.ff*e.ss;
-        }
-        else if(e.ff == 3){
-            count += e.ss;
+    ll odd = 0, even = 0, even1 = 0;
+    for(auto e : mp){
+        if((e.ss%2) == 1){
+            odd++;
         }
         else{
-
-            ll freq = e.ss;
-
-            count += ((freq/2)*2)*2;
-
-            if((freq%2) == 1){
-                if((e.ff/2)%2 == 1) count += 2;
-                //else count += 1;
-            }
+            even++;
+            if(((e.ss/2)%2) == 0)even1++;
         }
-        cerr << count << ln;
     }
 
+    ll ans = odd + 2 * even;
+
+    if(odd == 0){
+        if((even1%2) == 1){
+            ans -= 2;
+        }
+    }
+
+    cout << ans << ln;
     
-    cout << count << ln;
 
 }
 
