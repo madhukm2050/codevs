@@ -55,31 +55,30 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-ll helper(ll n){
-    return (n*(n+1))/2;
-}
 void solve() {
-    ll n, m;
-    cin >> n >> m;
+    ll n, x;
 
-    vector<ll> a(n), b(n);
+    cin >> n >> x;
 
-    rep(i,n)cin >> a[i];
-    rep(i,n)cin >> b[i];
+    vector<ll> vec(n);
+    rep(i,n)cin >> vec[i];
 
-    ll f1 = 1, fm = m;
+    ll i = 0;
 
-    rep(i,n){
-        f1 = max(f1+b[i], a[i]);
-        fm = max(fm+b[i], a[i]);
+    ll min1 = INF;
+    while(i < n){
+        set<ll> st;
+
+        while(i < n && vec[i] != x){
+            if(vec[i] < x)st.insert(vec[i]);
+            i++;
+        }
+        min1 = min(min1, x-sz(st)+1);
+        i++;
     }
 
-    ll k = fm-f1;
-
-    cout << helper(fm)-helper(f1) + (m-k)*f1 << ln;
-
+    cout << min1 << ln;
 }
-
 
 int main() {
     ios::sync_with_stdio(false);
