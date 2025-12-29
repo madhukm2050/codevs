@@ -58,25 +58,25 @@ template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i 
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
+    string s;
+    cin >> s;
 
-    ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
-        sum += vec[i];
+    int count = 0;
+    for(ll i = 0; i <= n-4; i++){
+        if(s[i] == '2' && s[i+1] == '0' && s[i+2] == '2' && s[i+3] == '5'){
+            count++;
+        }
     }
 
-    ll pre = 0, max1 = -INF;
-
-    for(ll i = 0; i < n; i++){
-        sum -= vec[i];
-        max1 = max(max1, pre-sum);
-
-        pre += ((i == 0)?vec[i]:abs(vec[i]));
-        //cerr << sum << " "<< pre << ln;
+    for(ll i = 0; i <= n-4; i++){
+        int c = 0;
+        if(s[i] != '2')c++;
+        if(s[i+1] != '0')c++;
+        if(s[i+2] != '2')c++;
+        if(s[i+3] != '6')c++;
+        count = min(count, c);
     }
-
-    cout << max1 << ln;
+    cout << count << ln;
 }
 
 int main() {

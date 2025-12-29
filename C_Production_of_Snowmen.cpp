@@ -55,28 +55,36 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
+ll helper(vector<ll> &a, vector<ll> &b){
+    int count = 0;
+    ll n = sz(a);
+    for(int i = 0; i < n; i++){
+        bool flag = true;
+        for(int j = 0; j < n; j++){
+            if(a[j] >= b[(i+j)%n]){
+                flag = false;
+                break;
+            }
+        }
+        if(flag){
+            count++;
+        }
+    }
+    return count;
+}
+
 void solve() {
     ll n;
     cin >> n;
-    vector<ll> vec(n);
 
-    ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
-        sum += vec[i];
-    }
+    vector<ll> a(n), b(n), c(n);
 
-    ll pre = 0, max1 = -INF;
+    rep(i,n)cin >> a[i];
+    rep(i,n)cin >> b[i];
+    rep(i,n)cin >> c[i];
 
-    for(ll i = 0; i < n; i++){
-        sum -= vec[i];
-        max1 = max(max1, pre-sum);
+    cout << n*helper(a,b)*helper(b,c) << ln;
 
-        pre += ((i == 0)?vec[i]:abs(vec[i]));
-        //cerr << sum << " "<< pre << ln;
-    }
-
-    cout << max1 << ln;
 }
 
 int main() {

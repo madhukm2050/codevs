@@ -56,27 +56,64 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
+    ll n, m;
+    
+    cin >> n >> m;
 
-    ll sum = 0;
+    vector<ll> vec(n);
+    vector<ll> p(n);
+
     rep(i,n){
         cin >> vec[i];
-        sum += vec[i];
+        p[i] = i;
     }
 
-    ll pre = 0, max1 = -INF;
-
-    for(ll i = 0; i < n; i++){
-        sum -= vec[i];
-        max1 = max(max1, pre-sum);
-
-        pre += ((i == 0)?vec[i]:abs(vec[i]));
-        //cerr << sum << " "<< pre << ln;
+    if(m > n/2){
+        cout << -1 << ln;
+        return;
     }
 
-    cout << max1 << ln;
+    sort(all(p), [&](int i, int j){
+        return vec[i] < vec[j];
+    });
+
+    if(m > 0){
+        cout << n-m << ln;
+
+        for(ll i = 0; i < n; i++){
+            if(i%2 == 0 && i/2 < m)continue;
+
+            cout << p[i]+1 << " "<< p[i-1]+1 << ln;
+        }
+        return;
+    }
+
+    ll sum1 = accumulate(all(vec), 0LL) - vec[p[n-1]];
+
+    if(vec[p[n-1]] > sum1){
+        cout << -1 << ln;
+        return;
+    }
+
+    sum1 = 0;
+
+    ll x = n-1;
+
+    while(sum1 < vec[p[n-1]]){
+        x--;
+        sum1 += vec[p[x]];
+    }
+
+    cout << n-1 << ln;
+    for(ll i = 0; i < x; i++){
+        cout << p[i]+1 << " "<< p[i+1]+1 <<ln;
+    }
+    for(ll i = x; i < n-1; i++){
+        cout << p[i]+1 << " "<< p[n-1]+1 << ln;
+    }
+
+    //debug(p);
+
 }
 
 int main() {

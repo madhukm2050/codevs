@@ -56,27 +56,53 @@ template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_pri
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void solve() {
-    ll n;
-    cin >> n;
-    vector<ll> vec(n);
+    ll n, m;
+    cin >> n >> m;
 
-    ll sum = 0;
-    rep(i,n){
-        cin >> vec[i];
-        sum += vec[i];
+    ll w1 = n, b1 = m;
+
+    ll i = 1, c1 = 0, p1 = 1;;
+    while(true){
+        if((i%2) == 0){
+            if(w1-p1 < 0){
+                break;
+            }
+            w1-=p1;
+            c1++;
+        }
+        else{
+            if(b1-p1 < 0){
+                break;
+            }
+            b1-=p1;
+            c1++;
+        }
+        p1 *= 2;
+        i++;
     }
 
-    ll pre = 0, max1 = -INF;
-
-    for(ll i = 0; i < n; i++){
-        sum -= vec[i];
-        max1 = max(max1, pre-sum);
-
-        pre += ((i == 0)?vec[i]:abs(vec[i]));
-        //cerr << sum << " "<< pre << ln;
+    i = 1;
+    ll w2 = n, b2 = m, c2 = 0, p2 = 1;
+    while(true){
+        if((i%2) == 1){
+            if(w2-p2 < 0){
+                break;
+            }
+            w2 -= p2;
+            c2++;
+        }
+        else{
+            if(b2-p2 < 0){
+                break;
+            }
+            b2 -= p2;
+            c2++;
+        }
+        p2 *= 2;
+        i++;
     }
+    cout << max(c1, c2) << ln;
 
-    cout << max1 << ln;
 }
 
 int main() {
